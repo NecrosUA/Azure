@@ -13,11 +13,11 @@ function callApi(endpoint, token) {
     logMessage('Calling web API...');
     
     fetch(endpoint, options)
-      .then(response => response.json())
+      .then(response => response.text())
       .then(response => {
 
         if (response) {
-          logMessage('Web API responded: ' + response.name);
+          logMessage('Web API responded: ' + response);
         }
         
         return response;

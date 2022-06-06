@@ -143,6 +143,7 @@ function passTokenToApi() {
         .then(response => {
             if (response) {
                 console.log("access_token acquired at: " + new Date().toString());
+                //console.log("Access token response : " + response.accessToken); //Added by Rost
                 try {
                     callApi(apiConfig.webApi, response.accessToken);
                 } catch (error) {
