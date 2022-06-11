@@ -9,6 +9,7 @@ const editProfileButton = document.getElementById('editProfileButton');
 const callApiButton = document.getElementById('callApiButton');
 const response = document.getElementById("response");
 const label = document.getElementById('label');
+const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
 
 function welcomeUser(username) {
     welcomeDiv.innerHTML = `Welcome ${username}!`
@@ -16,6 +17,7 @@ function welcomeUser(username) {
     label.classList.add('d-none');
     signInButton.classList.add('d-none');
     titleDiv.classList.add('d-none');
+    editProfileArea.classList.add('d-none');//Rost
 
     signOutButton.classList.remove('d-none');
     editProfileButton.classList.remove('d-none');

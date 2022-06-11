@@ -159,12 +159,15 @@ function passTokenToApi() {
  * https://fabrikamb2c.b2clogin.com/fabrikamb2c.onmicrosoft.com/B2C_1_edit_profile_v2 
  */
 function editProfile() {
-    
-    const editProfileRequest = b2cPolicies.authorities.editProfile;
-    editProfileRequest.loginHint = myMSALObj.getAccountByHomeId(accountId).username;
 
-    myMSALObj.loginPopup(editProfileRequest)
-        .catch(error => {
-            console.log(error);
-        });
+    const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
+    editProfileArea.classList.remove('d-none');//Rost
+
+    // const editProfileRequest = b2cPolicies.authorities.editProfile;
+    // editProfileRequest.loginHint = myMSALObj.getAccountByHomeId(accountId).username;
+
+    // myMSALObj.loginPopup(editProfileRequest)
+    //     .catch(error => {
+    //         console.log(error);
+    //     });
 }
