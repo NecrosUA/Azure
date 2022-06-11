@@ -17,7 +17,7 @@ function welcomeUser(username) {
     label.classList.add('d-none');
     signInButton.classList.add('d-none');
     titleDiv.classList.add('d-none');
-    editProfileArea.classList.add('d-none');//Rost
+    editProfileArea.classList.add('d-none');//Rost hide element
 
     signOutButton.classList.remove('d-none');
     editProfileButton.classList.remove('d-none');

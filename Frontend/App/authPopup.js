@@ -161,7 +161,7 @@ function passTokenToApi() {
 function editProfile() {
 
     const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
-    editProfileArea.classList.remove('d-none');//Rost
+    editProfileArea.classList.remove('d-none');//Rost show user profile editing 
 
     // const editProfileRequest = b2cPolicies.authorities.editProfile;
     // editProfileRequest.loginHint = myMSALObj.getAccountByHomeId(accountId).username;
@@ -170,4 +170,9 @@ function editProfile() {
     //     .catch(error => {
     //         console.log(error);
     //     });
+}
+
+function saveProfile(){
+    const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
+    editProfileArea.classList.add('d-none');//Hide user edit area   
 }
