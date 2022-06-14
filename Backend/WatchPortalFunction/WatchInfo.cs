@@ -13,8 +13,16 @@ using WatchPortalFunction.Entities;
 
 namespace WatchPortalFunction;//C# 10 file-scoped namespace
 
-public class WatchInfo //: AuthorizedServiceBase
+public class WatchInfo //Just trial azure function class ... 
 {
+    // Use dummy data for this example
+    static List<WatchInfoEntity> watchinfo = new List<WatchInfoEntity>
+            {
+                new WatchInfoEntity { Manufacturer = "abc", CaseType = "Solid", Bezel = "Titanium", Dial = "Roman", CaseFinish = "Gold", Jewels = 40 },
+                new WatchInfoEntity { Manufacturer = "acb", CaseType = "Medium", Bezel = "Iron", Dial = "Co-Signed", CaseFinish = "Silver", Jewels = 15 },
+                new WatchInfoEntity { Manufacturer = "cba", CaseType = "Bold", Bezel = "Aluminium", Dial = "Skeleton", CaseFinish = "Platinum", Jewels = 35 },
+                new WatchInfoEntity { Manufacturer = "bac", CaseType = "Plain", Bezel = "Titanium", Dial = "Enamel", CaseFinish = "Rose-gold", Jewels = 5 }
+            };
 
     [FunctionName("Watchinfo")]
     public static async Task<IActionResult> Run(
@@ -24,17 +32,6 @@ public class WatchInfo //: AuthorizedServiceBase
 
         // Retrieve the model id from the query string
         string id = req.Query["id"];
-
-
-
-        // Use dummy data for this example
-        var watchinfo = new List<WatchInfoEntity>
-            {
-                new WatchInfoEntity { Manufacturer = "abc", CaseType = "Solid", Bezel = "Titanium", Dial = "Roman", CaseFinish = "Gold", Jewels = 40 },
-                new WatchInfoEntity { Manufacturer = "acb", CaseType = "Medium", Bezel = "Iron", Dial = "Co-Signed", CaseFinish = "Silver", Jewels = 15 },
-                new WatchInfoEntity { Manufacturer = "cba", CaseType = "Bold", Bezel = "Aluminium", Dial = "Skeleton", CaseFinish = "Platinum", Jewels = 35 },
-                new WatchInfoEntity { Manufacturer = "bac", CaseType = "Plain", Bezel = "Titanium", Dial = "Enamel", CaseFinish = "Rose-gold", Jewels = 5 }
-            };
 
         var i = watchinfo.FindIndex(x => x.Manufacturer == id);
 
@@ -48,7 +45,7 @@ public class WatchInfo //: AuthorizedServiceBase
                 > 10 => "premium clock",
                 > 1 => "regular clock",
             }}";
-
+            //return new OkObjectResult(watchinfo);
             return new OkObjectResult($"Watch Details: {watchinfo[i].Manufacturer}, {watchinfo[i].CaseType}, {watchinfo[i].Bezel}, {watchinfo[i].Dial}, {watchinfo[i].CaseFinish}, {watchinfo[i].Jewels} {message}");
         }
         return new BadRequestObjectResult("Please provide a watch model in the query string");
