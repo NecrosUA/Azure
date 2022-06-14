@@ -145,7 +145,7 @@ function passTokenToApi() {
                 console.log("access_token acquired at: " + new Date().toString());
                 //console.log("Access token response : " + response.accessToken); //Added by Rost
                 try {
-                    callApi(apiConfig.webApi, response.accessToken);
+                    readUserInfo(apiConfig.webApi, response.accessToken); //Call information from backend about user //callApi(apiConfig.webApi, accessToken);
                 } catch (error) {
                     console.log(error);
                 }
@@ -162,6 +162,7 @@ function editProfile() {
 
     const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
     editProfileArea.classList.remove('d-none');//Rost show user profile editing 
+    passTokenToApi(); //pass token and call my API
 
     // const editProfileRequest = b2cPolicies.authorities.editProfile;
     // editProfileRequest.loginHint = myMSALObj.getAccountByHomeId(accountId).username;

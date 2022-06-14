@@ -155,7 +155,7 @@ function passTokenToApi() {
         getTokenRedirect(tokenRequest);
     } else {
         try {
-            callApi(apiConfig.webApi, accessToken);
+            readUserInfo(apiConfig.webApi, accessToken); //Call information from backend about user //callApi(apiConfig.webApi, accessToken);
         } catch(error) {
             console.log(error); 
         }
@@ -173,5 +173,5 @@ function editProfile() {
     const editProfileRequest = b2cPolicies.authorities.editProfile;
     editProfileRequest.loginHint = myMSALObj.getAccountByHomeId(accountId).username;
 
-    myMSALObj.loginRedirect(editProfileRequest);
+    myMSALObj.loginRedirect(editProfileRequest); 
 }
