@@ -49,7 +49,7 @@ namespace WatchPortalFunction
 
             public void Save() //Its will never be implemented I suppose, but I leave it :)
             {
-                Console.WriteLine("Saving our db context to DB using entity framework method dbContext.SaveChanges()... ");
+                Console.WriteLine("Imagine thar we are saving our db context to DB using entity framework method dbContext.SaveChanges()... ");
             }
         }
 
@@ -72,14 +72,14 @@ namespace WatchPortalFunction
         }
 
         [FunctionName("WriteUserSettings")] //write into user profile 
-        public static async Task<IActionResult> Write( //TODO implement logic of writing into user profile 
+        public static async Task<IActionResult> Write( 
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "writeuser")] HttpRequest req,
         ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             var updateUser = new DbTools();
-            var content = await new StreamReader(req.Body).ReadToEndAsync();
+            var content = await new StreamReader(req.Body).ReadToEndAsync();//Most important thing for post method is getting request forom frontend! 
             //var jsonInfo = JsonConvert.DeserializeObject(content);
             ClientInfo jsonInfo = JsonConvert.DeserializeObject<ClientInfo>(content);
             updateUser.UpdateUser(jsonInfo);
