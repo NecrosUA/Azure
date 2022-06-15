@@ -19,7 +19,7 @@ namespace WatchPortalFunction
 
         static List<ClientInfo> clientInfo = new List<ClientInfo> //temp data simulating DB
         {
-            new ClientInfo("PID1234567890",new DateOnly(1993,03,09),"9303091324") 
+            new ClientInfo("PID1234567890","1993-03-09","9303091324") 
             {Name = "Adam", Surname = "Jensen", 
             Address1 = "Zeleň 43/1",
             Address2 = "Prague - Překážka",
@@ -78,19 +78,11 @@ namespace WatchPortalFunction
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-
-            string write = req.Query["write"]; 
-
-
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            write = write ?? data?.write;
-
-            //clientInfo[0].Name = name;
-
-            //string responseMessage = string.IsNullOrEmpty(name)
-            //    ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-            //    : $"Hello, {name}. This HTTP triggered function executed successfully.";
+            var updateUser = new DbTools();
+            var content = await new StreamReader(req.Body).ReadToEndAsync();
+            //var jsonInfo = JsonConvert.DeserializeObject(content);
+            ClientInfo jsonInfo = JsonConvert.DeserializeObject<ClientInfo>(content);
+            updateUser.UpdateUser(jsonInfo);
 
             return new OkObjectResult(clientInfo);
         }
