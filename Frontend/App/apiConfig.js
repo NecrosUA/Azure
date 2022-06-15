@@ -5,7 +5,12 @@
 //   };
 
 
-const apiConfig = { //Call userinfo
+const apiConfigRead = { //Call userinfo
     b2cScopes: ["https://rostb2c.onmicrosoft.com/tasks.read/tasks.read"],
     webApi: "https://premiumwatchreseller.azure-api.net/watchportalrost/readuser?pid=PID1234567890"
+  };
+
+  const apiConfigWrite = { //Call userinfo
+    b2cScopes: ["https://rostb2c.onmicrosoft.com/tasks.read/tasks.write"],
+    webApi: "https://premiumwatchreseller.azure-api.net/watchportalrost/writeuser"
   };

@@ -10,7 +10,7 @@ function readUserInfo(endpoint, token) {
         headers: headers
       };
   
-    //logMessage('Calling user settings...');
+    logMessage('Getting user settings...');
     
     fetch(endpoint, options)
       .then(response => response.json()) //response.json()
@@ -53,7 +53,7 @@ function readUserInfo(endpoint, token) {
     tbName.value = response.name;
     tbSurname.value = response.surname;
     tbPid.value = response.pid;
-    tbBirthDate.value = response.birthdate; //TODO need to fix date format at backend its yyyy-MM-dd
+    tbBirthDate.value = "1993-03-09"//response.birthdate; //TODO need to fix date format at backend its yyyy-MM-dd
     tbBirthnumber.value = response.birthNumber;
     tbEmail.value = response.email;
     tbMobile.value = response.mobileNumber;
@@ -61,4 +61,37 @@ function readUserInfo(endpoint, token) {
     tbAddress2.value = response.address2;
     tbCountry.value = "Czech Republic"
     tbRegion.value = "Prague"
+  }
+
+  function writeUserInfo(endpoint, token) {
+    
+    const headers = new Headers();
+    const bearer = `Bearer ${token}`;
+  
+    headers.append("Authorization", bearer);
+
+    const body = {
+        pid: document.getElementById('tbPid').value,
+        name: document.getElementById('tbName').value,
+        surname: document.getElementById('tbSurname').value,   
+        birthdate: document.getElementById('tbBirthDate').value,
+        birthnumber: document.getElementById('tbBirthnumber').value,
+        mobilenumber: document.getElementById('tbMobile').value,
+        email: document.getElementById('tbEmail').value,
+        address1: document.getElementById('tbAddress1').value,
+        address2: document.getElementById('tbAddress2').value,
+    };
+  
+    const options = {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(body)
+      };
+  
+    logMessage('Saving user data...');
+    
+    fetch(endpoint, options)
+        .catch(error => {
+        console.error(error);
+      });
   }

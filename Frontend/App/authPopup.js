@@ -138,14 +138,22 @@ function getTokenPopup(request) {
         });
 }
 
-function passTokenToApi() {
+function passTokenToApi(key) {
     getTokenPopup(tokenRequest)
         .then(response => {
             if (response) {
                 console.log("access_token acquired at: " + new Date().toString());
                 //console.log("Access token response : " + response.accessToken); //Added by Rost
                 try {
-                    readUserInfo(apiConfig.webApi, response.accessToken); //Call information from backend about user //callApi(apiConfig.webApi, accessToken);
+                    switch (key) {
+                        case "GET":
+                            readUserInfo(apiConfigRead.webApi, response.accessToken); //Call information from backend about user
+                            break;
+                        case "POST":
+                            writeUserInfo(apiConfigWrite.webApi, response.accessToken); //Save information about user
+                            break;
+                    }
+                    
                 } catch (error) {
                     console.log(error);
                 }
@@ -162,7 +170,7 @@ function editProfile() {
 
     const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
     editProfileArea.classList.remove('d-none');//Rost show user profile editing 
-    passTokenToApi(); //pass token and call my API
+    passTokenToApi("GET"); //pass token and call my API
 
     // const editProfileRequest = b2cPolicies.authorities.editProfile;
     // editProfileRequest.loginHint = myMSALObj.getAccountByHomeId(accountId).username;
@@ -176,4 +184,5 @@ function editProfile() {
 function saveProfile(){
     const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
     editProfileArea.classList.add('d-none');//Hide user edit area   
+    passTokenToApi("POST"); //pass token and call my API
 }

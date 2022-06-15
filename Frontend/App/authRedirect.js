@@ -150,12 +150,19 @@ function getTokenRedirect(request) {
 }
  
 // Acquires and access token and then passes it to the API call
-function passTokenToApi() {
+function passTokenToApi(key) {
     if (!accessToken) {
         getTokenRedirect(tokenRequest);
     } else {
         try {
-            readUserInfo(apiConfig.webApi, accessToken); //Call information from backend about user //callApi(apiConfig.webApi, accessToken);
+            switch (key) {
+                case "GET":
+                    readUserInfo(apiConfigRead.webApi, response.accessToken); //Call information from backend about user
+                    break;
+                case "POST":
+                    writeUserInfo(apiConfigWrite.webApi, response.accessToken); //Save information about user
+                    break;
+            }
         } catch(error) {
             console.log(error); 
         }
@@ -169,9 +176,18 @@ function passTokenToApi() {
  */
 function editProfile() {
 
+    const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
+    editProfileArea.classList.remove('d-none');//Rost show user profile editing 
+    passTokenToApi("GET"); //pass token and call my API
 
-    const editProfileRequest = b2cPolicies.authorities.editProfile;
-    editProfileRequest.loginHint = myMSALObj.getAccountByHomeId(accountId).username;
 
-    myMSALObj.loginRedirect(editProfileRequest); 
+    // const editProfileRequest = b2cPolicies.authorities.editProfile;
+    // editProfileRequest.loginHint = myMSALObj.getAccountByHomeId(accountId).username;
+
+    // myMSALObj.loginRedirect(editProfileRequest); 
+}
+function saveProfile(){
+    const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
+    editProfileArea.classList.add('d-none');//Hide user edit area   
+    passTokenToApi("POST"); //pass token and call my API
 }

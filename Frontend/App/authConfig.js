@@ -49,7 +49,7 @@ const msalConfig = {
  * https://docs.microsoft.com/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
  */
 const loginRequest = {
-  scopes: ["openid", ...apiConfig.b2cScopes],
+  scopes: ["openid", ...apiConfigRead.b2cScopes],
 };
 
 /**
@@ -58,6 +58,6 @@ const loginRequest = {
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/resources-and-scopes.md
  */
 const tokenRequest = {
-  scopes: [...apiConfig.b2cScopes],  // e.g. ["https://fabrikamb2c.onmicrosoft.com/helloapi/demo.read"]
+  scopes: [...apiConfigRead.b2cScopes],  // e.g. ["https://fabrikamb2c.onmicrosoft.com/helloapi/demo.read"]
   forceRefresh: false // Set this to "true" to skip a cached token and go to the server to get a new token
 };
