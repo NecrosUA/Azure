@@ -10,7 +10,7 @@ function readUserInfo(endpoint, token) {
         headers: headers
       };
   
-    logMessage('Getting user settings...');
+    //logMessage('Getting user settings...');
     
     fetch(endpoint, options)
       .then(response => response.json()) //response.json()
@@ -53,7 +53,7 @@ function readUserInfo(endpoint, token) {
     tbName.value = response.name;
     tbSurname.value = response.surname;
     tbPid.value = response.pid;
-    tbBirthDate.value = "1993-03-09"//response.birthdate; //TODO need to fix date format at backend its yyyy-MM-dd
+    tbBirthDate.value = response.birthdate;
     tbBirthnumber.value = response.birthNumber;
     tbEmail.value = response.email;
     tbMobile.value = response.mobileNumber;
@@ -88,7 +88,7 @@ function readUserInfo(endpoint, token) {
         body: JSON.stringify(body)
       };
   
-    logMessage('Saving user data...');
+    //logMessage('Saving user data...');
     
     fetch(endpoint, options)
         .catch(error => {
