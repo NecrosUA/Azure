@@ -24,5 +24,6 @@ namespace WatchPortalFunction.Entities
         public string Email { get; set; }
         public string Address1 { get; set; }
         public string Address2 { get; set; }
+        public string ProfileImage { get; set; }
     }
 }

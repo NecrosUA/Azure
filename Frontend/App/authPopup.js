@@ -138,7 +138,7 @@ function getTokenPopup(request) {
         });
 }
 
-function passTokenToApi(key) {
+function passTokenToApi(key,img = null) {
     getTokenPopup(tokenRequest)
         .then(response => {
             if (response) {
@@ -149,8 +149,11 @@ function passTokenToApi(key) {
                         case "GET":
                             readUserInfo(apiConfigRead.webApi, response.accessToken); //Call information from backend about user
                             break;
-                        case "POST":
+                        case "POSTINFO":
                             writeUserInfo(apiConfigWrite.webApi, response.accessToken); //Save information about user
+                            break;
+                        case "POSTIMG":
+                            uploadImage(apiUploadImage.webApi, response.accessToken,img); //Upload image
                             break;
                     }
                     
@@ -184,5 +187,5 @@ function editProfile() {
 function saveProfile(){
     const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
     editProfileArea.classList.add('d-none');//Hide user edit area   
-    passTokenToApi("POST"); //pass token and call my API
+    passTokenToApi("POSTINFO"); //pass token and call my API
 }

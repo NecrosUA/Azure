@@ -14,3 +14,8 @@ const apiConfigRead = { //Call userinfo
     b2cScopes: ["https://rostb2c.onmicrosoft.com/tasks.read/tasks.write"],
     webApi: "https://premiumwatchreseller.azure-api.net/watchportalrost/writeuser"
   };
+
+  const apiUploadImage = { //Upload image
+    b2cScopes: ["https://rostb2c.onmicrosoft.com/tasks.read/tasks.write"],
+    webApi: "https://premiumwatchreseller.azure-api.net/watchportalrost/uploadimage"
+  };

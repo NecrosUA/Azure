@@ -17,17 +17,19 @@ namespace WatchPortalFunction
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "uploadimage")] HttpRequest req,
             ILogger log)
         {
-            string Connection = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
-            string containerName = Environment.GetEnvironmentVariable("ContainerName");
-
-            //Stream myBlob = new MemoryStream();
+            string Connection = Environment.GetEnvironmentVariable("ImageAzureWebJobsStorage");
+            string containerName = Environment.GetEnvironmentVariable("ImageContainerName");
+            //Guid id = Guid.NewGuid();
             var file = req.Form.Files["File"];
+            string[] restr = file.FileName.Split('.');
+            string filename = Guid.NewGuid() + "."+restr[restr.Length - 1]; //generate unique id of image
+
             Stream myBlob = file.OpenReadStream();
 
             var blobClient = new BlobContainerClient(Connection, containerName);
-            var blob = blobClient.GetBlobClient(file.FileName);
+            var blob = blobClient.GetBlobClient(filename);
             await blob.UploadAsync(myBlob);
-            return new OkObjectResult("file uploaded successfylly");
+            return new OkObjectResult(filename);
         }
     }
 }

@@ -49,7 +49,7 @@ function readUserInfo(endpoint, token) {
 
     picName.textContent = response.name;
     picEmail.textContent = response.email;
-    picSrc.src = "https://yt3.ggpht.com/a/AATXAJxYRjCkDJNMlaBlFvJkImsx4WfyUDowJ2O64Q=s900-c-k-c0xffffffff-no-rj-mo"
+    picSrc.src = response.profileImage //"https://yt3.ggpht.com/a/AATXAJxYRjCkDJNMlaBlFvJkImsx4WfyUDowJ2O64Q=s900-c-k-c0xffffffff-no-rj-mo"
     tbName.value = response.name;
     tbSurname.value = response.surname;
     tbPid.value = response.pid;
@@ -80,6 +80,7 @@ function readUserInfo(endpoint, token) {
         email: document.getElementById('tbEmail').value,
         address1: document.getElementById('tbAddress1').value,
         address2: document.getElementById('tbAddress2').value,
+        profileImage: document.getElementById('picSrc').src
     };
   
     const options = {

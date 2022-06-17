@@ -24,7 +24,8 @@ namespace WatchPortalFunction
             Address1 = "Zeleň 43/1",
             Address2 = "Prague - Překážka",
             Email = "Adam.Jensen@dex.cz",
-            MobileNumber = "77422914"}
+            MobileNumber = "77422914",
+            ProfileImage = @"https://yt3.ggpht.com/a/AATXAJxYRjCkDJNMlaBlFvJkImsx4WfyUDowJ2O64Q=s900-c-k-c0xffffffff-no-rj-mo"}
         };
 
         internal class DbTools : Idb<ClientInfo> //nested class because I need data from clientInfo
@@ -44,12 +45,13 @@ namespace WatchPortalFunction
                 clientInfo[i].Name = item.Name;
                 clientInfo[i].Surname = item.Surname;
                 clientInfo[i].MobileNumber = item.MobileNumber;
+                clientInfo[i].ProfileImage = item.ProfileImage;
                 Save();
             }
 
-            public void Save() //Its will never be implemented I suppose, but I leave it :)
+            public void Save() 
             {
-                Console.WriteLine("Imagine thar we are saving our db context to DB using entity framework method dbContext.SaveChanges()... ");
+                Console.WriteLine("Imagine that we are saving our db context to DB using entity framework method dbContext.SaveChanges()... "); //imagination
             }
         }
 
