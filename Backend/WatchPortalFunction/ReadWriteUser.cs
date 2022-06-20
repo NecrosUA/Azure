@@ -25,7 +25,7 @@ namespace WatchPortalFunction
             Address2 = "Prague - Překážka",
             Email = "Adam.Jensen@dex.cz",
             MobileNumber = "77422914",
-            ProfileImage = @"https://yt3.ggpht.com/a/AATXAJxYRjCkDJNMlaBlFvJkImsx4WfyUDowJ2O64Q=s900-c-k-c0xffffffff-no-rj-mo"}
+            ProfileImage = @"https://rostupload.blob.core.windows.net/images/adam.jpg"}
         };
 
         internal class DbTools : Idb<ClientInfo> //nested class because I need data from clientInfo
