@@ -1,5 +1,6 @@
 function uploadImage(endpoint,token,imageFile)
 {
+    const picSrc = document.getElementById('picSrc');
     const headers = new Headers();
     const bearer = `Bearer ${token}`;
 
@@ -13,7 +14,10 @@ function uploadImage(endpoint,token,imageFile)
       };
     
     fetch(endpoint, options)
-        .catch(error => {
+    .then(response => response.text())
+    .then(response => {
+        picSrc.src = "https://rostupload.blob.core.windows.net/images/"+response
+    }).catch(error => {
         console.error(error);
     });
 }

@@ -10,7 +10,7 @@ function openFile() {
 
 function handleFileInput()
 {  
-    const picSrc = document.getElementById('picSrc');
+    //const picSrc = document.getElementById('picSrc');
     const file = fileSelector.files[0]    
     const myFormData = new FormData();
 
