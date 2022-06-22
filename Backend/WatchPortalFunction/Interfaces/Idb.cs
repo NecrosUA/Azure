@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WatchPortalFunction.Interfaces
+namespace WatchPortalFunction.Interfaces;
+
+internal interface Idb<T> where T : class
 {
-    internal interface Idb<T> where T : class
-    {
-        T GetUser(string pid);
-        void UpdateUser(T item);
-        void Save();
-    }
+    T GetUser(string pid);
+    void UpdateUser(T item);
+    void Save();
 }

@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using WatchPortalFunction.Entities;
 //using WatchPortalFunction.Auth;
 
-namespace WatchPortalFunction;//C# 10 file-scoped namespace
+namespace WatchPortalFunction;
 
 public class WatchInfo //Just trial azure function class ... 
 {
