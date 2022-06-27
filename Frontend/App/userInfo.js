@@ -16,13 +16,6 @@ function readUserInfo(endpoint, token) {
       .then(response => response.json()) //response.json()
       .then(response => {
 
-        // if (response) {
-        //   logMessage('Web API responded: ' + response); 
-        // }
-        
-        //var jsonResponse= JSON.parse(response); //Parsing to JSON
-        //alert(response.name);//Now I can call like regular array by index
-
         fillUserInfo(response); //fill form
       }).catch(error => {
         console.error(error);
