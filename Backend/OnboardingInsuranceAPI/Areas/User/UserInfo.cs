@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WatchPortalFunction.Entities;
+namespace OnboardingInsuranceAPI.Areas.User;
 
-public class ClientInfo
+public class UserInfo
 {
-    public ClientInfo(string pid, string birthdate, string birthNumber)
+    public UserInfo(string pid, string birthdate, string birthNumber)
     {
         Pid = pid;
         Birthdate = birthdate;

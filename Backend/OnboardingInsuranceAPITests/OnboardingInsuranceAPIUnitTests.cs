@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 
 namespace WatchFunctionsTests
 {
-    public class WatchFunctionUnitTests
+    public class OnboardingInsuranceAPIUnitTests
     {
         [Fact]
         public void TestWatchFunctionSuccess()
@@ -26,7 +26,7 @@ namespace WatchFunctionsTests
             };
 
             var logger = NullLoggerFactory.Instance.CreateLogger("Null Logger");//Here will be normal logger?
-            var response = WatchPortalFunction.WatchInfo.Run(request, logger);
+            var response = OnboardingInsuranceAPI.WatchInfo.Run(request, logger);
             response.Wait();
 
             // Check that the response is an "OK" response
@@ -47,7 +47,7 @@ namespace WatchFunctionsTests
             var request = new DefaultHttpRequest(new DefaultHttpContext());
             var logger = NullLoggerFactory.Instance.CreateLogger("Null Logger");
 
-            var response = WatchPortalFunction.WatchInfo.Run(request, logger);
+            var response = OnboardingInsuranceAPI.WatchInfo.Run(request, logger);
             response.Wait();
 
             // Check that the response is an "Bad" response
@@ -75,7 +75,7 @@ namespace WatchFunctionsTests
 
             var logger = NullLoggerFactory.Instance.CreateLogger("Null Logger");
 
-            var response = WatchPortalFunction.WatchInfo.Run(request, logger);
+            var response = OnboardingInsuranceAPI.WatchInfo.Run(request, logger);
             response.Wait();
 
             // Check that the response is an "Bad" response
@@ -102,7 +102,7 @@ namespace WatchFunctionsTests
             };
 
             var logger = NullLoggerFactory.Instance.CreateLogger("Null Logger");
-            var response = WatchPortalFunction.WatchInfo.Run(request, logger);
+            var response = OnboardingInsuranceAPI.WatchInfo.Run(request, logger);
             response.Wait();
 
             // Check that the response is an "Bad" response

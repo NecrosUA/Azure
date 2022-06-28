@@ -8,19 +8,18 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using WatchPortalFunction.Entities;
-using WatchPortalFunction.Interfaces;
+using OnboardingInsuranceAPI.Areas.User.Models;
 
-namespace WatchPortalFunction;
+namespace OnboardingInsuranceAPI.Areas.User;
 
-public static class ReadWriteUser
+public static class ReadWriteUserController
 {
     //private static readonly Idb<ClientInfo> db;
 
-    static List<ClientInfo> clientInfo = new List<ClientInfo> //temp data simulating DB
+    static List<UserInfo> clientInfo = new List<UserInfo> //temp data simulating DB
     {
-        new ClientInfo("PID1234567890","1993-03-09","9303091324") 
-        {Name = "Adam", Surname = "Jensen", 
+        new UserInfo("PID1234567890","1993-03-09","9303091324")
+        {Name = "Adam", Surname = "Jensen",
         Address1 = "Zeleň 43/1",
         Address2 = "Prague - Překážka",
         Email = "Adam.Jensen@dex.cz",
@@ -28,14 +27,14 @@ public static class ReadWriteUser
         ProfileImage = @"https://rostupload.blob.core.windows.net/images/adam.jpg"}
     };
 
-    internal class DbTools : Idb<ClientInfo> //nested class because I need data from clientInfo
+    internal class DbTools : Idb<UserInfo> //nested class because I need data from clientInfo
     {
-        public ClientInfo GetUser(string pid) //Return our data from "DB"
+        public UserInfo GetUser(string pid) //Return our data from "DB"
         {
-            return clientInfo.Find(x => x.Pid == pid); 
+            return clientInfo.Find(x => x.Pid == pid);
         }
 
-        public void UpdateUser(ClientInfo item) //get data from api and saving to our "DB"
+        public void UpdateUser(UserInfo item) //get data from api and saving to our "DB"
         {
             var i = clientInfo.FindIndex(x => x.Pid == item.Pid);
 
@@ -49,7 +48,7 @@ public static class ReadWriteUser
             Save();
         }
 
-        public void Save() 
+        public void Save()
         {
             Console.WriteLine("Imagine that we are saving our db context to DB using entity framework method dbContext.SaveChanges()... "); //imagination
         }
@@ -70,12 +69,12 @@ public static class ReadWriteUser
         pid = pid ?? data?.pid;
 
         string responseMessage = string.IsNullOrEmpty(pid)
-            ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.":"";
+            ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response." : "";
         return new OkObjectResult(new DbTools().GetUser(pid));
     }
 
     [FunctionName("WriteUserSettings")] //write into user profile 
-    public static async Task<IActionResult> Write( 
+    public static async Task<IActionResult> Write(
     [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "writeuser")] HttpRequest req,
     ILogger log)
     {
@@ -84,7 +83,7 @@ public static class ReadWriteUser
         var updateUser = new DbTools();
         var content = await new StreamReader(req.Body).ReadToEndAsync();//Most important thing for post method is getting request forom frontend! 
         //var jsonInfo = JsonConvert.DeserializeObject(content);
-        ClientInfo jsonInfo = JsonConvert.DeserializeObject<ClientInfo>(content);
+        UserInfo jsonInfo = JsonConvert.DeserializeObject<UserInfo>(content);
         updateUser.UpdateUser(jsonInfo);
 
         return new OkObjectResult(clientInfo);

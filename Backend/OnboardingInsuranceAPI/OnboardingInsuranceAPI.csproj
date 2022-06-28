@@ -22,8 +22,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="AdminArea.cs" />
-    <Compile Remove="Entities\Constants.cs" />
-    <Compile Remove="Entities\Credentials.cs" />
     <Compile Remove="GenerateToken.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -39,5 +37,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Areas\Insurance\" />
   </ItemGroup>
 </Project>

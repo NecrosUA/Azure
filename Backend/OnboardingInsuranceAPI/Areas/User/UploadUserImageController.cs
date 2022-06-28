@@ -8,9 +8,9 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace WatchPortalFunction;
+namespace OnboardingInsuranceAPI.Areas.User;
 
-public static class UploadUserImage
+public static class UploadUserImageController
 {
     [FunctionName("UploadUserImage")]
     public static async Task<IActionResult> Run(
@@ -22,7 +22,7 @@ public static class UploadUserImage
         //Guid id = Guid.NewGuid();
         var file = req.Form.Files["File"];
         string[] restr = file.FileName.Split('.');
-        string filename = Guid.NewGuid() + "."+restr[restr.Length - 1]; //generate unique id of image
+        string filename = Guid.NewGuid() + "." + restr[restr.Length - 1]; //generate unique id of image
 
         Stream myBlob = file.OpenReadStream();
 

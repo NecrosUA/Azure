@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WatchPortalFunction.Interfaces;
+namespace OnboardingInsuranceAPI.Areas.User.Models;
 
 internal interface Idb<T> where T : class
 {
