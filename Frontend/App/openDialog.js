@@ -15,7 +15,7 @@ function handleFileInput()
 
     myFormData.append('File', file);   
     
-    passTokenToApi("POSTIMG", myFormData);
+    passTokenToApi("POST", myFormData);
      
 }
 

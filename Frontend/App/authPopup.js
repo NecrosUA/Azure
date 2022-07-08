@@ -149,10 +149,10 @@ function passTokenToApi(key,img = null) {
                         case "GET":
                             readUserInfo(apiConfigRead.webApi, response.accessToken); //Call information from backend about user
                             break;
-                        case "POSTINFO":
+                        case "PUT":
                             writeUserInfo(apiConfigWrite.webApi, response.accessToken); //Save information about user
                             break;
-                        case "POSTIMG":
+                        case "POST":
                             uploadImage(apiUploadImage.webApi, response.accessToken,img); //Upload image
                             break;
                     }
@@ -187,5 +187,5 @@ function editProfile() {
 function saveProfile(){
     const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
     editProfileArea.classList.add('d-none');//Hide user edit area   
-    passTokenToApi("POSTINFO"); //pass token and call my API
+    passTokenToApi("PUT"); //pass token and call my API
 }
