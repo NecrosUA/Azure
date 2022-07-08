@@ -13,8 +13,8 @@ namespace OnboardingInsuranceAPI.Areas.User;
 public static class UploadUserImageController
 {
     [FunctionName("UploadUserImage")]
-    public static async Task<IActionResult> Run(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "uploadimage")] HttpRequest req,
+    public static async Task<IActionResult> Create(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "images")] HttpRequest req,
         ILogger log)
     {
         string Connection = Environment.GetEnvironmentVariable("ImageAzureWebJobsStorage");

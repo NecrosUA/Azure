@@ -8,84 +8,41 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using OnboardingInsuranceAPI.Areas.User.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace OnboardingInsuranceAPI.Areas.User;
 
 public static class ReadWriteUserController
 {
-    //private static readonly Idb<ClientInfo> db;
-
-    static List<UserInfo> clientInfo = new List<UserInfo> //temp data simulating DB
-    {
-        new UserInfo("PID1234567890","1993-03-09","9303091324")
-        {Name = "Adam", Surname = "Jensen",
-        Address1 = "Zeleň 43/1",
-        Address2 = "Prague - Překážka",
-        Email = "Adam.Jensen@dex.cz",
-        MobileNumber = "77422914",
-        ProfileImage = @"https://rostupload.blob.core.windows.net/images/adam.jpg"}
-    };
-
-    internal class DbTools : Idb<UserInfo> //nested class because I need data from clientInfo
-    {
-        public UserInfo GetUser(string pid) //Return our data from "DB"
-        {
-            return clientInfo.Find(x => x.Pid == pid);
-        }
-
-        public void UpdateUser(UserInfo item) //get data from api and saving to our "DB"
-        {
-            var i = clientInfo.FindIndex(x => x.Pid == item.Pid);
-
-            clientInfo[i].Address1 = item.Address1;
-            clientInfo[i].Address2 = item.Address2;
-            clientInfo[i].Email = item.Email;
-            clientInfo[i].Name = item.Name;
-            clientInfo[i].Surname = item.Surname;
-            clientInfo[i].MobileNumber = item.MobileNumber;
-            clientInfo[i].ProfileImage = item.ProfileImage;
-            Save();
-        }
-
-        public void Save()
-        {
-            Console.WriteLine("Imagine that we are saving our db context to DB using entity framework method dbContext.SaveChanges()... "); //imagination
-        }
-
-    }
+    //private static readonly Idb<ClientInfo> db; 
+    private static readonly Repo repo = new Repo(); 
 
     [FunctionName("ReadUserSettings")] //read user profile by PID number
     public static async Task<IActionResult> Read(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "readuser")] HttpRequest req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users/{pid}")] HttpRequest req, string pid,
         ILogger log)
     {
         log.LogInformation("C# HTTP trigger function processed a request.");
 
-        string pid = req.Query["pid"];
+        var userData = await repo.GetUserBy(pid); //TODO finish this
 
-        string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-        dynamic data = JsonConvert.DeserializeObject(requestBody);
-        pid = pid ?? data?.pid;
-
-        string responseMessage = string.IsNullOrEmpty(pid)
-            ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response." : "";
-        return new OkObjectResult(new DbTools().GetUser(pid));
+        //string responseMessage = string.IsNullOrEmpty(pid)
+        //    ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response." : "";
+        return new OkObjectResult(userData);
     }
 
     [FunctionName("WriteUserSettings")] //write into user profile 
-    public static async Task<IActionResult> Write(
-    [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "writeuser")] HttpRequest req,
+    public static async Task<IActionResult> Update(
+    [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "users")] HttpRequest req,
     ILogger log)
     {
         log.LogInformation("C# HTTP trigger function processed a request.");
 
-        var updateUser = new DbTools();
-        var content = await new StreamReader(req.Body).ReadToEndAsync();//Most important thing for post method is getting request forom frontend! 
-        //var jsonInfo = JsonConvert.DeserializeObject(content);
-        UserInfo jsonInfo = JsonConvert.DeserializeObject<UserInfo>(content);
-        updateUser.UpdateUser(jsonInfo);
+        var content = await new StreamReader(req.Body).ReadToEndAsync();//Getting request info about user from frontend 
+        ReqData requestedData = JsonConvert.DeserializeObject<ReqData>(content);
 
-        return new OkObjectResult(clientInfo);
+        repo.UpSertItem(requestedData); //test
+
+        return new OkResult();
     }
 }
