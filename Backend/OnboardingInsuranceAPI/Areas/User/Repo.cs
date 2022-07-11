@@ -41,11 +41,5 @@ namespace OnboardingInsuranceAPI.Areas.User
             Console.WriteLine("Information saved...");
         }
 
-        public void Save()
-        {
-            throw new NotImplementedException();
-        }
-
-
     }
 }

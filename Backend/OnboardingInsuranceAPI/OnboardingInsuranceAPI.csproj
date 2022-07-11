@@ -46,7 +46,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Insurance\" />
     <Folder Include="Properties\ServiceDependencies\watchportalrost - Zip Deploy\" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OnboardingInsuranceAPI.Areas.Insurance;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,12 +10,6 @@ namespace OnboardingInsuranceAPI.Areas.User;
 
 public class UserInfo
 {
-    //public UserInfo(string pid, string birthdate, string birthNumber)
-    //{
-    //    Pid = pid;
-    //    Birthdate = birthdate;
-    //    BirthNumber = birthNumber;
-    //}
     [Key]
     public string Pid { get; set; }
     public string Name { get; set; }
@@ -26,4 +21,7 @@ public class UserInfo
     public string Address1 { get; set; }
     public string Address2 { get; set; }
     public string ProfileImage { get; set; }
+    public CarInsuranceInfo CarInsurance {get; set;}
+    public LifeInsuranceInfo LifeInsurance {get; set;}
+    public PensionInsuranceInfo PensionInsurance {get; set;}
 }

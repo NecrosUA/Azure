@@ -32,7 +32,7 @@ public class DataContext : DbContext
             .HasPartitionKey(o => o.Pid)
             .HasData(new UserInfo
             {
-                Pid = "PID1234567891",
+                Pid = "773ba94b-e9a8-4a1c-9d7e-655eb2f426d9",
                 Name = "Rostyslav",
                 Surname = "Kokhanchuk",
                 Birthdate = "1983-03-20",
