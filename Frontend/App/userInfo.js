@@ -11,10 +11,12 @@ function readUserInfo(endpoint, token) {
       };
   
     //logMessage('Getting user settings...');
+    // document append div class loader
     
     fetch(endpoint, options)
       .then(response => response.json()) //response.json()
       .then(response => {
+        //document remove div loader
 
         fillUserInfo(response); //fill form
       }).catch(error => {
@@ -39,6 +41,18 @@ function readUserInfo(endpoint, token) {
     const tbAddress2 = document.getElementById('tbAddress2');
     const tbCountry = document.getElementById('tbCountry');
     const tbRegion = document.getElementById('tbRegion');
+
+    // const editProfileArea = document.getElementById('editProfileArea')
+
+    // let div = document.createElement("div");
+    // let span = document.createElement("span")
+
+    // div.classList.add("spinner-border");
+    // div.classList.add("text-secondary");
+    // span.classList.add("visually-hidden")
+
+    // div.appendChild(span)
+    // editProfileArea.appendChild(div);
 
     picName.textContent = response.name;
     picEmail.textContent = response.email;

@@ -147,7 +147,8 @@ function passTokenToApi(key,img = null) {
                 try {
                     switch (key) {
                         case "GET":
-                            readUserInfo(apiConfigRead.webApi, response.accessToken); //Call information from backend about user
+                            readUserInfo(apiConfigRead.webApi+getUserId(response.accessToken), response.accessToken); //Call information from backend about user
+                            console.log("Current user id is: " + getUserId(response.accessToken))
                             break;
                         case "PUT":
                             writeUserInfo(apiConfigWrite.webApi, response.accessToken); //Save information about user
