@@ -17,7 +17,7 @@ function readUserInfo(endpoint, token) {
       .then(response => response.json()) //response.json()
       .then(response => {
         //document remove div loader
-
+        hideLoaderShowUser();
         fillUserInfo(response); //fill form
       }).catch(error => {
         console.error(error);
@@ -78,16 +78,16 @@ function readUserInfo(endpoint, token) {
     headers.append("Authorization", bearer);
 
     const body = { //ReqData class on backend
-        reqPid: document.getElementById('tbPid').value,
-        reqName: document.getElementById('tbName').value,
-        reqSurname: document.getElementById('tbSurname').value,   
+        pid: document.getElementById('tbPid').value,
+        name: document.getElementById('tbName').value,
+        surname: document.getElementById('tbSurname').value,   
         //birthdate: document.getElementById('tbBirthDate').value,
         //birthnumber: document.getElementById('tbBirthnumber').value,
-        reqMobilenumber: document.getElementById('tbMobile').value,
-        reqEmail: document.getElementById('tbEmail').value,
-        reqAddress1: document.getElementById('tbAddress1').value,
-        reqAddress2: document.getElementById('tbAddress2').value,
-        reqProfileImage: document.getElementById('picSrc').src
+        mobileNumber: document.getElementById('tbMobile').value,
+        email: document.getElementById('tbEmail').value,
+        address1: document.getElementById('tbAddress1').value,
+        address2: document.getElementById('tbAddress2').value,
+        profileImage: document.getElementById('picSrc').src 
     };
   
     const options = {
