@@ -1,12 +1,11 @@
-﻿using OnboardingInsuranceAPI.Areas.Insurance;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnboardingInsuranceAPI.Areas.User;
+namespace OnboardingInsuranceAPI.Services;
 
 public class UserInfo
 {
@@ -21,7 +20,7 @@ public class UserInfo
     public string Address1 { get; set; }
     public string Address2 { get; set; }
     public string ProfileImage { get; set; }
-    public CarInsuranceInfo CarInsurance {get; set;}
-    public LifeInsuranceInfo LifeInsurance {get; set;}
-    public PensionInsuranceInfo PensionInsurance {get; set;}
+    public CarInsuranceInfo CarInsurance { get; set; }
+    public LifeInsuranceInfo LifeInsurance { get; set; }
+    public PensionInsuranceInfo PensionInsurance { get; set; }
 }

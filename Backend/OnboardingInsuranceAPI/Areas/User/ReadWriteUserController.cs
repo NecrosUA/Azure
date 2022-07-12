@@ -9,13 +9,14 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using OnboardingInsuranceAPI.Areas.Shared;
 
 namespace OnboardingInsuranceAPI.Areas.User;
 
 public static class ReadWriteUserController
 {
     //private static readonly Idb<ClientInfo> db; 
-    private static readonly Repo repo = new Repo(); 
+    private static readonly Repository repo = new Repository(); 
 
     [FunctionName("ReadUserSettings")] //read user profile by PID number
     public static async Task<IActionResult> Read(
@@ -37,11 +38,10 @@ public static class ReadWriteUserController
     ILogger log)
     {
         log.LogInformation("C# HTTP trigger function processed a request.");
-
         var content = await new StreamReader(req.Body).ReadToEndAsync();//Getting request info about user from frontend 
-        ReqData requestedData = JsonConvert.DeserializeObject<ReqData>(content);
+        RequestedData requestedData = JsonConvert.DeserializeObject<RequestedData>(content);
 
-        repo.UpSertItem(requestedData); //test
+        repo.UpdateItem(requestedData); //test
 
         return new OkResult();
     }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnboardingInsuranceAPI.Areas.Insurance;
+namespace OnboardingInsuranceAPI.Services;
 
 public class PensionInsuranceInfo
 {

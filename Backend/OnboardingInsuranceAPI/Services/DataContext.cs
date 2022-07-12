@@ -7,7 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnboardingInsuranceAPI.Areas.User;
+namespace OnboardingInsuranceAPI.Services;
 
 public class DataContext : DbContext
 {
