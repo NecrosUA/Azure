@@ -28,6 +28,8 @@ public record RequestedData
     [JsonProperty("profileImage")]
     string ProfileImage,
     [JsonProperty("carInsurance")]
-    CarInsuranceInfo CarInsurance
+    CarInsuranceInfo CarInsurance,
+    [JsonProperty("sub")]
+    string Sub
 );
 

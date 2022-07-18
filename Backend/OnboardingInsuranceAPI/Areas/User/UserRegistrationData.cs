@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OnboardingInsuranceAPI.Areas.User;
 
-public record UserRegistration
+public record UserRegistrationData
 (
     [JsonProperty("pid")]
     string Pid,
