@@ -87,7 +87,11 @@ function readUserInfo(endpoint, token) {
         email: document.getElementById('tbEmail').value,
         address1: document.getElementById('tbAddress1').value,
         address2: document.getElementById('tbAddress2').value,
-        profileImage: document.getElementById('picSrc').src 
+        profileImage: document.getElementById('picSrc').src,
+        // carInsurance: //RequestedData record on Backend 
+        // {
+        //     expDate: document.getElementById('test').src
+        // }
     };
   
     const options = {
