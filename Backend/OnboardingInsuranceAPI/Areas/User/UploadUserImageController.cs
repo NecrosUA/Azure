@@ -1,8 +1,9 @@
 using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.Functions.Worker;
+//using Microsoft.Azure.WebJobs;
+//using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
@@ -10,25 +11,21 @@ using System.Threading.Tasks;
 
 namespace OnboardingInsuranceAPI.Areas.User;
 
-public static class UploadUserImageController
+public class UploadUserImageController
 {
-    [FunctionName("UploadUserImage")]
-    public static async Task<IActionResult> Create(
+    private readonly UploadUserImageHandler _handler;
+    public UploadUserImageController(UploadUserImageHandler handler)
+    {
+        _handler = handler;
+    }
+    [Function("UploadUserImage")]
+    public async Task<IActionResult> Create(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "images")] HttpRequest req,
         ILogger log)
     {
-        string Connection = Environment.GetEnvironmentVariable("ImageAzureWebJobsStorage");
-        string containerName = Environment.GetEnvironmentVariable("ImageContainerName");
-        //Guid id = Guid.NewGuid();
-        var file = req.Form.Files["File"];
-        string[] restr = file.FileName.Split('.');
-        string filename = Guid.NewGuid() + "." + restr[restr.Length - 1]; //generate unique id of image
+        var filename = await _handler.SaveImageToBlobContainer(req.Form.Files["File"]);
+        log.LogInformation($"C# HTTP trigger function processed a request UploadUserImage with image name: {filename}");
 
-        Stream myBlob = file.OpenReadStream();
-
-        var blobClient = new BlobContainerClient(Connection, containerName);
-        var blob = blobClient.GetBlobClient(filename);
-        await blob.UploadAsync(myBlob);
         return new OkObjectResult(filename);
     }
 }

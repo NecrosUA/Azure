@@ -7,7 +7,7 @@ namespace OnboardingInsuranceAPI.Extensions;
 
 internal static class FunctionContextExtensions
 {
-    internal static async Task SetResponse(this FunctionContext context, HttpStatusCode statusCode, object? response = null)
+    internal static async Task SetResponse(this FunctionContext context, HttpStatusCode statusCode, object response = null)
     {
         var req = await context.GetHttpRequestDataAsync();
 

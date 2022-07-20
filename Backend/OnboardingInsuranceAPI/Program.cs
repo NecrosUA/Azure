@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
-using OnboardingInsuranceAPI.Services;
 using OnboardingInsuranceAPI.ErrorHandling;
+using OnboardingInsuranceAPI.Areas.User;
+using OnboardingInsuranceAPI.Extensions;
+using OnboardingInsuranceAPI.Services;
 
 namespace OnboardingInsuranceAPI;
 
@@ -16,13 +14,20 @@ public class Program
     static async Task Main()
     {
         var host = new HostBuilder()
-            .ConfigureFunctionsWorkerDefaults(w =>
+            .ConfigureFunctionsWorkerDefaults(worker =>
             {
-                w.UseMiddleware<ExceptionHandlerMiddleware>();
+                worker
+                .UseMiddleware<ExceptionHandlerMiddleware>()
+                .UseMiddleware<CustomAuthorizationMiddleware>(); ;
             })
-            .ConfigureServices(s =>
+            .ConfigureServices(services =>
             {
-                s.AddSingleton<DataContext>();
+                services
+                .AddScopedByInterface<IUserHandler>()
+                //.AddScoped<ReadWriteUserHandler>()
+                //.AddScoped<RegisterUserHandler>()
+                //.AddScoped<UploadUserImageHandler>()
+                .AddSingleton<DataContext>(); //Is it ok to use singleton here? 
             })
             .ConfigureOpenApi()
             .Build();
