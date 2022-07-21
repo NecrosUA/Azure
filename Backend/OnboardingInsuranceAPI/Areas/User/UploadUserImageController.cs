@@ -1,10 +1,13 @@
 using Azure.Storage.Blobs;
+using HttpMultipartParser;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 //using Microsoft.Azure.WebJobs;
 //using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using OnboardingInsuranceAPI.Extensions;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -14,18 +17,32 @@ namespace OnboardingInsuranceAPI.Areas.User;
 public class UploadUserImageController
 {
     private readonly UploadUserImageHandler _handler;
-    public UploadUserImageController(UploadUserImageHandler handler)
+    private readonly ILogger<UploadUserImageController> _log;
+
+    public UploadUserImageController(UploadUserImageHandler handler, ILogger<UploadUserImageController> log)
     {
         _handler = handler;
+        _log = log;
     }
     [Function("UploadUserImage")]
-    public async Task<IActionResult> Create(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "images")] HttpRequest req,
-        ILogger log)
+    public async Task<HttpResponseData> Create(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "images")] HttpRequestData req)
     {
-        var filename = await _handler.SaveImageToBlobContainer(req.Form.Files["File"]);
-        log.LogInformation($"C# HTTP trigger function processed a request UploadUserImage with image name: {filename}");
+        var parsedFromBody = MultipartFormDataParser.ParseAsync(req.Body);
+        var file = parsedFromBody.Result.Files[0];
+        var filename = await _handler.SaveImageToBlobContainer(file);
+        _log.LogInformation($"C# HTTP trigger function processed a request UploadUserImage with image name: {filename}");
+        return await req.ReturnJson(filename);
 
-        return new OkObjectResult(filename);
+        //string connection = Environment.GetEnvironmentVariable("ImageAzureWebJobsStorage");
+        //string containerName = Environment.GetEnvironmentVariable("ImageContainerName");
+        //var file = req.Form.Files["File"];
+        //string[] restr = file.FileName.Split('.');
+        //string filename = Guid.NewGuid() + "." + restr[restr.Length - 1]; //generate unique id of image
+        //Stream myBlob = file.OpenReadStream();
+        //var blobClient = new BlobContainerClient(connection, containerName);
+        //var blob = blobClient.GetBlobClient(filename);
+        //await blob.UploadAsync(myBlob);
+        //return new OkObjectResult(filename);
     }
 }

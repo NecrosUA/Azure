@@ -1,9 +1,8 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
 using OnboardingInsuranceAPI.ErrorHandling;
-using OnboardingInsuranceAPI.Areas.User;
 using OnboardingInsuranceAPI.Extensions;
 using OnboardingInsuranceAPI.Services;
 
@@ -23,11 +22,11 @@ public class Program
             .ConfigureServices(services =>
             {
                 services
-                .AddScopedByInterface<IUserHandler>()
+                .AddScopedByInterface<IHandler>()
                 //.AddScoped<ReadWriteUserHandler>()
                 //.AddScoped<RegisterUserHandler>()
                 //.AddScoped<UploadUserImageHandler>()
-                .AddSingleton<DataContext>(); //Is it ok to use singleton here? 
+                .AddDbContextFactory<DataContext>(); 
             })
             .ConfigureOpenApi()
             .Build();

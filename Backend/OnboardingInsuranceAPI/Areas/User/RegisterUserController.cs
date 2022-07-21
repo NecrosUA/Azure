@@ -8,26 +8,30 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using OnboardingInsuranceAPI.Areas.Shared;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using System.Net;
 
 namespace OnboardingInsuranceAPI.Areas.User;
 public class RegisterUserController
 {
     private readonly RegisterUserHandler _handler;
-    public RegisterUserController(RegisterUserHandler handler)
+    private readonly ILogger<RegisterUserController> _log;
+
+    public RegisterUserController(RegisterUserHandler handler, ILogger<RegisterUserController> log)
     {
         _handler = handler;
+        _log = log;
     }
 
     [Function("RegisterUser")]
 
-    public async Task<IActionResult> Create(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "user")] HttpRequest req,
-        ILogger log)
+    public async Task<HttpResponseData> Create(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "user")] HttpRequestData req)
     {
         var content = await new StreamReader(req.Body).ReadToEndAsync();//Getting pid and other info inside body
-        log.LogInformation($"C# HTTP trigger function processed a request RegisterUserController with content: {content}");
+        _log.LogInformation($"C# HTTP trigger function processed a request RegisterUserController with content: {content}");
         RequestedData requestedData = JsonConvert.DeserializeObject<RequestedData>(content);
         await _handler.CreateUser(requestedData.Sub);
-        return new OkResult();
+        return req.CreateResponse(HttpStatusCode.Accepted);
     }
 }

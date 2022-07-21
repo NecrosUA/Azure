@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OnboardingInsuranceAPI.Areas.User;
 
-public class ReadWriteUserHandler : IUserHandler
+public class ReadWriteUserHandler : IHandler
 {
     private readonly DataContext _context;
     public ReadWriteUserHandler(DataContext context)

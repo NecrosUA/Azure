@@ -1,25 +1,27 @@
-﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs;
+using HttpMultipartParser;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OnboardingInsuranceAPI.Services;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 
 namespace OnboardingInsuranceAPI.Areas.User;
 
-public class UploadUserImageHandler : IUserHandler
+public class UploadUserImageHandler : IHandler
 {
-    public async Task<string> SaveImageToBlobContainer(IFormFile file)
+    public async Task<string> SaveImageToBlobContainer(FilePart file)
     {
-        string Connection = Environment.GetEnvironmentVariable("ImageAzureWebJobsStorage");
+        string connection = Environment.GetEnvironmentVariable("ImageAzureWebJobsStorage");
         string containerName = Environment.GetEnvironmentVariable("ImageContainerName");
 
         string[] restr = file.FileName.Split('.');
         string filename = Guid.NewGuid() + "." + restr[restr.Length - 1]; //generate unique id of image
 
-        Stream myBlob = file.OpenReadStream();
+        Stream myBlob = file.Data;
 
-        var blobClient = new BlobContainerClient(Connection, containerName);
+        var blobClient = new BlobContainerClient(connection, containerName);
         var blob = blobClient.GetBlobClient(filename);
         await blob.UploadAsync(myBlob);
 

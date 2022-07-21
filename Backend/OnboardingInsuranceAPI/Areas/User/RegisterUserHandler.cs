@@ -1,17 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using OnboardingInsuranceAPI.Services;
 using System;
 using System.Threading.Tasks;
 
 namespace OnboardingInsuranceAPI.Areas.User;
 
-public class RegisterUserHandler : IUserHandler
+public class RegisterUserHandler : IHandler
 {
     private readonly DataContext _context;
+    private readonly ILogger<RegisterUserHandler> _log;
 
-    public RegisterUserHandler(DataContext context)
+    public RegisterUserHandler(DataContext context, ILogger<RegisterUserHandler> log)
     {
-        _context = context;  
+        _context = context;
+        _log = log;
     }
 
     public async Task CreateUser(string pid)
@@ -21,7 +24,7 @@ public class RegisterUserHandler : IUserHandler
         {
             await _context.AddAsync(new UserInfo { Pid = pid });
             await _context.SaveChangesAsync();
-            Console.WriteLine("New user registered!");
+            _log.LogInformation($"New user registered. With pid:  {pid}");
         }
 
         //public async void InsertItem(UserRegistrationData item) //TODO rewrite this to complete registartion

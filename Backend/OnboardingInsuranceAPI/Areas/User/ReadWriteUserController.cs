@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -13,25 +13,28 @@ using OnboardingInsuranceAPI.Areas.Shared;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using OnboardingInsuranceAPI.Extensions;
+using System.Net;
 
 namespace OnboardingInsuranceAPI.Areas.User;
 
 public class ReadWriteUserController
 {
     private readonly ReadWriteUserHandler _handler;
+    private readonly ILogger<ReadWriteUserController> _log;
 
     //private static readonly Idb<ClientInfo> db; 
 
-    public ReadWriteUserController(ReadWriteUserHandler handler)
+    public ReadWriteUserController(ReadWriteUserHandler handler, ILogger<ReadWriteUserController> log)
     {
         _handler = handler;
+        _log = log;
     }
 
     [Function("ReadUserSettings")] //read user profile by PID number
     public  async Task<HttpResponseData> Read(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users/{pid}")] HttpRequestData req, string pid)
     {
-        //log.LogInformation("C# HTTP trigger function processed a request ReadUserSettings."); //Got exception here why why?
+        _log.LogInformation("C# HTTP trigger function processed a request ReadUserSettings."); //Got exception here but why?
 
         var userData = await _handler.GetUserBy(pid);
 
@@ -43,16 +46,15 @@ public class ReadWriteUserController
     }
 
     [Function("WriteUserSettings")] //write into user profile 
-    public  async Task<IActionResult> Update(
-    [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "users")] HttpRequest req,
-    ILogger log)
+    public  async Task<HttpResponseData> Update(
+    [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "users")] HttpRequestData req)
     {
-        log.LogInformation("C# HTTP trigger function processed a request WriteUserSettings.");
+        _log.LogInformation("C# HTTP trigger function processed a request WriteUserSettings.");
         var content = await new StreamReader(req.Body).ReadToEndAsync();//Getting request info about user from frontend 
         RequestedData requestedData = JsonConvert.DeserializeObject<RequestedData>(content);
 
-        await _handler.UpdateItem(requestedData); //test
+        await _handler.UpdateItem(requestedData); 
 
-        return new OkResult();
+        return req.CreateResponse(HttpStatusCode.Accepted);
     }
 }
