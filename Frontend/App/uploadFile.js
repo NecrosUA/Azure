@@ -14,8 +14,9 @@ function uploadImage(endpoint,token,imageFile)
       };
     
     fetch(endpoint, options)
-    .then(response => response.text()) //get response image filename 
+    .then(response => response.json()) //get response image filename 
     .then(response => {
+        //console.log("Resposnse name is: "+response)
         picSrc.src = "https://rostupload.blob.core.windows.net/images/"+response //set new image
     }).catch(error => {
         console.error(error);

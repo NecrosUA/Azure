@@ -5,7 +5,7 @@
  */
 const b2cPolicies = {
     names: {
-        signUpSignIn: "B2C_1A_SIGNUP_SIGNIN", //Mandatory field, put here Your userflow or Custom policy B2C_1_rostsignin
+        signUpSignIn: "B2C_1A_SIGNUP_SIGNIN", //Mandatory field, put here Your userflow or Custom policy B2C_1_rostsignin B2C_1A_SIGNUP_SIGNIN
         editProfile: "B2C_1_edit_profile_v2"
     },
     authorities: {

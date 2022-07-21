@@ -1,4 +1,5 @@
 function readUserInfo(endpoint, token) {
+
     
     const headers = new Headers();
     const bearer = `Bearer ${token}`;
@@ -14,9 +15,10 @@ function readUserInfo(endpoint, token) {
     // document append div class loader
     
     fetch(endpoint, options)
-      .then(response => response.json()) //response.json()
+      .then(response => response.json()) //response.json() TODO fix isolated project changes 
       .then(response => {
         //document remove div loader
+        //console.log("response" + response.Name)
         hideLoaderShowUser();
         fillUserInfo(response); //fill form
       }).catch(error => {
@@ -54,18 +56,18 @@ function readUserInfo(endpoint, token) {
     // div.appendChild(span)
     // editProfileArea.appendChild(div);
 
-    picName.textContent = response.name;
-    picEmail.textContent = response.email;
-    picSrc.src = response.profileImage //"https://yt3.ggpht.com/a/AATXAJxYRjCkDJNMlaBlFvJkImsx4WfyUDowJ2O64Q=s900-c-k-c0xffffffff-no-rj-mo"
-    tbName.value = response.name;
-    tbSurname.value = response.surname;
-    tbPid.value = response.pid;
-    tbBirthDate.value = response.birthdate;
-    tbBirthnumber.value = response.birthNumber;
-    tbEmail.value = response.email;
-    tbMobile.value = response.mobileNumber;
-    tbAddress1.value = response.address1;
-    tbAddress2.value = response.address2;
+    picName.textContent = response.Name; //TODO in production need to use middleware which convert all Uppercase json to lowercase
+    picEmail.textContent = response.Email;
+    picSrc.src = response.ProfileImage //"https://yt3.ggpht.com/a/AATXAJxYRjCkDJNMlaBlFvJkImsx4WfyUDowJ2O64Q=s900-c-k-c0xffffffff-no-rj-mo"
+    tbName.value = response.Name;
+    tbSurname.value = response.Surname;
+    tbPid.value = response.Pid; //If set to Pid with uppercase works 
+    tbBirthDate.value = response.Birthdate;
+    tbBirthnumber.value = response.BirthNumber;
+    tbEmail.value = response.Email;
+    tbMobile.value = response.MobileNumber;
+    tbAddress1.value = response.Address1;
+    tbAddress2.value = response.Address2;
     tbCountry.value = "Czech Republic"
     tbRegion.value = "Prague"
   }

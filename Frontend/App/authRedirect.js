@@ -150,23 +150,31 @@ function getTokenRedirect(request) {
 }
  
 // Acquires and access token and then passes it to the API call
-function passTokenToApi(key) {
-    if (!accessToken) {
-        getTokenRedirect(tokenRequest);
-    } else {
-        try {
-            switch (key) {
-                case "GET":
-                    readUserInfo(apiConfigRead.webApi, response.accessToken); //Call information from backend about user
-                    break;
-                case "POST":
-                    writeUserInfo(apiConfigWrite.webApi, response.accessToken); //Save information about user
-                    break;
+function passTokenToApi(key,img = null) {
+    getTokenPopup(tokenRequest)
+        .then(response => {
+            if (response) {
+                console.log("access_token acquired at: " + new Date().toString());
+                console.log("Access token response : " + response.accessToken); //Added by Rost
+                try {
+                    switch (key) {
+                        case "GET":
+                            readUserInfo(apiConfigRead.webApi+getUserId(response.accessToken), response.accessToken); //Call information from backend about user
+                            console.log("Current user id is: " + apiConfigRead.webApi + getUserId(response.accessToken))
+                            break;
+                        case "PUT":
+                            writeUserInfo(apiConfigWrite.webApi, response.accessToken); //Save information about user
+                            break;
+                        case "POST":
+                            uploadImage(apiUploadImage.webApi, response.accessToken,img); //Upload image
+                            break;
+                    }
+                    
+                } catch (error) {
+                    console.log(error);
+                }
             }
-        } catch(error) {
-            console.log(error); 
-        }
-    }
+        });
 }
 
 /**
@@ -174,20 +182,37 @@ function passTokenToApi(key) {
  * the full authority string of that user-flow e.g.
  * https://fabrikamb2c.b2clogin.com/fabrikamb2c.onmicrosoft.com/B2C_1_edit_profile_v2 
  */
-function editProfile() {
-
-    const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
-    editProfileArea.classList.remove('d-none');//Rost show user profile editing 
+ function editProfile() {
+    hideUserShowLoader();
     passTokenToApi("GET"); //pass token and call my API
-
 
     // const editProfileRequest = b2cPolicies.authorities.editProfile;
     // editProfileRequest.loginHint = myMSALObj.getAccountByHomeId(accountId).username;
 
-    // myMSALObj.loginRedirect(editProfileRequest); 
+    // myMSALObj.loginPopup(editProfileRequest)
+    //     .catch(error => {
+    //         console.log(error);
+    //     });
 }
 function saveProfile(){
     const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
     editProfileArea.classList.add('d-none');//Hide user edit area   
-    passTokenToApi("POST"); //pass token and call my API
+    passTokenToApi("PUT"); //pass token and call my API
+}
+
+function hideLoaderShowUser()
+{
+    const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
+    editProfileArea.classList.remove('d-none');//Rost show user profile editing 
+    const loader = document.getElementById('loader');
+    loader.classList.add('d-none');
+}
+
+function hideUserShowLoader()
+{
+    const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
+    editProfileArea.classList.add('d-none');//Rost show user profile editing 
+    const loader = document.getElementById('loader');
+    loader.classList.remove('d-none');
+
 }
