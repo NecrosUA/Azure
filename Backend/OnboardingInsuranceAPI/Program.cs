@@ -16,17 +16,17 @@ public class Program
             .ConfigureFunctionsWorkerDefaults(worker =>
             {
                 worker
-                .UseMiddleware<ExceptionHandlerMiddleware>()
-                .UseMiddleware<CustomAuthorizationMiddleware>(); ;
+                    .UseMiddleware<ExceptionHandlerMiddleware>()
+                    .UseMiddleware<CustomAuthorizationMiddleware>(); ;
             })
             .ConfigureServices(services =>
             {
                 services
-                .AddScopedByInterface<IHandler>()
-                //.AddScoped<ReadWriteUserHandler>()
-                //.AddScoped<RegisterUserHandler>()
-                //.AddScoped<UploadUserImageHandler>()
-                .AddDbContextFactory<DataContext>(); 
+                    .AddScopedByInterface<IHandler>()
+                    //.AddScoped<ReadWriteUserHandler>()
+                    //.AddScoped<RegisterUserHandler>()
+                    //.AddScoped<UploadUserImageHandler>()
+                    .AddDbContext<DataContext>(); //AddDbContextFactory try booth
             })
             .ConfigureOpenApi()
             .Build();
