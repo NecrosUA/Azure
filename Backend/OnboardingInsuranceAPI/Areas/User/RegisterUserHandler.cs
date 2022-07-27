@@ -17,12 +17,16 @@ public class RegisterUserHandler : IHandler
         _log = log;
     }
 
-    public async Task CreateUser(string pid)
+    public async Task CreateUser(string pid, string email)
     {
         var user = await _context.Users.FirstOrDefaultAsync(x => x.Pid == pid);//check if user exist
         if (user == null)
         {
-            await _context.AddAsync(new UserInfo { Pid = pid });
+            await _context.AddAsync(new UserInfo
+            {   Pid = pid,
+                ProfileImage = "https://rostupload.blob.core.windows.net/images/default.jpg",
+                Email = email
+            });
             await _context.SaveChangesAsync();
             _log.LogInformation($"New user registered. With pid:  {pid}");
         }

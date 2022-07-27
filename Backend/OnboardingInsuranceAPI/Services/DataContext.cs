@@ -1,4 +1,4 @@
-﻿using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,17 +14,19 @@ public class DataContext : DbContext
     public DbSet<UserInfo> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseCosmos(
-            Environment.GetEnvironmentVariable("AccountEndpoint"),
-            Environment.GetEnvironmentVariable("AccountKey"),
-            databaseName: "Data",
-            options =>
-            {
-                options.ConnectionMode(ConnectionMode.Gateway);
-                options.WebProxy(new WebProxy());
-                options.Region(Regions.WestEurope);
-                options.GatewayModeMaxConnectionLimit(32);
-            });
+    {
+        optionsBuilder.UseCosmos(
+        Environment.GetEnvironmentVariable("AccountEndpoint"),
+        Environment.GetEnvironmentVariable("AccountKey"),
+        databaseName: "Data",
+        options =>
+        {
+            options.ConnectionMode(ConnectionMode.Gateway);
+            options.WebProxy(new WebProxy());
+            options.Region(Regions.WestEurope);
+            options.GatewayModeMaxConnectionLimit(32);
+        });
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

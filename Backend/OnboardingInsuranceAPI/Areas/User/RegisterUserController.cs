@@ -24,14 +24,13 @@ public class RegisterUserController
     }
 
     [Function("RegisterUser")]
-
     public async Task<HttpResponseData> Create(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "user")] HttpRequestData req)
     {
         var content = await new StreamReader(req.Body).ReadToEndAsync();//Getting pid and other info inside body
         _log.LogInformation($"C# HTTP trigger function processed a request RegisterUserController with content: {content}");
         RequestedData requestedData = JsonConvert.DeserializeObject<RequestedData>(content);
-        await _handler.CreateUser(requestedData.Sub);
+        await _handler.CreateUser(requestedData.Sub, requestedData.Email);
         return req.CreateResponse(HttpStatusCode.Accepted);
     }
 }
