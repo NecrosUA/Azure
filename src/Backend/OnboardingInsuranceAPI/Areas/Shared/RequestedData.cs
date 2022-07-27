@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +17,10 @@ public record RequestedData
     string Name,
     [JsonProperty("surname")]
     string Surname,
+    [JsonProperty("birthdate")]
+    string Birthdate,
+    [JsonProperty("birthNumber")]
+    string BirthNumber,
     [JsonProperty("mobileNumber")]
     string MobileNumber,
     [JsonProperty("email")]

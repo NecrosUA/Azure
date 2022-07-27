@@ -30,28 +30,5 @@ public class RegisterUserHandler : IHandler
             await _context.SaveChangesAsync();
             _log.LogInformation($"New user registered. With pid:  {pid}");
         }
-
-        //public async void InsertItem(UserRegistrationData item) //TODO rewrite this to complete registartion
-        //{
-        //    var newUser = new UserInfo
-        //    {
-        //        Pid = item.Pid,
-        //        Name = item.Name,
-        //        Surname = item.Surname,
-        //        Birthdate = item.Birthdate,
-        //        BirthNumber = item.BirthNumber,
-        //        MobileNumber = item.MobileNumber,
-        //        Email = item.Email,
-        //        Address1 = item.Address1,
-        //        Address2 = item.Address2,
-        //        ProfileImage = item.ProfileImage
-        //    };
-
-
-
-        //    using var context = new DataContext();
-        //    await context.AddAsync(newUser);
-        //    Console.WriteLine("New user registered...");
-        //}
     }
 }

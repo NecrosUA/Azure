@@ -171,7 +171,7 @@ function passTokenToApi(key,img = null) {
                     }
                     
                 } catch (error) {
-                    console.log(error);
+                    console.log(error)
                 }
             }
         });
@@ -183,8 +183,8 @@ function passTokenToApi(key,img = null) {
  * https://fabrikamb2c.b2clogin.com/fabrikamb2c.onmicrosoft.com/B2C_1_edit_profile_v2 
  */
  function editProfile() {
-    hideUserShowLoader();
-    passTokenToApi("GET"); //pass token and call my API
+    hideUserShowLoader()
+    passTokenToApi("GET") //pass token and call my API
 
     // const editProfileRequest = b2cPolicies.authorities.editProfile;
     // editProfileRequest.loginHint = myMSALObj.getAccountByHomeId(accountId).username;
@@ -203,16 +203,16 @@ function saveProfile(){
 function hideLoaderShowUser()
 {
     const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
-    editProfileArea.classList.remove('d-none');//Rost show user profile editing 
-    const loader = document.getElementById('loader');
-    loader.classList.add('d-none');
+    editProfileArea.classList.remove('d-none')//Rost show user profile editing 
+    const loader = document.getElementById('loader')
+    loader.classList.add('d-none')
 }
 
 function hideUserShowLoader()
 {
     const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
-    editProfileArea.classList.add('d-none');//Rost show user profile editing 
-    const loader = document.getElementById('loader');
-    loader.classList.remove('d-none');
+    editProfileArea.classList.add('d-none')//Rost show user profile editing 
+    const loader = document.getElementById('loader')
+    loader.classList.remove('d-none')
 
 }

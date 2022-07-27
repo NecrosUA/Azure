@@ -23,9 +23,6 @@ public class Program
             {
                 services
                     .AddScopedByInterface<IHandler>()
-                    //.AddScoped<ReadWriteUserHandler>()
-                    //.AddScoped<RegisterUserHandler>()
-                    //.AddScoped<UploadUserImageHandler>()
                     .AddDbContext<DataContext>(); //AddDbContextFactory try booth
             })
             .ConfigureOpenApi()

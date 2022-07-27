@@ -5,7 +5,6 @@ fileSelector.addEventListener('change', handleFileInput);
 
 function openFile() {   
     fileSelector.click();    
-    //return false;
 }
 
 function handleFileInput()

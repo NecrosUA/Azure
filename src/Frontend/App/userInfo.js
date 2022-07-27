@@ -17,10 +17,10 @@ function readUserInfo(endpoint, token) {
     fetch(endpoint, options)
       .then(response => response.json()) //response.json() TODO fix isolated project changes 
       .then(response => {
-        //document remove div loader
-        //console.log("response" + response.Name)
-        hideLoaderShowUser();
-        fillUserInfo(response); //fill form
+
+        fillUserInfo(response)
+        hideLoaderShowUser()
+        checkRegistration()
       }).catch(error => {
         console.error(error);
       });
@@ -83,8 +83,8 @@ function readUserInfo(endpoint, token) {
         pid: document.getElementById('tbPid').value,
         name: document.getElementById('tbName').value,
         surname: document.getElementById('tbSurname').value,   
-        //birthdate: document.getElementById('tbBirthDate').value,
-        //birthnumber: document.getElementById('tbBirthnumber').value,
+        birthdate: document.getElementById('tbBirthDate').value,
+        birthnumber: document.getElementById('tbBirthnumber').value,
         mobileNumber: document.getElementById('tbMobile').value,
         email: document.getElementById('tbEmail').value,
         address1: document.getElementById('tbAddress1').value,
