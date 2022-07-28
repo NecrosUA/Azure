@@ -33,16 +33,5 @@ public class UploadUserImageController
         var filename = await _handler.SaveImageToBlobContainer(file);
         _log.LogInformation($"C# HTTP trigger function processed a request UploadUserImage with image name: {filename}");
         return await req.ReturnJson(filename);
-
-        //string connection = Environment.GetEnvironmentVariable("ImageAzureWebJobsStorage");
-        //string containerName = Environment.GetEnvironmentVariable("ImageContainerName");
-        //var file = req.Form.Files["File"];
-        //string[] restr = file.FileName.Split('.');
-        //string filename = Guid.NewGuid() + "." + restr[restr.Length - 1]; //generate unique id of image
-        //Stream myBlob = file.OpenReadStream();
-        //var blobClient = new BlobContainerClient(connection, containerName);
-        //var blob = blobClient.GetBlobClient(filename);
-        //await blob.UploadAsync(myBlob);
-        //return new OkObjectResult(filename);
     }
 }

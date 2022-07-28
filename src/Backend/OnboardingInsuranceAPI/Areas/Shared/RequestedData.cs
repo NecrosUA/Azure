@@ -1,13 +1,15 @@
-﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
+using OnboardingInsuranceAPI.Services;
 
-namespace OnboardingInsuranceAPI.Areas.User;
+namespace OnboardingInsuranceAPI.Areas.Shared;
 
-public record UserRegistrationData
+public record RequestedData
 (
     [JsonProperty("pid")]
     string Pid,
@@ -28,5 +30,10 @@ public record UserRegistrationData
     [JsonProperty("address2")]
     string Address2,
     [JsonProperty("profileImage")]
-    string ProfileImage
+    string ProfileImage,
+    [JsonProperty("carInsurance")]
+    CarInsuranceInfo CarInsurance,
+    [JsonProperty("sub")]
+    string Sub
 );
+

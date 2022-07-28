@@ -50,16 +50,16 @@
               <div class="col-md-5 border-right">
                   <div class="p-3 py-5">
                       <div class="d-flex justify-content-between align-items-center mb-3">
-                          <h4 class="text-right">Profile Settings</h4>
+                          <h4 class="text-right" id="profileText">Profile Settings</h4>
                       </div>
                       <div class="row mt-2">
-                          <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control" placeholder="first name" value="" id="tbName"></div>
-                          <div class="col-md-6"><label class="labels">Surname</label><input type="text" class="form-control" value="" placeholder="surname" id="tbSurname"></div>
+                          <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control" placeholder="first name" value="" id="tbName" required></div>
+                          <div class="col-md-6"><label class="labels">Surname</label><input type="text" class="form-control" value="" placeholder="surname" id="tbSurname" required></div>
                       </div>
                       <div class="row mt-3">
                           <div class="col-md-12"><label class="labels">PID</label><input type="text" class="form-control" placeholder="enter PID" value="" id="tbPid" readonly></div>
-                          <div class="col-md-12"><label class="labels">Birth date</label><input type="date" class="form-control" placeholder="enter birth date" value="" id="tbBirthDate" readonly></div>
-                          <div class="col-md-12"><label class="labels">Birth number</label><input type="text" class="form-control" placeholder="enter birth number" value="" id="tbBirthnumber" readonly></div>
+                          <div class="col-md-12"><label class="labels">Birth date</label><input type="date" class="form-control" placeholder="enter birth date" value="" id="tbBirthDate" required></div>
+                          <div class="col-md-12"><label class="labels">Birth number</label><input type="text" class="form-control" placeholder="enter birth number" value="" id="tbBirthnumber" required></div>
                           <div class="col-md-12"><label class="labels">Email</label><input type="text" class="form-control" placeholder="enter email" value="" id="tbEmail" readonly></div>
                           <div class="col-md-12"><label class="labels">Mobile Number</label><input type="text" class="form-control" placeholder="enter phone number" value="" id="tbMobile"></div>
                           <div class="col-md-12"><label class="labels">Address Line 1</label><input type="text" class="form-control" placeholder="enter address line 1" value="" id="tbAddress1"></div>
@@ -72,7 +72,7 @@
                       <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button" id="saveProfile" onclick="saveProfile()">Save Profile</button></div>
                   </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-4" id = "insuranceArea">
                 <div class="p-3 py-5">
                   <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="text-right">Insurance information</h4>

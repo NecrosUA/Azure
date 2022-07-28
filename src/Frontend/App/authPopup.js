@@ -170,9 +170,11 @@ function passTokenToApi(key,img = null) {
  * the full authority string of that user-flow e.g.
  * https://fabrikamb2c.b2clogin.com/fabrikamb2c.onmicrosoft.com/B2C_1_edit_profile_v2 
  */
-function editProfile() {
-    hideUserShowLoader();
-    passTokenToApi("GET"); //pass token and call my API
+async function editProfile() {
+    hideUserShowLoader()
+
+    passTokenToApi("GET") //pass token and call my API
+
 
     // const editProfileRequest = b2cPolicies.authorities.editProfile;
     // editProfileRequest.loginHint = myMSALObj.getAccountByHomeId(accountId).username;
@@ -184,24 +186,50 @@ function editProfile() {
 }
 
 function saveProfile(){
-    const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
-    editProfileArea.classList.add('d-none');//Hide user edit area   
-    passTokenToApi("PUT"); //pass token and call my API
+    const editProfileArea = document.getElementById('editProfileArea')//Rost edit profile
+    editProfileArea.classList.add('d-none')//Hide user edit area   
+    passTokenToApi("PUT") //pass token and call my API
 }
 
 function hideLoaderShowUser()
 {
-    const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
-    editProfileArea.classList.remove('d-none');//Rost show user profile editing 
-    const loader = document.getElementById('loader');
-    loader.classList.add('d-none');
+    const editProfileArea = document.getElementById('editProfileArea')//Rost edit profile
+    editProfileArea.classList.remove('d-none')//Rost show user profile editing 
+    const loader = document.getElementById('loader')
+    loader.classList.add('d-none')
+    document.getElementById('insuranceArea').classList.remove('d-none')
+    document.getElementById('profileText').textContent = "Profile Settings"
+}
+
+function checkRegistration()
+{
+    const birthdate = document.getElementById('tbBirthDate') //In case registartion finish set fields to readonly 
+    const birthnumber = document.getElementById('tbBirthnumber')
+    if(birthdate.value.length > 0 || birthnumber.value.length > 0) 
+    {
+        birthdate.readOnly = true;
+        birthnumber.readOnly = true;
+    } 
+
+    const name = document.getElementById('tbName') //Hide all elements except registration
+    const surname = document.getElementById('tbSurname')
+    if( name.value.length == 0 || 
+        surname.value.length == 0 || 
+        birthdate.value.length == 0 || 
+        birthnumber.value.length == 0 )
+    {
+        hideLoaderShowUser()
+        document.getElementById('insuranceArea').classList.add('d-none')
+        document.getElementById('profileText').textContent = "FINISH REGISTRATION PLEASE"
+    }
+
 }
 
 function hideUserShowLoader()
 {
     const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
-    editProfileArea.classList.add('d-none');//Rost show user profile editing 
-    const loader = document.getElementById('loader');
-    loader.classList.remove('d-none');
+    editProfileArea.classList.add('d-none')//Rost show user profile editing 
+    const loader = document.getElementById('loader')
+    loader.classList.remove('d-none')
 
 }

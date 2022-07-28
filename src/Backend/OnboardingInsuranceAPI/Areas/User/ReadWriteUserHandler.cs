@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using OnboardingInsuranceAPI.Areas.Shared;
 using OnboardingInsuranceAPI.Services;
 using System;
@@ -38,6 +38,8 @@ public class ReadWriteUserHandler : IHandler
         user.Email = item.Email;
         user.MobileNumber = item.MobileNumber;
         user.ProfileImage = item.ProfileImage;
+        user.BirthNumber = item.BirthNumber;
+        user.Birthdate = item.Birthdate;
 
         _context.Update(user);
         await _context.SaveChangesAsync();
