@@ -146,6 +146,12 @@ function passTokenToApi(key,img = null) {
                 //console.log("Access token response : " + response.accessToken); //Added by Rost
                 try {
                     switch (key) {
+                        case "INSURANCEGET":
+                            readInsurance(apiConfigRead.webApi+getUserId(response.accessToken), response.accessToken); //Call information from backend about user
+                            break;
+                        case "NSURANCEPUT":
+                            writeInsurance(apiConfigWrite.webApi, response.accessToken); //Save information about user
+                            break;
                         case "GET":
                             readUserInfo(apiConfigRead.webApi+getUserId(response.accessToken), response.accessToken); //Call information from backend about user
                             //console.log("Current user id is: " + apiConfigRead.webApi + getUserId(response.accessToken))
@@ -170,36 +176,6 @@ function passTokenToApi(key,img = null) {
  * the full authority string of that user-flow e.g.
  * https://fabrikamb2c.b2clogin.com/fabrikamb2c.onmicrosoft.com/B2C_1_edit_profile_v2 
  */
-async function editProfile() {
-    hideUserShowLoader()
-
-    passTokenToApi("GET") //pass token and call my API
-
-
-    // const editProfileRequest = b2cPolicies.authorities.editProfile;
-    // editProfileRequest.loginHint = myMSALObj.getAccountByHomeId(accountId).username;
-
-    // myMSALObj.loginPopup(editProfileRequest)
-    //     .catch(error => {
-    //         console.log(error);
-    //     });
-}
-
-function saveProfile(){
-    const editProfileArea = document.getElementById('editProfileArea')//Rost edit profile
-    editProfileArea.classList.add('d-none')//Hide user edit area   
-    passTokenToApi("PUT") //pass token and call my API
-}
-
-function hideLoaderShowUser()
-{
-    const editProfileArea = document.getElementById('editProfileArea')//Rost edit profile
-    editProfileArea.classList.remove('d-none')//Rost show user profile editing 
-    const loader = document.getElementById('loader')
-    loader.classList.add('d-none')
-    document.getElementById('insuranceArea').classList.remove('d-none')
-    document.getElementById('profileText').textContent = "Profile Settings"
-}
 
 function checkRegistration()
 {
@@ -219,17 +195,9 @@ function checkRegistration()
         birthnumber.value.length == 0 )
     {
         hideLoaderShowUser()
-        document.getElementById('insuranceArea').classList.add('d-none')
+        //document.getElementById('insuranceArea').classList.add('d-none')
         document.getElementById('profileText').textContent = "FINISH REGISTRATION PLEASE"
     }
 
 }
 
-function hideUserShowLoader()
-{
-    const editProfileArea = document.getElementById('editProfileArea');//Rost edit profile
-    editProfileArea.classList.add('d-none')//Rost show user profile editing 
-    const loader = document.getElementById('loader')
-    loader.classList.remove('d-none')
-
-}
