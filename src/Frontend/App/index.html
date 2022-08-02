@@ -21,6 +21,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <a class="navbar-brand" href="/">Azure AD B2C</a>
       <div class="btn-group ml-auto dropleft">
+        <button type="button" id="InsuranceButton" class="btn btn-warning  d-none" onclick="addInsurance()">Insurance</button>
         <button type="button" id="editProfileButton" class="btn btn-secondary d-none" onclick="editProfile()">Edit Profile</button>
         <button type="button" id="signIn" class="btn btn-secondary" onclick="signIn()">Sign-in</button>
         <button type="button" id="signOut" class="btn btn-success d-none" onclick="signOut()">Sign-out</button>
@@ -53,42 +54,62 @@
                           <h4 class="text-right" id="profileText">Profile Settings</h4>
                       </div>
                       <form id="profile-update-form" class="needs-validation" novalidate >
-                      <div class="row mt-2">
-                          <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control" placeholder="first name" value="" id="tbName" required></div>
-                          <div class="col-md-6"><label class="labels">Surname</label><input type="text" class="form-control" value="" placeholder="surname" id="tbSurname" required></div>
-                      </div>
-                      <div class="row mt-3">
-                          <div class="col-md-12"><label class="labels">PID</label><input type="text" class="form-control" placeholder="enter PID" value="" id="tbPid" readonly></div>
-                          <div class="col-md-12"><label class="labels">Birth date</label><input type="date" class="form-control" placeholder="enter birth date" value="" id="tbBirthDate" required></div>
-                          <div class="col-md-12"><label class="labels">Birth number</label><input type="text" class="form-control" placeholder="enter birth number" value="" id="tbBirthnumber" required></div>
-                          <div class="col-md-12"><label class="labels">Email</label><input type="text" class="form-control" placeholder="enter email" value="" id="tbEmail" readonly></div>
-                          <div class="col-md-12"><label class="labels">Mobile Number</label><input type="text" class="form-control" placeholder="enter phone number" value="" id="tbMobile"></div>
-                          <div class="col-md-12"><label class="labels">Address Line 1</label><input type="text" class="form-control" placeholder="enter address line 1" value="" id="tbAddress1"></div>
-                          <div class="col-md-12"><label class="labels">Address Line 2</label><input type="text" class="form-control" placeholder="enter address line 2" value="" id="tbAddress2"></div>
-                      </div>
-                      <div class="row mt-3">
-                          <div class="col-md-6"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" value="" id="tbCountry" readonly></div>
-                          <div class="col-md-6"><label class="labels">State/Region</label><input type="text" class="form-control" value="" placeholder="state" id="tbRegion" readonly></div>
-                      </div>
-                      <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button" onclick="submitProfile()">Save Profile</button></div>
+                        <div class="row mt-2">
+                            <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control" placeholder="first name" value="" id="tbName" required></div>
+                            <div class="col-md-6"><label class="labels">Surname</label><input type="text" class="form-control" value="" placeholder="surname" id="tbSurname" required></div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12"><label class="labels">PID</label><input type="text" class="form-control" placeholder="enter PID" value="" id="tbPid" readonly></div>
+                            <div class="col-md-12"><label class="labels">Birth date</label><input type="date" class="form-control" placeholder="enter birth date" value="" id="tbBirthDate" required></div>
+                            <div class="col-md-12"><label class="labels">Birth number</label><input type="text" class="form-control" placeholder="enter birth number" value="" id="tbBirthnumber" required></div>
+                            <div class="col-md-12"><label class="labels">Email</label><input type="email" class="form-control" placeholder="enter email" value="" id="tbEmail" readonly></div>
+                            <div class="col-md-12"><label class="labels">Mobile Number</label><input type="tel" class="form-control" placeholder="enter phone number" value="" id="tbMobile"></div>
+                            <div class="col-md-12"><label class="labels">Address Line 1</label><input type="text" class="form-control" placeholder="enter address line 1" value="" id="tbAddress1"></div>
+                            <div class="col-md-12"><label class="labels">Address Line 2</label><input type="text" class="form-control" placeholder="enter address line 2" value="" id="tbAddress2"></div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" value="" id="tbCountry" readonly></div>
+                            <div class="col-md-6"><label class="labels">State/Region</label><input type="text" class="form-control" value="" placeholder="state" id="tbRegion" readonly></div>
+                        </div>
+                        <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button" onclick="submitProfile()">Save Profile</button></div>
                       </form>
                   </div>
               </div>
-              <div class="col-md-4" id = "insuranceArea">
-                <div class="p-3 py-5">
-                  <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="text-left">Insurance information</h4>
-                  </div>
-                    <div class="col-md-12"><label class="labels">Car insurance info</label><input type="text" class="form-control" placeholder="Car insurance info" value=""></div> <br>
-                    <div class="col-md-12"><label class="labels">Life insurance info</label><input type="text" class="form-control" placeholder="Life insurance info" value=""></div>
-                    <div class="col-md-12"><label class="labels">Pension</label><input type="text" class="form-control" placeholder="Pension" value=""></div>
-                </div>
-              </div>
           </div>
       </div>
+      <div class="container rounded bg-white mt-5 mb-5 d-none" id="insuranceArea">
+        <div class="row">
+            <div class="col-md-3 border-right">
+                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" id="picSrcIns"><span class="font-weight-bold" id="picNameIns">Edogaru</span><span class="text-black-50" id="picEmailIns">edogaru@mail.com.my</span><span> </span></div>
+            </div>
+            <div class="col-md-5 border-right">
+                <div class="p-3 py-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="text-right" id="profileText">Insurance information</h4>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-6"><label class="labels">Car type</label><input type="search" class="form-control" placeholder="Select type of car" value="" id="carType" required></div>
+                      <div class="col-md-6"><label class="labels">Car brand</label><input type="search" class="form-control" placeholder="Select car brand" value="" id="carBarnd" required></div>
+                      <div class="col-md-6"><label class="labels">Last service</label><input type="date" class="form-control" value="" id="lastService" required></div>
+                      <div class="col-md-6"><label class="labels">Year of production</label><input type="number" class="form-control" value="" id="yearOfProduction" required></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12"><label class="labels">Note</label><input type="text" class="form-control" placeholder="enter additional notes" value="" id="informationNote"></div>
+                        <div class="col-md-6"><label class="labels">Crashed</label><input type="checkbox" class="form-control"  id="carshed"></div>
+                        <div class="col-md-6"><label class="labels">First owner</label><input type="checkbox" class="form-control"  id="firstOwner"></div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-6"><label class="labels">Expiration date</label><input type="date" class="form-control" value="" id="expirationDate" readonly></div>
+                      <div class="col-md-6"><label class="labels">Yearly contribution</label><input type="number" class="form-control" value="" id="yearlyContribution" readonly></div>                     
+                    </div>
+                    <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button" id="saveInsurance" onclick="">Save</button></div>
+                </div>
+            </div>
+        </div>
+      </div>
+
       </div>
       </div>  
-
       </div>
     </div>
 
@@ -96,7 +117,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>  
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    
+
     <!-- importing app scripts (load order is important) -->
     <script type="text/javascript" src="./apiConfig.js"></script>
     <script type="text/javascript" src="./policies.js"></script>
@@ -112,5 +133,7 @@
     <script type="text/javascript" src="./api.js"></script> 
     <script type="text/javascript" src="./userInfo.js"></script>
     <script type="text/javascript" src="./getUserId.js"></script>
+    <script type="text/javascript" src="./insurance.js"></script>
+
   </body>
 </html>
