@@ -23,10 +23,12 @@ public class RegisterUserHandler : IHandler
         if (user == null)
         {
             await _context.AddAsync(new UserInfo
-            {   Pid = pid,
+            {
+                Pid = pid,
                 ProfileImage = "https://rostupload.blob.core.windows.net/images/default.jpg",
                 Email = email
             });
+
             await _context.SaveChangesAsync();
             _log.LogInformation($"New user registered. With pid:  {pid}");
         }

@@ -3,38 +3,38 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace OnboardingInsuranceAPI.Services;
 
 public class UserInfo
 {
     [Key]
-    [JsonProperty("pid")]
+    [JsonPropertyName("pid")]
     public string Pid { get; set; }
-    [JsonProperty("name")]
+    [JsonPropertyName("name")]
     public string Name { get; set; }
-    [JsonProperty("surname")]
+    [JsonPropertyName("surname")]
     public string Surname { get; set; }
-    [JsonProperty("birthdate")]
+    [JsonPropertyName("birthdate")]
     public string Birthdate { get; set; }
-    [JsonProperty("birthNumber")]
+    [JsonPropertyName("birthNumber")]
     public string BirthNumber { get; set; }
-    [JsonProperty("mobileNumber")]
+    [JsonPropertyName("mobileNumber")]
     public string MobileNumber { get; set; }
-    [JsonProperty("email")]
+    [JsonPropertyName("email")]
     public string Email { get; set; }
-    [JsonProperty("address1")]
+    [JsonPropertyName("address1")]
     public string Address1 { get; set; }
-    [JsonProperty("address2")]
+    [JsonPropertyName("address2")]
     public string Address2 { get; set; }
-    [JsonProperty("profileImage")]
+    [JsonPropertyName("profileImage")]
     public string ProfileImage { get; set; }
-    [JsonProperty("carInsurance")]
+    [JsonPropertyName("carInsurance")]
     public CarInsuranceInfo CarInsurance { get; set; }
-    [JsonProperty("lifeInsurance")]
+    [JsonPropertyName("lifeInsurance")]
     public LifeInsuranceInfo LifeInsurance { get; set; }
-    [JsonProperty("pensionInsurance")]
+    [JsonPropertyName("pensionInsurance")]
     public PensionInsuranceInfo PensionInsurance { get; set; }
 }

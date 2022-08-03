@@ -6,34 +6,34 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 using OnboardingInsuranceAPI.Services;
+using System.Text.Json.Serialization;
 
 namespace OnboardingInsuranceAPI.Areas.Shared;
 
 public record RequestedData
-(
-    [JsonProperty("pid")]
-    string Pid,
-    [JsonProperty("name")]
-    string Name,
-    [JsonProperty("surname")]
-    string Surname,
-    [JsonProperty("birthdate")]
-    string Birthdate,
-    [JsonProperty("birthNumber")]
-    string BirthNumber,
-    [JsonProperty("mobileNumber")]
-    string MobileNumber,
-    [JsonProperty("email")]
-    string Email,
-    [JsonProperty("address1")]
-    string Address1,
-    [JsonProperty("address2")]
-    string Address2,
-    [JsonProperty("profileImage")]
-    string ProfileImage,
-    [JsonProperty("carInsurance")]
-    CarInsuranceInfo CarInsurance,
-    [JsonProperty("sub")]
-    string Sub
-);
-
+{
+    [JsonPropertyName("pid")]
+    public string? Pid { get; set; }
+    [JsonPropertyName("name")]
+    public string? Name { get; set; }
+    [JsonPropertyName("surname")]
+    public string? Surname { get; set; }
+    [JsonPropertyName("birthdate")]
+    public string? Birthdate { get; set; }
+    [JsonPropertyName("birthNumber")]
+    public string? BirthNumber { get; set; }
+    [JsonPropertyName("mobileNumber")]
+    public string? MobileNumber { get; set; }
+    [JsonPropertyName("email")]
+    public string? Email { get; set; }
+    [JsonPropertyName("address1")]
+    public string? Address1 { get; set; }
+    [JsonPropertyName("address2")]
+    public string? Address2 { get; set; }
+    [JsonPropertyName("profileImage")]
+    public string? ProfileImage { get; set; }
+    [JsonPropertyName("carInsurance")]
+    public CarInsuranceInfo CarInsurance { get; set; }
+    [JsonPropertyName("sub")]
+    public string? Sub { get; }
+}

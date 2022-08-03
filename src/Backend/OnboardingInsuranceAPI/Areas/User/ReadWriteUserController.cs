@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 //using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using OnboardingInsuranceAPI.Areas.Shared;
@@ -34,14 +34,10 @@ public class ReadWriteUserController
     public  async Task<HttpResponseData> Read(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users/{pid}")] HttpRequestData req, string pid)
     {
-        _log.LogInformation("C# HTTP trigger function processed a request ReadUserSettings."); //Got exception here but why?
+        _log.LogInformation("C# HTTP trigger function processed a request ReadUserSettings.");
 
         var userData = await _handler.GetUserBy(pid);
 
-        //string responseMessage = string.IsNullOrEmpty(pid)
-        //    ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response." : "";
-
-        //return new OkObjectResult(userData);
         return await req.ReturnJson(userData);
     }
 
@@ -50,8 +46,7 @@ public class ReadWriteUserController
     [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "users")] HttpRequestData req)
     {
         _log.LogInformation("C# HTTP trigger function processed a request WriteUserSettings.");
-        var content = await new StreamReader(req.Body).ReadToEndAsync();//Getting request info about user from frontend 
-        RequestedData requestedData = JsonConvert.DeserializeObject<RequestedData>(content);
+        var requestedData = await req.ReadBodyAs<RequestedData>();
 
         await _handler.UpdateItem(requestedData); 
 

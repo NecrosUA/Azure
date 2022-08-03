@@ -19,7 +19,7 @@ public class ReadWriteUserHandler : IHandler
 
     public Task<UserInfo> GetUserBy(string pid)
     {
-        //await _context.Database.EnsureDeletedAsync();
+        //await _context.Database.EnsureDeletedAsync(); //uncomment it in case DB is empty
         //await _context.Database.EnsureCreatedAsync();
 
         return _context.Users.FirstOrDefaultAsync(u => u.Pid == pid);
@@ -29,7 +29,7 @@ public class ReadWriteUserHandler : IHandler
         //using var context = new DataContext();
 
         /*Prepare to update only not null data*/
-        UserInfo user = await _context.Users.FirstOrDefaultAsync(u => u.Pid == item.Pid);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Pid == item.Pid);
         //user.Pid = item.Pid;
         user.Name = item.Name;
         user.Surname = item.Surname;

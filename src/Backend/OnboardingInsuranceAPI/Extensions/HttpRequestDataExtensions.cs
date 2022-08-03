@@ -1,10 +1,11 @@
-﻿using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace OnboardingInsuranceAPI.Extensions;
@@ -20,5 +21,12 @@ public static class HttpRequestDataExtensions
         response.Headers.Add(HeaderNames.CacheControl, "no-cache");
 
         return response;
+    }
+
+    internal static async Task<TJson> ReadBodyAs<TJson>(
+        this HttpRequestData requestData,
+        JsonSerializerOptions? options = default)
+    {
+        return (await JsonSerializer.DeserializeAsync<TJson>(requestData.Body, options))!; 
     }
 }

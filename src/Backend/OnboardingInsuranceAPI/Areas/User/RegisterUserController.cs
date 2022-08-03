@@ -5,11 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 //using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+//using Newtonsoft.Json;
 using OnboardingInsuranceAPI.Areas.Shared;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using System.Net;
+using OnboardingInsuranceAPI.Extensions;
 
 namespace OnboardingInsuranceAPI.Areas.User;
 public class RegisterUserController
@@ -27,9 +28,11 @@ public class RegisterUserController
     public async Task<HttpResponseData> Create(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "user")] HttpRequestData req)
     {
-        var content = await new StreamReader(req.Body).ReadToEndAsync();//Getting pid and other info inside body
-        _log.LogInformation($"C# HTTP trigger function processed a request RegisterUserController with content: {content}");
-        RequestedData requestedData = JsonConvert.DeserializeObject<RequestedData>(content);
+        
+        _log.LogInformation($"C# HTTP trigger function processed a request RegisterUserController ");
+        //var content = await new StreamReader(req.Body).ReadToEndAsync();//Getting pid and other info inside body
+        //RequestedData requestedData = JsonConvert.DeserializeObject<RequestedData>(content);
+        var requestedData = await req.ReadBodyAs<RequestedData>();
         await _handler.CreateUser(requestedData.Sub, requestedData.Email);
         return req.CreateResponse(HttpStatusCode.Accepted);
     }

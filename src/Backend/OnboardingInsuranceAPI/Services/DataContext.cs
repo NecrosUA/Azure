@@ -28,38 +28,38 @@ public class DataContext : DbContext
         });
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<UserInfo>()
-            .HasPartitionKey(o => o.Pid)
-            .HasData(new UserInfo
-            {
-                Pid = "773ba94b-e9a8-4a1c-9d7e-655eb2f426d9",
-                Name = "Rostyslav",
-                Surname = "Kokhanchuk",
-                Birthdate = "1983-03-20",
-                BirthNumber = "8303201234",
-                MobileNumber = "77422914",
-                Email = "Adam.Jensen@dex.cz",
-                Address1 = "Zeleň 43/1",
-                Address2 = "Prague - Překážka",
-                ProfileImage = "https://rostupload.blob.core.windows.net/images/adam.jpg"
-            },
-            new UserInfo
-            {
-                Pid = "PID1234567890",
-                Name = "Adam",
-                Surname = "Jensen",
-                Birthdate = "1993-03-09",
-                BirthNumber = "9303091324",
-                MobileNumber = "77422914",
-                Email = "Adam.Jensen@dex.cz",
-                Address1 = "Zeleň 43/1",
-                Address2 = "Prague - Překážka",
-                ProfileImage = "https://rostupload.blob.core.windows.net/images/adam.jpg"
-            });
+    //protected override void OnModelCreating(ModelBuilder modelBuilder)
+    //{
+    //    modelBuilder.Entity<UserInfo>()
+    //        .HasPartitionKey(o => o.Pid)
+    //        .HasData(new UserInfo
+    //        {
+    //            Pid = "773ba94b-e9a8-4a1c-9d7e-655eb2f426d9",
+    //            Name = "Rostyslav",
+    //            Surname = "Kokhanchuk",
+    //            Birthdate = "1983-03-20",
+    //            BirthNumber = "8303201234",
+    //            MobileNumber = "77422914",
+    //            Email = "Adam.Jensen@dex.cz",
+    //            Address1 = "Zeleň 43/1",
+    //            Address2 = "Prague - Překážka",
+    //            ProfileImage = "https://rostupload.blob.core.windows.net/images/default.jpg"
+    //        },
+    //        new UserInfo
+    //        {
+    //            Pid = "PID1234567890",
+    //            Name = "Adam",
+    //            Surname = "Jensen",
+    //            Birthdate = "1993-03-09",
+    //            BirthNumber = "9303091324",
+    //            MobileNumber = "77422914",
+    //            Email = "Adam.Jensen@dex.cz",
+    //            Address1 = "Zeleň 43/1",
+    //            Address2 = "Prague - Překážka",
+    //            ProfileImage = "https://rostupload.blob.core.windows.net/images/default.jpg"
+    //        });
 
-        base.OnModelCreating(modelBuilder);
-    }
+    //    base.OnModelCreating(modelBuilder);
+    //}
 }
 
