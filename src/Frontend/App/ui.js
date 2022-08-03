@@ -20,9 +20,9 @@ const tbCountry = document.getElementById('tbCountry')
 const tbRegion = document.getElementById('tbRegion')
 
 /* Insurance profile area */
-const picNameIns = document.getElementById('picName')
-const picEmailIns = document.getElementById('picEmail')
-const picSrcIns = document.getElementById('picSrc')
+const picNameIns = document.getElementById('picNameIns')
+const picEmailIns = document.getElementById('picEmailIns')
+const picSrcIns = document.getElementById('picSrcIns')
 const carType = document.getElementById('carType') 
 const carBrand = document.getElementById('carBrand')
 const lastService = document.getElementById('lastService')

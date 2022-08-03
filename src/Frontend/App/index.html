@@ -21,7 +21,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <a class="navbar-brand" href="/">Azure AD B2C</a>
       <div class="btn-group ml-auto dropleft">
-        <button type="button" id="InsuranceButton" class="btn btn-warning  d-none" onclick="addInsurance()">Insurance</button>
+        <button type="button" id="InsuranceButton" class="btn btn-warning  d-none" onclick="readInsuranceInfo()">Insurance</button>
         <button type="button" id="editProfileButton" class="btn btn-secondary d-none" onclick="editProfile()">Edit Profile</button>
         <button type="button" id="signIn" class="btn btn-secondary" onclick="signIn()">Sign-in</button>
         <button type="button" id="signOut" class="btn btn-success d-none" onclick="signOut()">Sign-out</button>
@@ -88,8 +88,8 @@
                         <h4 class="text-right" id="profileText">Insurance information</h4>
                     </div>
                     <div class="row mt-2">
-                      <div class="col-md-6"><label class="labels">Car type</label><input type="search" class="form-control" placeholder="Select type of car" value="" id="carType" required></div>
-                      <div class="col-md-6"><label class="labels">Car brand</label><input type="search" class="form-control" placeholder="Select car brand" value="" id="carBarnd" required></div>
+                      <div class="col-md-6"><label class="labels">Car type</label><input type="text" class="form-control" placeholder="Select type of car" value="" id="carType" required></div>
+                      <div class="col-md-6"><label class="labels">Car brand</label><input type="text" class="form-control" placeholder="Select car brand" value="" id="carBrand" required></div>
                       <div class="col-md-6"><label class="labels">Last service</label><input type="date" class="form-control" value="" id="lastService" required></div>
                       <div class="col-md-6"><label class="labels">Year of production</label><input type="number" class="form-control" value="" id="yearOfProduction" required></div>
                     </div>
@@ -102,7 +102,7 @@
                       <div class="col-md-6"><label class="labels">Expiration date</label><input type="date" class="form-control" value="" id="expirationDate" readonly></div>
                       <div class="col-md-6"><label class="labels">Yearly contribution</label><input type="number" class="form-control" value="" id="yearlyContribution" readonly></div>                     
                     </div>
-                    <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button" id="saveInsurance" onclick="">Save</button></div>
+                    <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button" id="saveInsurance" onclick="addInsurance()">Save</button></div>
                 </div>
             </div>
         </div>
