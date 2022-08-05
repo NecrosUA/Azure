@@ -22,7 +22,7 @@ public class RegisterUserHandler : IHandler
         var user = await _context.Users.FirstOrDefaultAsync(x => x.Pid == pid);//check if user exist
         if (user == null)
         {
-            await _context.AddAsync(new UserInfo
+            _context.Add(new UserInfo
             {
                 Pid = pid,
                 ProfileImage = "https://rostupload.blob.core.windows.net/images/default.jpg",

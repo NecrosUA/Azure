@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using OnboardingInsuranceAPI.Areas.Shared;
 using OnboardingInsuranceAPI.Services;
 
 namespace OnboardingInsuranceAPI.Areas.Insurance;
@@ -18,7 +14,7 @@ public class WriteUserInsuranceHandler: IHandler
         _context = context; 
     }
 
-    public async Task UpdateInsurance(RequestedData item)
+    public async Task UpdateInsurance(InsuranceData item)
     {
         var insurance = await _context.Users.FirstOrDefaultAsync(i => i.Pid == item.Pid);
 

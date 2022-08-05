@@ -5,6 +5,10 @@ using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
 using OnboardingInsuranceAPI.ErrorHandling;
 using OnboardingInsuranceAPI.Extensions;
 using OnboardingInsuranceAPI.Services;
+using Microsoft.EntityFrameworkCore;
+using System;
+using Microsoft.Azure.Cosmos;
+using System.Net;
 
 namespace OnboardingInsuranceAPI;
 
@@ -23,7 +27,17 @@ public class Program
             {
                 services
                     .AddScopedByInterface<IHandler>()
-                    .AddDbContext<DataContext>(); //AddDbContextFactory try booth
+                    .AddDbContext<DataContext>(optionsBuilder => optionsBuilder.UseCosmos(
+                        Environment.GetEnvironmentVariable("AccountEndpoint"),
+                        Environment.GetEnvironmentVariable("AccountKey"),
+                        databaseName: "Data",
+                        options =>
+                        {
+                            options.ConnectionMode(ConnectionMode.Gateway);
+                            options.WebProxy(new WebProxy());
+                            options.Region(Regions.WestEurope);
+                            options.GatewayModeMaxConnectionLimit(32);
+                        })); //AddDbContextFactory try booth
             })
             .ConfigureOpenApi()
             .Build();

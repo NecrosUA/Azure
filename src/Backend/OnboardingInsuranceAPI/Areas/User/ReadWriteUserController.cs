@@ -1,15 +1,5 @@
-using System;
-using System.IO;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-//using Microsoft.Azure.WebJobs;
-//using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System.Text.Json;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using OnboardingInsuranceAPI.Areas.Shared;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using OnboardingInsuranceAPI.Extensions;
@@ -46,7 +36,7 @@ public class ReadWriteUserController
     [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "users")] HttpRequestData req)
     {
         _log.LogInformation("C# HTTP trigger function processed a request WriteUserSettings.");
-        var requestedData = await req.ReadBodyAs<RequestedData>();
+        var requestedData = await req.ReadBodyAs<UserData>();
 
         await _handler.UpdateItem(requestedData); 
 

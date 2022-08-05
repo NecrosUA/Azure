@@ -1,7 +1,5 @@
 using Azure.Storage.Blobs;
 using HttpMultipartParser;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using OnboardingInsuranceAPI.Services;
 using System;
 using System.IO;

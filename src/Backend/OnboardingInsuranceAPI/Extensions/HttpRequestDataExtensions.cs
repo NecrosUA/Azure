@@ -1,10 +1,6 @@
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Net.Http.Headers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -25,8 +21,12 @@ public static class HttpRequestDataExtensions
 
     internal static async Task<TJson> ReadBodyAs<TJson>(
         this HttpRequestData requestData,
-        JsonSerializerOptions? options = default)
+        JsonSerializerOptions options = default)
     {
+        options ??= new JsonSerializerOptions()
+        {
+            PropertyNameCaseInsensitive = true,
+        };
         return (await JsonSerializer.DeserializeAsync<TJson>(requestData.Body, options))!; 
     }
 }
