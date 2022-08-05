@@ -4,6 +4,7 @@
 function addInsurance()
 {
     passTokenToApi("INSURANCEPUT")
+    insuranceArea.classList.add('d-none')
 }
 
 function readInsuranceInfo()
@@ -16,20 +17,22 @@ function readInsuranceInfo()
 
 function fillInsurance(response)
 {
-    picNameIns.textContent = response.Name 
-    picEmailIns.textContent = response.Email
-    picSrcIns.src = response.ProfileImage 
-    tbPid.value = response.Pid
+    //console.log("resposne : " + JSON.stringify(response))
+
+    picNameIns.textContent = response.name 
+    picEmailIns.textContent = response.email
+    picSrcIns.src = response.profileImage 
+    tbPid.value = response.pid
     
-    carType.value = response.CarInsurance?.ExpDate
-    carBrand.value = response.CarInsurance?.CarBrand
-    lastService.value = response.CarInsurance?.LastService
-    yearProd.value = response.CarInsurance?.Year
-    note.value = response.CarInsurance?.Note
-    crashed.value = response.CarInsurance?.Crashed
-    firstOwner.value = response.CarInsurance?.FirstOwner
-    yearContrib.value = response.CarInsurance?.YearlyContribution
-    expDate.value = response.CarInsurance?.ExpDate
+    carType.value = response.carInsurance?.carType
+    carBrand.value = response.carInsurance?.carBrand
+    lastService.value = response.carInsurance?.lastService
+    yearProd.value = response.carInsurance?.year
+    note.value = response.carInsurance?.informationNote
+    crashed.checked = response.carInsurance?.crashed
+    firstOwner.checked = response.carInsurance?.firstOwner
+    yearContrib.value = response.carInsurance?.yearlyContribution
+    expDate.value = response.carInsurance?.expDate
 }
 
 function readInsurance(endpoint, token) //TODO finish reading insurance
@@ -48,7 +51,7 @@ function readInsurance(endpoint, token) //TODO finish reading insurance
     fetch(endpoint, options)
       .then(response => response.json()) //response.json() TODO fix isolated project changes 
       .then(response => {
-        //console.log(response) //response is ok!
+        //console.log("fetched response: " + response) //response is ok!
         fillInsurance(response)
         hideLoaderShowInsurance()
       }).catch(error => {
@@ -59,8 +62,11 @@ function readInsurance(endpoint, token) //TODO finish reading insurance
 function writeInsurance(endpoint, token) //TODO finish saving insurance
 {
     const today = new Date()
-    const nextYearExp = (today.getMonth()+1)+'-'+today.getDate()+'-'+(today.getFullYear()+1)
-    const contribution = yearProd.value * 1.33 // =)
+    const day = today.getDate()
+    const month = (today.getMonth()+1)
+    const year = today.getFullYear()
+    const nextYearExp = (year+1)+'-'+(month<=9?"0":"") + month + '-' +(day<=9?"0":"") + day
+    const contribution = yearProd.value * 2.33 // =)
     const headers = new Headers()
     const bearer = `Bearer ${token}`
   
@@ -76,14 +82,14 @@ function writeInsurance(endpoint, token) //TODO finish saving insurance
             yearlyContribution: contribution,
             carType: carType.value,
             carBrand: carBrand.value,
-            crashed: crashed.value,
-            firstOwner: firstOwner.value,
+            crashed: crashed.checked,
+            firstOwner: firstOwner.checked,
             lastService: lastService.value,
             year: yearProd.value
         }
     };
 
-    console.log(body)
+    //console.log(body)
   
     const options = 
     {
