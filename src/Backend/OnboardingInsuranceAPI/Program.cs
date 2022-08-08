@@ -27,17 +27,8 @@ public class Program
             {
                 services
                     .AddScopedByInterface<IHandler>()
-                    .AddDbContext<DataContext>(optionsBuilder => optionsBuilder.UseCosmos(
-                        Environment.GetEnvironmentVariable("AccountEndpoint"),
-                        Environment.GetEnvironmentVariable("AccountKey"),
-                        databaseName: "Data",
-                        options =>
-                        {
-                            options.ConnectionMode(ConnectionMode.Gateway);
-                            options.WebProxy(new WebProxy());
-                            options.Region(Regions.WestEurope);
-                            options.GatewayModeMaxConnectionLimit(32);
-                        })); //AddDbContextFactory try booth
+                    .AddCosmosDb(); //!!!PRODUCTION DB!!!
+                    //.AddInMemoryDb(); //For tests
             })
             .ConfigureOpenApi()
             .Build();

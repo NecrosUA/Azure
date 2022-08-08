@@ -5,11 +5,11 @@ using OnboardingInsuranceAPI.Services;
 
 namespace OnboardingInsuranceAPI.Areas.Insurance;
 
-public class WriteUserInsuranceHandler: IHandler
+public class PutInsurance: IHandler
 {
     private readonly DataContext _context;
 
-    public WriteUserInsuranceHandler(DataContext context)
+    public PutInsurance(DataContext context)
     {
         _context = context; 
     }

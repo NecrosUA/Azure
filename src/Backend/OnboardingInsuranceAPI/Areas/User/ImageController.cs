@@ -7,23 +7,23 @@ using System.Threading.Tasks;
 
 namespace OnboardingInsuranceAPI.Areas.User;
 
-public class UploadUserImageController
+public class ImageController
 {
-    private readonly UploadUserImageHandler _handler;
-    private readonly ILogger<UploadUserImageController> _log;
+    private readonly PostImage _handlerPost;
+    private readonly ILogger<ImageController> _log;
 
-    public UploadUserImageController(UploadUserImageHandler handler, ILogger<UploadUserImageController> log)
+    public ImageController(PostImage handlerPost, ILogger<ImageController> log)
     {
-        _handler = handler;
+        _handlerPost = handlerPost;
         _log = log;
     }
-    [Function("UploadUserImage")]
+    [Function("PostImage")]
     public async Task<HttpResponseData> Create(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "images")] HttpRequestData req)
     {
         var parsedFromBody = MultipartFormDataParser.ParseAsync(req.Body);
         var file = parsedFromBody.Result.Files[0];
-        var filename = await _handler.SaveImageToBlobContainer(file);
+        var filename = await _handlerPost.SaveImageToBlobContainer(file);
         _log.LogInformation($"C# HTTP trigger function processed a request UploadUserImage with image name: {filename}");
         return await req.ReturnJson(filename);
     }

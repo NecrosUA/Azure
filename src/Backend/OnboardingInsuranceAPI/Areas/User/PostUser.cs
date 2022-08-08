@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace OnboardingInsuranceAPI.Areas.User;
 
-public class RegisterUserHandler : IHandler
+public class PostUser : IHandler
 {
     private readonly DataContext _context;
-    private readonly ILogger<RegisterUserHandler> _log;
+    private readonly ILogger<PostUser> _log;
 
-    public RegisterUserHandler(DataContext context, ILogger<RegisterUserHandler> log)
+    public PostUser(DataContext context, ILogger<PostUser> log)
     {
         _context = context;
         _log = log;
