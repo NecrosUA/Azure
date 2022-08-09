@@ -8,6 +8,7 @@ namespace OnboardingInsuranceAPI.Areas.Insurance;
 public class GetInsurance : IHandler
 {
     private readonly DataContext _context;
+
     public GetInsurance(DataContext context)
     {
         _context = context;
@@ -15,15 +16,15 @@ public class GetInsurance : IHandler
 
     public async Task<InsuranceData> GetInsuranceByPid(string pid)
     {
-        var context =  await _context.Users.FirstOrDefaultAsync(u => u.Pid == pid);
+        var user =  await _context.Users.FirstOrDefaultAsync(u => u.Pid == pid);
 
         return new InsuranceData
         {
-            ProfileImage = context.ProfileImage,
-            CarInsurance = context.CarInsurance,
-            Email = context.Email,
-            Name = context.Name,
-            Pid = context.Pid
+            ProfileImage = user.ProfileImage,
+            CarInsurance = user.CarInsurance,
+            Email = user.Email,
+            Name = user.Name,
+            Pid = user.Pid
         };
     }
 

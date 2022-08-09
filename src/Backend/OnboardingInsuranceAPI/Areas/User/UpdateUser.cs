@@ -8,10 +8,10 @@ using OnboardingInsuranceAPI.Services;
 
 namespace OnboardingInsuranceAPI.Areas.User;
 
-public class PutUser : IHandler
+public class UpdateUser : IHandler
 {
     private readonly DataContext _context;
-    public PutUser(DataContext context)
+    public UpdateUser(DataContext context)
     {
         _context = context;
     }

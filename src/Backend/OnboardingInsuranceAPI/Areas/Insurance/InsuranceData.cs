@@ -11,13 +11,13 @@ namespace OnboardingInsuranceAPI.Areas.Insurance;
 public record InsuranceData
 {
     [JsonPropertyName("pid")]
-    public string? Pid { get; set; }
+    public string Pid { get; set; }
     [JsonPropertyName("name")]
     public string? Name { get; set; }
     [JsonPropertyName("profileImage")]
     public string? ProfileImage { get; set; }
     [JsonPropertyName("email")]
-    public string? Email { get; set; }
+    public string Email { get; set; }
     [JsonPropertyName("carInsurance")]
     public CarInsuranceInfo CarInsurance { get; set; }
 }

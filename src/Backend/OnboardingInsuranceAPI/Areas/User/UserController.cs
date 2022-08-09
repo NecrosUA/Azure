@@ -12,13 +12,11 @@ namespace OnboardingInsuranceAPI.Areas.User;
 public class UserController
 {
     private readonly GetUser _handlerGet;
-    private readonly PostUser _handlerPost;
-    private readonly PutUser _handlerPut;
+    private readonly RegisterUser _handlerPost;
+    private readonly UpdateUser _handlerPut;
     private readonly ILogger<UserController> _log;
 
-    //private static readonly Idb<ClientInfo> db; 
-
-    public UserController(GetUser handlerGet, PostUser handlerPost , PutUser handlerPut, ILogger<UserController> log)
+    public UserController(GetUser handlerGet, RegisterUser handlerPost , UpdateUser handlerPut, ILogger<UserController> log)
     {
         _handlerGet = handlerGet;
         _handlerPut = handlerPut;
@@ -30,7 +28,7 @@ public class UserController
     public  async Task<HttpResponseData> Get(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users/{pid}")] HttpRequestData req, string pid)
     {
-        _log.LogInformation("C# HTTP trigger function processed a request ReadUserSettings.");
+        //_log.LogInformation("C# HTTP trigger function processed a request ReadUserSettings.");
 
         var userData = await _handlerGet.GetUserBy(pid);
 
@@ -41,7 +39,7 @@ public class UserController
     public  async Task<HttpResponseData> Put(
     [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "users")] HttpRequestData req)
     {
-        _log.LogInformation("C# HTTP trigger function processed a request WriteUserSettings.");
+        //_log.LogInformation("C# HTTP trigger function processed a request WriteUserSettings.");
         var requestedData = await req.ReadBodyAs<UserData>();
 
         await _handlerPut.UpdateItem(requestedData); 
@@ -54,11 +52,9 @@ public class UserController
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "user")] HttpRequestData req)
     {
 
-        _log.LogInformation($"C# HTTP trigger function processed a request RegisterUser");
+        //_log.LogInformation($"C# HTTP trigger function processed a request RegisterUser");
         var content = await new StreamReader(req.Body).ReadToEndAsync();//Getting pid and other info inside body
         UserData requestedData = JsonConvert.DeserializeObject<UserData>(content);
-        //var requestedData = await req.ReadBodyAs<RequestedData>();
-        //_log.LogInformation($"Requested data: {requestedData}");
         await _handlerPost.CreateUser(requestedData.Sub, requestedData.Email);
         return req.CreateResponse(HttpStatusCode.Accepted);
     }

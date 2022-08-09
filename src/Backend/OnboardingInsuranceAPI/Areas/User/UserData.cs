@@ -10,7 +10,7 @@ namespace OnboardingInsuranceAPI.Areas.User
     public record UserData
     {
         [JsonPropertyName("pid")]
-        public string? Pid { get; set; }
+        public string Pid { get; set; }
         [JsonPropertyName("name")]
         public string? Name { get; set; }
         [JsonPropertyName("surname")]
@@ -22,7 +22,7 @@ namespace OnboardingInsuranceAPI.Areas.User
         [JsonPropertyName("mobileNumber")]
         public string? MobileNumber { get; set; }
         [JsonPropertyName("email")]
-        public string? Email { get; set; }
+        public string Email { get; set; }
         [JsonPropertyName("address1")]
         public string? Address1 { get; set; }
         [JsonPropertyName("address2")]

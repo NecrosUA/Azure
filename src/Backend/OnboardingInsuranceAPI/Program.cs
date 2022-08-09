@@ -27,8 +27,8 @@ public class Program
             {
                 services
                     .AddScopedByInterface<IHandler>()
-                    .AddCosmosDb(); //!!!PRODUCTION DB!!!
-                    //.AddInMemoryDb(); //For tests
+                    .AddCosmosDb(); //Dev DB
+                    //.AddInMemoryDb(); //Test DB
             })
             .ConfigureOpenApi()
             .Build();

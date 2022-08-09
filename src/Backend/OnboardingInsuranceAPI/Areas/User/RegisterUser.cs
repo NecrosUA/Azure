@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace OnboardingInsuranceAPI.Areas.User;
 
-public class PostUser : IHandler
+public class RegisterUser : IHandler
 {
     private readonly DataContext _context;
-    private readonly ILogger<PostUser> _log;
+    private readonly ILogger<RegisterUser> _log;
 
-    public PostUser(DataContext context, ILogger<PostUser> log)
+    public RegisterUser(DataContext context, ILogger<RegisterUser> log)
     {
         _context = context;
         _log = log;
@@ -19,7 +19,7 @@ public class PostUser : IHandler
 
     public async Task CreateUser(string pid, string email)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(x => x.Pid == pid);//check if user exist
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Pid == pid);//check if user exist
         if (user == null)
         {
             _context.Add(new UserInfo
@@ -30,7 +30,7 @@ public class PostUser : IHandler
             });
 
             await _context.SaveChangesAsync();
-            _log.LogInformation($"New user registered. With pid:  {pid}");
+            //_log.LogInformation($"New user registered. With pid:  {pid}");
         }
     }
 }

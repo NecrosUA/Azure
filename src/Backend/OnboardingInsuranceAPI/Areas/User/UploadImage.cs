@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OnboardingInsuranceAPI.Areas.User;
 
-public class PostImage : IHandler
+public class UploadImage : IHandler
 {
     public async Task<string> SaveImageToBlobContainer(FilePart file)
     {

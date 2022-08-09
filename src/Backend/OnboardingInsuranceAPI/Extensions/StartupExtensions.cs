@@ -36,12 +36,6 @@ internal static class StartupExtensions
                 databaseName: "Data"
             ));
 
-        //using (var context = new DataContext())
-        //{
-        //    context.Database.EnsureDeletedAsync();
-        //    context.Database.EnsureCreatedAsync();
-        //}
-
         return services;
     }
 }
