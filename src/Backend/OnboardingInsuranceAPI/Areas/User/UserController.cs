@@ -11,27 +11,22 @@ namespace OnboardingInsuranceAPI.Areas.User;
 
 public class UserController
 {
-    private readonly GetUser _handlerGet;
-    private readonly RegisterUser _handlerPost;
-    private readonly UpdateUser _handlerPut;
-    private readonly ILogger<UserController> _log;
+    private readonly GetUser _getUser;
+    private readonly RegisterUser _registerUser;
+    private readonly UpdateUser _updateUser;
 
-    public UserController(GetUser handlerGet, RegisterUser handlerPost , UpdateUser handlerPut, ILogger<UserController> log)
+    public UserController(GetUser getUser, RegisterUser registerUser , UpdateUser updateUser)
     {
-        _handlerGet = handlerGet;
-        _handlerPut = handlerPut;
-        _handlerPost = handlerPost;
-        _log = log;
+        _getUser = getUser;
+        _updateUser = updateUser;
+        _registerUser = registerUser;
     }
 
     [Function("GetUser")] //read user profile by PID number
     public  async Task<HttpResponseData> Get(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users/{pid}")] HttpRequestData req, string pid)
     {
-        //_log.LogInformation("C# HTTP trigger function processed a request ReadUserSettings.");
-
-        var userData = await _handlerGet.GetUserBy(pid);
-
+        var userData = await _getUser.Handle(pid);
         return await req.ReturnJson(userData);
     }
 
@@ -39,23 +34,18 @@ public class UserController
     public  async Task<HttpResponseData> Put(
     [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "users")] HttpRequestData req)
     {
-        //_log.LogInformation("C# HTTP trigger function processed a request WriteUserSettings.");
         var requestedData = await req.ReadBodyAs<UserData>();
-
-        await _handlerPut.UpdateItem(requestedData); 
-
+        await _updateUser.Handle(requestedData); 
         return req.CreateResponse(HttpStatusCode.Accepted);
     }
 
-    [Function("PostUser")] //Register new user
+    [Function("PostUser")] //Checking registartion user in cosmos db, if not - register new user
     public async Task<HttpResponseData> Post(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "user")] HttpRequestData req)
     {
-
-        //_log.LogInformation($"C# HTTP trigger function processed a request RegisterUser");
         var content = await new StreamReader(req.Body).ReadToEndAsync();//Getting pid and other info inside body
         UserData requestedData = JsonConvert.DeserializeObject<UserData>(content);
-        await _handlerPost.CreateUser(requestedData.Sub, requestedData.Email);
+        await _registerUser.Handle(requestedData.Sub, requestedData.Email);
         return req.CreateResponse(HttpStatusCode.Accepted);
     }
 }

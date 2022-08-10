@@ -28,7 +28,6 @@ public class Program
                 services
                     .AddScopedByInterface<IHandler>()
                     .AddCosmosDb(); //Dev DB
-                    //.AddInMemoryDb(); //Test DB
             })
             .ConfigureOpenApi()
             .Build();

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using OnboardingInsuranceAPI.ErrorHandling;
 using OnboardingInsuranceAPI.Services;
 using System;
 using System.Threading.Tasks;
@@ -17,9 +18,22 @@ public class RegisterUser : IHandler
         _log = log;
     }
 
-    public async Task CreateUser(string pid, string email)
+    public async Task Handle(string pid, string email)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Pid == pid);//check if user exist
+        if (string.IsNullOrEmpty(pid))
+        {
+            _log.LogWarning("Error, received pid is empty!");
+            throw new ApiException(ErrorCode.InvalidQueryParameters);
+        }
+
+        if (string.IsNullOrEmpty(email))
+        {
+            _log.LogWarning("Error, received email is empty!");
+            throw new ApiException(ErrorCode.InvalidQueryParameters);
+        }
+
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Pid == pid); //If this pid does not exist than add it to cosmos db
+
         if (user == null)
         {
             _context.Add(new UserInfo
@@ -30,7 +44,6 @@ public class RegisterUser : IHandler
             });
 
             await _context.SaveChangesAsync();
-            //_log.LogInformation($"New user registered. With pid:  {pid}");
         }
     }
 }

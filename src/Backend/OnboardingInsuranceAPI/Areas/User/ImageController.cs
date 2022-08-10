@@ -10,12 +10,10 @@ namespace OnboardingInsuranceAPI.Areas.User;
 public class ImageController
 {
     private readonly UploadImage _handler;
-    private readonly ILogger<ImageController> _log;
 
-    public ImageController(UploadImage handler, ILogger<ImageController> log)
+    public ImageController(UploadImage handler)
     {
         _handler = handler;
-        _log = log;
     }
     [Function("UploadImage")]
     public async Task<HttpResponseData> Create(
@@ -23,8 +21,7 @@ public class ImageController
     {
         var parsedFromBody = MultipartFormDataParser.ParseAsync(req.Body);
         var file = parsedFromBody.Result.Files[0];
-        var filename = await _handler.SaveImageToBlobContainer(file);
-        //_log.LogInformation($"C# HTTP trigger function processed a request UploadUserImage with image name: {filename}");
+        var filename = await _handler.Handle(file);
         return await req.ReturnJson(filename);
     }
 }

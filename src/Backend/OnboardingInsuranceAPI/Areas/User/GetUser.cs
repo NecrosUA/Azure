@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using OnboardingInsuranceAPI.ErrorHandling;
 using OnboardingInsuranceAPI.Services;
 using System;
 using System.Collections.Generic;
@@ -11,17 +13,29 @@ namespace OnboardingInsuranceAPI.Areas.User;
 public class GetUser : IHandler
 {
     private readonly DataContext _context;
-    public GetUser(DataContext context)
+    private readonly ILogger<GetUser> _logger;
+
+    public GetUser(DataContext context, ILogger<GetUser> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
-    public async Task<UserData> GetUserBy(string pid)
+    public async Task<UserData> Handle(string pid)
     {
-        //await _context.Database.EnsureDeletedAsync(); //uncomment it in case DB is empty
-        //await _context.Database.EnsureCreatedAsync();
+        if (string.IsNullOrEmpty(pid))
+        {
+            _logger.LogWarning("Error, received pid is empty!");
+            throw new ApiException(ErrorCode.InvalidQueryParameters);
+        }
 
         var users = await _context.Users.FirstOrDefaultAsync(u => u.Pid == pid);
+
+        if (users is null)
+        {
+            _logger.LogWarning("Error reading user, user is null!");
+            throw new ApiException(ErrorCode.NotFound);
+        }
 
         return new UserData
         {

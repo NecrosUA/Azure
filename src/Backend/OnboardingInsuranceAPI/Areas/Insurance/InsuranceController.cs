@@ -11,29 +11,25 @@ public class InsuranceController
 {
     private readonly GetInsurance _handlerGet;
     private readonly AddInsurance _handlerPut;
-    private readonly ILogger<InsuranceController> _logger;
     
-    public InsuranceController(GetInsurance handlerGetInsurance, AddInsurance handlerPutInsurance, ILogger<InsuranceController> log)
+    public InsuranceController(GetInsurance handlerGet, AddInsurance handlerPut)
     {
-        _logger = log;
-        _handlerGet = handlerGetInsurance;
-        _handlerPut = handlerPutInsurance;
+        _handlerGet = handlerGet;
+        _handlerPut = handlerPut;
     }
 
     [Function("GetInsurance")]
     public async Task<HttpResponseData> Get([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "insurance/{pid}")] HttpRequestData req, string pid)
     {
-        //_logger.LogInformation($"C# HTTP trigger function processed a request ReadUserInsurance with pid: {pid}");
-        var insuranceData = await _handlerGet.GetInsuranceByPid(pid);
+        var insuranceData = await _handlerGet.Handle(pid);
         return await req.ReturnJson(insuranceData);
     }
 
     [Function("PutInsurance")]
     public async Task<HttpResponseData> Put([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "insurance")] HttpRequestData req)
     {
-        //_logger.LogInformation("C# HTTP trigger function processed a request WriteUserInsurance.");
         var requestedData = await req.ReadBodyAs<InsuranceData>();
-        await _handlerPut.AddInsuranceBy(requestedData);
+        await _handlerPut.Handle(requestedData);
         return req.CreateResponse(HttpStatusCode.Accepted);
     }
 }

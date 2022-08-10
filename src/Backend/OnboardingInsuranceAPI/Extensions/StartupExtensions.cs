@@ -26,7 +26,7 @@ internal static class StartupExtensions
                 options.WebProxy(new WebProxy());
                 options.Region(Regions.WestEurope);
                 options.GatewayModeMaxConnectionLimit(32);
-            })); //AddDbContextFactory try booth
+            }));
         return services;
     }
     internal static IServiceCollection AddInMemoryDb(this IServiceCollection services) //TODO implement mock data
