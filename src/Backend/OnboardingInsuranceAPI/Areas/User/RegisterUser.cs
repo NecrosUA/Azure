@@ -23,20 +23,17 @@ public class RegisterUser : IHandler
     {
         if (string.IsNullOrEmpty(pid))
         {
-            _logger.LogWarning("Error, received pid is empty!");
             throw new ApiException(ErrorCode.InvalidQueryParameters);
         }
 
         if (string.IsNullOrEmpty(email))
         {
-            _logger.LogWarning("Error, received email is empty!");
             throw new ApiException(ErrorCode.InvalidQueryParameters);
         }
 
-        var sub = req.ReadPidFromJwt(); //secure 
+        var sub = req.ReadPidFromJwt();
         if (sub != pid)
         {
-            _logger.LogWarning("Error, unauthorized access pid does not match with header");
             throw new ApiException(ErrorCode.Unauthorized);
         }
 

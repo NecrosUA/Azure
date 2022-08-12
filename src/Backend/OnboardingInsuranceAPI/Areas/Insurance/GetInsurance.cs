@@ -21,7 +21,6 @@ public class GetInsurance : IHandler
     {
         if (string.IsNullOrEmpty(pid))
         {
-            _logger.LogWarning("Error, received pid is empty");
             throw new ApiException(ErrorCode.InvalidQueryParameters);
         }
 
@@ -29,7 +28,6 @@ public class GetInsurance : IHandler
 
         if (user is null)
         {
-            _logger.LogWarning("Error reading user, user is null!");
             throw new ApiException(ErrorCode.NotFound);
         }
 
@@ -43,7 +41,7 @@ public class GetInsurance : IHandler
                 CarType = user.CarInsurance.CarType,
                 FirstOwner = user.CarInsurance.FirstOwner,
                 Crashed = user.CarInsurance.Crashed,
-                ExpDate = user.CarInsurance.ExpDate,
+                ExpirationDate = user.CarInsurance.ExpDate,
                 InformationNote = user.CarInsurance.InformationNote,
                 LastService = user.CarInsurance.LastService,
                 YearlyContribution = user.CarInsurance.YearlyContribution,

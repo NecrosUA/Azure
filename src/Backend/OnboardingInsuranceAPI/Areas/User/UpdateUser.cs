@@ -23,21 +23,18 @@ public class UpdateUser : IHandler
     {
         if (string.IsNullOrEmpty(item.Pid))
         {
-            _logger.LogWarning("Error, received pid is empty!");
             throw new ApiException(ErrorCode.InvalidQueryParameters);
         }
 
-        var sub = req.ReadPidFromJwt(); //secured 
+        var sub = req.ReadPidFromJwt(); 
         if (item.Pid != sub)
         {
-            _logger.LogWarning("Error, unauthorized access pid does not match with header");
             throw new ApiException(ErrorCode.Unauthorized);
         }
 
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Pid == item.Pid);
         if (user is null)
         {
-            _logger.LogWarning("Error reading user, user is null!");
             throw new ApiException(ErrorCode.NotFound);
         }
 

@@ -26,21 +26,18 @@ public class UploadImage : IHandler
         var parsedFromBody = await MultipartFormDataParser.ParseAsync(request.Body);
         if (parsedFromBody is null)
         {
-            _logger.LogWarning("Error, parsing from body is null!");
             throw new ApiException(ErrorCode.UnhandledException);
         }
 
         var file = parsedFromBody.Files[0];
         if (string.IsNullOrEmpty(file.Name))
         {
-            _logger.LogWarning("Error, file is empty!");
             throw new ApiException(ErrorCode.UnhandledException);
         }
 
         var splitName = file.FileName.Split('.');
         if (splitName.Length == 1)
         {
-            _logger.LogWarning("Error, wrong file!");
             throw new ApiException(ErrorCode.UnhandledException);
         }
 

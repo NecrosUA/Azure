@@ -5,7 +5,7 @@ namespace OnboardingInsuranceAPI.Areas.Insurance;
 public record CarInsuranceData
 {
     [JsonPropertyName("expDate")]
-    public string ExpDate { get; init; } //Expiration date
+    public string ExpirationDate { get; init; } //Expiration date
     [JsonPropertyName("informationNote")]
     public string InformationNote { get; init; } //Note about insurancr from agent
     [JsonPropertyName("yearlyContribution")]
