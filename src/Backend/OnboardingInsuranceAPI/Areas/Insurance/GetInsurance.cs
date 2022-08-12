@@ -37,11 +37,11 @@ public class GetInsurance : IHandler
             CarInsurance = new CarInsuranceData
             {
                 CarBarnd = user.CarInsurance.CarBarnd,
-                Year = user.CarInsurance.Year,
+                YearOfProduction = user.CarInsurance.YearOfProduction,
                 CarType = user.CarInsurance.CarType,
                 FirstOwner = user.CarInsurance.FirstOwner,
                 Crashed = user.CarInsurance.Crashed,
-                ExpirationDate = user.CarInsurance.ExpDate,
+                ExpirationDate = user.CarInsurance.ExpirationDate,
                 InformationNote = user.CarInsurance.InformationNote,
                 LastService = user.CarInsurance.LastService,
                 YearlyContribution = user.CarInsurance.YearlyContribution,

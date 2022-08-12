@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +8,8 @@ namespace OnboardingInsuranceAPI.Services;
 
 public class LifeInsuranceInfo
 {
-    public DateTime ExpDate { get; set; } //Expiration date
-    public bool IsValid { get; set; } //Valid or not
-    public string InformationNote { get; set; } //Note about insurancr from agent
+    public DateTime ExpirationDate { get; set; } 
+    public bool IsValid { get; set; } 
+    public string InformationNote { get; set; } 
     public int? YearlyContribution { get; set; }
 }

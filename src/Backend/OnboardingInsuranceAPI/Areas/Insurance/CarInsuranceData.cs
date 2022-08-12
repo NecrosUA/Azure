@@ -5,21 +5,21 @@ namespace OnboardingInsuranceAPI.Areas.Insurance;
 public record CarInsuranceData
 {
     [JsonPropertyName("expDate")]
-    public string ExpirationDate { get; init; } //Expiration date
+    public string ExpirationDate { get; init; } 
     [JsonPropertyName("informationNote")]
-    public string InformationNote { get; init; } //Note about insurancr from agent
+    public string InformationNote { get; init; } 
     [JsonPropertyName("yearlyContribution")]
     public decimal? YearlyContribution { get; init; }
     [JsonPropertyName("carType")]
-    public string CarType { get; init; } //Type of car "for example sportcar"
+    public string CarType { get; init; }
     [JsonPropertyName("carBrand")]
-    public string CarBarnd { get; init; } //Brand of car "for example Škoda"
+    public string CarBarnd { get; init; } 
     [JsonPropertyName("crashed")]
-    public bool Crashed { get; init; } //Crashed or not
+    public bool Crashed { get; init; } 
     [JsonPropertyName("firstOwner")]
-    public bool FirstOwner { get; init; } //First owner of the car or not
+    public bool FirstOwner { get; init; } 
     [JsonPropertyName("lastService")]
-    public string LastService { get; init; } //Date of last service
+    public string LastService { get; init; }
     [JsonPropertyName("year")]
-    public string Year { get; init; } //Year of prosuction   
+    public string YearOfProduction { get; init; } 
 }

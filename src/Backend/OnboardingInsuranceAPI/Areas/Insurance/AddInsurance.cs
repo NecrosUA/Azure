@@ -39,11 +39,11 @@ public class AddInsurance: IHandler
         }
 
         user.CarInsurance.CarBarnd = item.CarInsurance.CarBarnd;
-        user.CarInsurance.Year = item.CarInsurance.Year;
+        user.CarInsurance.YearOfProduction = item.CarInsurance.YearOfProduction;
         user.CarInsurance.CarType = item.CarInsurance.CarType;
         user.CarInsurance.FirstOwner = item.CarInsurance.FirstOwner;
         user.CarInsurance.Crashed = item.CarInsurance.Crashed;
-        user.CarInsurance.ExpDate = item.CarInsurance.ExpirationDate;
+        user.CarInsurance.ExpirationDate = item.CarInsurance.ExpirationDate;
         user.CarInsurance.InformationNote = item.CarInsurance.InformationNote;
         user.CarInsurance.LastService = item.CarInsurance.LastService;
         user.CarInsurance.YearlyContribution = item.CarInsurance.YearlyContribution;
