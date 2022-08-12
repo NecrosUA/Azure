@@ -1,5 +1,6 @@
 using Azure.Storage.Blobs;
 using HttpMultipartParser;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using OnboardingInsuranceAPI.ErrorHandling;
 using OnboardingInsuranceAPI.Services;
@@ -20,8 +21,16 @@ public class UploadImage : IHandler
         _logger = logger;
     }
 
-    public async Task<string> Handle(FilePart file)
+    public async Task<string> Handle(HttpRequestData request)
     {
+        var parsedFromBody = await MultipartFormDataParser.ParseAsync(request.Body);
+        if (parsedFromBody is null)
+        {
+            _logger.LogWarning("Error, parsing from body is null!");
+            throw new ApiException(ErrorCode.UnhandledException);
+        }
+
+        var file = parsedFromBody.Files[0];
         if (string.IsNullOrEmpty(file.Name))
         {
             _logger.LogWarning("Error, file is empty!");
@@ -29,7 +38,6 @@ public class UploadImage : IHandler
         }
 
         var splitName = file.FileName.Split('.');
-
         if (splitName.Length == 1)
         {
             _logger.LogWarning("Error, wrong file!");
@@ -37,10 +45,11 @@ public class UploadImage : IHandler
         }
 
         string filename = Guid.NewGuid() + "." + splitName[splitName.Length - 1]; //generate unique id of image
-        Stream myBlob = file.Data;
+        using var myBlob = file.Data;
         var blobClient = new BlobContainerClient(_connection, _containerName);
         var blob = blobClient.GetBlobClient(filename);
         await blob.UploadAsync(myBlob);
+        myBlob.Close();
 
         return filename;
     }

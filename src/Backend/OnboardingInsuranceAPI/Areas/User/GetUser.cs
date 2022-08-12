@@ -2,10 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OnboardingInsuranceAPI.ErrorHandling;
 using OnboardingInsuranceAPI.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace OnboardingInsuranceAPI.Areas.User;
@@ -30,7 +26,6 @@ public class GetUser : IHandler
         }
 
         var users = await _context.Users.FirstOrDefaultAsync(u => u.Pid == pid);
-
         if (users is null)
         {
             _logger.LogWarning("Error reading user, user is null!");

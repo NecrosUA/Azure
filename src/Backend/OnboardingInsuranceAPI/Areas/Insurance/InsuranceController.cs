@@ -2,7 +2,6 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Logging;
 using OnboardingInsuranceAPI.Extensions;
 
 namespace OnboardingInsuranceAPI.Areas.Insurance;
@@ -19,8 +18,9 @@ public class InsuranceController
     }
 
     [Function("GetInsurance")]
-    public async Task<HttpResponseData> Get([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "insurance/{pid}")] HttpRequestData req, string pid)
+    public async Task<HttpResponseData> Get([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "insurance")] HttpRequestData req)
     {
+        var pid = req.ReadPidFromJwt();
         var insuranceData = await _handlerGet.Handle(pid);
         return await req.ReturnJson(insuranceData);
     }
@@ -29,7 +29,7 @@ public class InsuranceController
     public async Task<HttpResponseData> Put([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "insurance")] HttpRequestData req)
     {
         var requestedData = await req.ReadBodyAs<InsuranceData>();
-        await _handlerPut.Handle(requestedData);
+        await _handlerPut.Handle(requestedData, req);
         return req.CreateResponse(HttpStatusCode.Accepted);
     }
 }

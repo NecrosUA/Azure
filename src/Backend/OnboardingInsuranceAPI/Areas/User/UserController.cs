@@ -1,11 +1,8 @@
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using OnboardingInsuranceAPI.Extensions;
 using System.Net;
-using System.IO;
-using Newtonsoft.Json;
 
 namespace OnboardingInsuranceAPI.Areas.User;
 
@@ -24,18 +21,19 @@ public class UserController
 
     [Function("GetUser")] //read user profile by PID number
     public  async Task<HttpResponseData> Get(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users/{pid}")] HttpRequestData req, string pid)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users")] HttpRequestData req) //TODO rewrite frontend remove pid and fix reference 
     {
+        var pid = req.ReadPidFromJwt(); //Return pid from header jwt
         var userData = await _getUser.Handle(pid);
         return await req.ReturnJson(userData);
     }
 
-    [Function("PutUser")] //write into user profile 
+    [Function("PutUser")] //write into user profile  
     public  async Task<HttpResponseData> Put(
     [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "users")] HttpRequestData req)
     {
         var requestedData = await req.ReadBodyAs<UserData>();
-        await _updateUser.Handle(requestedData); 
+        await _updateUser.Handle(requestedData, req); 
         return req.CreateResponse(HttpStatusCode.Accepted);
     }
 
@@ -43,9 +41,8 @@ public class UserController
     public async Task<HttpResponseData> Post(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "user")] HttpRequestData req)
     {
-        var content = await new StreamReader(req.Body).ReadToEndAsync();//Getting pid and other info inside body
-        UserData requestedData = JsonConvert.DeserializeObject<UserData>(content);
-        await _registerUser.Handle(requestedData.Sub, requestedData.Email);
+        var requestedData = await req.ReadBodyAs<RegisterUserData>();//Getting pid and other info inside body 
+        await _registerUser.Handle(requestedData.Sub, requestedData.Email, req);
         return req.CreateResponse(HttpStatusCode.Accepted);
     }
 }

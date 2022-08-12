@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -37,7 +36,18 @@ public class GetInsurance : IHandler
         return new InsuranceData
         {
             ProfileImage = user.ProfileImage,
-            CarInsurance = user.CarInsurance,
+            CarInsurance = new CarInsuranceData
+            {
+                CarBarnd = user.CarInsurance.CarBarnd,
+                Year = user.CarInsurance.Year,
+                CarType = user.CarInsurance.CarType,
+                FirstOwner = user.CarInsurance.FirstOwner,
+                Crashed = user.CarInsurance.Crashed,
+                ExpDate = user.CarInsurance.ExpDate,
+                InformationNote = user.CarInsurance.InformationNote,
+                LastService = user.CarInsurance.LastService,
+                YearlyContribution = user.CarInsurance.YearlyContribution,
+            },
             Email = user.Email,
             Name = user.Name,
             Pid = user.Pid

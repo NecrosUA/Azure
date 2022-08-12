@@ -1,24 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using OnboardingInsuranceAPI.Services;
 
 namespace OnboardingInsuranceAPI.Areas.Insurance;
 
 public record InsuranceData
 {
     [JsonPropertyName("pid")]
-    public string Pid { get; set; }
+    public string Pid { get; init; }
     [JsonPropertyName("name")]
-    public string? Name { get; set; }
+    public string? Name { get; init; }
     [JsonPropertyName("profileImage")]
-    public string? ProfileImage { get; set; }
+    public string? ProfileImage { get; init; }
     [JsonPropertyName("email")]
-    public string Email { get; set; }
+    public string Email { get; init; }
     [JsonPropertyName("carInsurance")]
-    public CarInsuranceInfo CarInsurance { get; set; }
+    public CarInsuranceData CarInsurance { get; init; }
 }
 
