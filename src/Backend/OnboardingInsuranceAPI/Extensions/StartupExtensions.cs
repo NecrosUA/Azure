@@ -29,13 +29,4 @@ internal static class StartupExtensions
             }));
         return services;
     }
-    internal static IServiceCollection AddInMemoryDb(this IServiceCollection services) //TODO implement mock data
-    {
-        services.AddDbContext<DataContext>(optionsBuilder
-            => optionsBuilder.UseInMemoryDatabase(
-                databaseName: "Data"
-            ));
-
-        return services;
-    }
 }
