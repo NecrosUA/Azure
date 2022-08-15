@@ -20,16 +20,11 @@ public class GetInsurance : IHandler
     public async Task<InsuranceData> Handle(string pid)
     {
         if (string.IsNullOrEmpty(pid))
-        {
             throw new ApiException(ErrorCode.InvalidQueryParameters);
-        }
 
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Pid == pid);
-
         if (user is null)
-        {
             throw new ApiException(ErrorCode.NotFound);
-        }
 
         return new InsuranceData
         {

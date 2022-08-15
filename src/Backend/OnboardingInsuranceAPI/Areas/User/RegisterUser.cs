@@ -34,7 +34,6 @@ public class RegisterUser : IHandler
 
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Pid == pid); //If this pid does not exist than add it to cosmos db
         if (user == null)
-        {
             _context.Add(new UserInfo
             {
                 Pid = pid,
@@ -43,6 +42,5 @@ public class RegisterUser : IHandler
             });
 
             await _context.SaveChangesAsync();
-        }
     }
 }

@@ -33,10 +33,10 @@ public class AddInsurance: IHandler
             throw new ApiException(ErrorCode.InvalidQueryParameters);
 
         if (yearOfProduction <= DateTime.Parse("01/01/1900"))
-            throw new ApiException(ErrorCode.InvalidQueryParameters);
+            throw new ApiException(ErrorCode.ValidationFailed);
 
         if (DateTime.Parse(item.CarInsurance.ExpirationDate) < DateTime.Now)
-            throw new ApiException(ErrorCode.InvalidQueryParameters);
+            throw new ApiException(ErrorCode.ValidationFailed);
 
         user.CarInsurance.CarBarnd = item.CarInsurance.CarBarnd;
         user.CarInsurance.YearOfProduction = yearOfProduction.ToString(); //TODO change type of property to DateTime in the next branch

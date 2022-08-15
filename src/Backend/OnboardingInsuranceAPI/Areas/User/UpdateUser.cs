@@ -33,10 +33,10 @@ public class UpdateUser : IHandler
             throw new ApiException(ErrorCode.InvalidQueryParameters);
 
         if (birthDate <= DateTime.Parse("01/01/1900"))
-            throw new ApiException(ErrorCode.InvalidQueryParameters);
+            throw new ApiException(ErrorCode.ValidationFailed);
 
         if(int.TryParse(item.MobileNumber, out _) == false && item.MobileNumber.Length != 9)
-            throw new ApiException(ErrorCode.InvalidQueryParameters);
+            throw new ApiException(ErrorCode.ValidationFailed);
 
         // Prepare to update only not null data
         user.Name = item.Name;
