@@ -20,29 +20,17 @@ public class RegisterUser : IHandler
         _logger = logger;
     }
 
-    public async Task Handle(string pid, string email, HttpRequestData req)
+    public async Task Handle(string pid, string email)
     {
         if (string.IsNullOrEmpty(pid))
-        {
             throw new ApiException(ErrorCode.InvalidQueryParameters);
-        }
 
         if (string.IsNullOrEmpty(email))
-        {
             throw new ApiException(ErrorCode.InvalidQueryParameters);
-        }
-
-        var sub = req.ReadPidFromJwt();
-        if (sub != pid)
-        {
-            throw new ApiException(ErrorCode.Unauthorized);
-        }
 
         string regex = @"^[^@\s]+@[^@\s]+\.(com|net|org|gov|cz)$";
         if (Regex.IsMatch(email, regex, RegexOptions.IgnoreCase) == false)
-        {
             throw new ApiException(ErrorCode.InvalidQueryParameters);
-        }
 
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Pid == pid); //If this pid does not exist than add it to cosmos db
         if (user == null)

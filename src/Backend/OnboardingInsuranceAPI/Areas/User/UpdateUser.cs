@@ -20,39 +20,23 @@ public class UpdateUser : IHandler
         _logger = logger;
     }
 
-    public async Task Handle(UserData item, HttpRequestData req)
+    public async Task Handle(UserData item, string pid)
     {
-        if (string.IsNullOrEmpty(item.Pid))
-        {
+        if (string.IsNullOrEmpty(pid))
             throw new ApiException(ErrorCode.InvalidQueryParameters);
-        }
-
-        var sub = req.ReadPidFromJwt(); 
-        if (item.Pid != sub)
-        {
-            throw new ApiException(ErrorCode.Unauthorized);
-        }
 
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Pid == item.Pid);
         if (user is null)
-        {
             throw new ApiException(ErrorCode.NotFound);
-        }
 
         if (DateTime.TryParse(item.Birthdate, out var birthDate) == false)
-        {
             throw new ApiException(ErrorCode.InvalidQueryParameters);
-        }
 
         if (birthDate <= DateTime.Parse("01/01/1900"))
-        {
             throw new ApiException(ErrorCode.InvalidQueryParameters);
-        }
 
         if(int.TryParse(item.MobileNumber, out _) == false && item.MobileNumber.Length != 9)
-        {
             throw new ApiException(ErrorCode.InvalidQueryParameters);
-        }
 
         // Prepare to update only not null data
         user.Name = item.Name;

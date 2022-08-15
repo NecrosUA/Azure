@@ -20,39 +20,23 @@ public class AddInsurance: IHandler
         _logger = logger;   
     }
 
-    public async Task Handle(InsuranceData item, HttpRequestData req)
+    public async Task Handle(InsuranceData item, string pid)
     {
-        if (string.IsNullOrEmpty(item.Pid))
-        {
+        if (string.IsNullOrEmpty(pid))
             throw new ApiException(ErrorCode.InvalidQueryParameters);
-        }
 
-        var sub = req.ReadPidFromJwt();
-        if (item.Pid != sub)
-        {
-            throw new ApiException(ErrorCode.Unauthorized);
-        }
-
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Pid == item.Pid);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Pid == pid);
         if (user is null)
-        {
             throw new ApiException(ErrorCode.NotFound);
-        }
 
         if (DateTime.TryParse(item.CarInsurance.YearOfProduction, out var yearOfProduction) == false)
-        {
             throw new ApiException(ErrorCode.InvalidQueryParameters);
-        }
 
         if (yearOfProduction <= DateTime.Parse("01/01/1900"))
-        {
             throw new ApiException(ErrorCode.InvalidQueryParameters);
-        }
 
         if (DateTime.Parse(item.CarInsurance.ExpirationDate) < DateTime.Now)
-        {
             throw new ApiException(ErrorCode.InvalidQueryParameters);
-        }
 
         user.CarInsurance.CarBarnd = item.CarInsurance.CarBarnd;
         user.CarInsurance.YearOfProduction = yearOfProduction.ToString(); //TODO change type of property to DateTime in the next branch

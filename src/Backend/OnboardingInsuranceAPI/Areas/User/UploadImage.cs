@@ -21,25 +21,19 @@ public class UploadImage : IHandler
         _logger = logger;
     }
 
-    public async Task<string> Handle(HttpRequestData request)
+    public async Task<string> Handle(Stream stream)
     {
-        var parsedFromBody = await MultipartFormDataParser.ParseAsync(request.Body);
+        var parsedFromBody = await MultipartFormDataParser.ParseAsync(stream);
         if (parsedFromBody is null)
-        {
             throw new ApiException(ErrorCode.UnhandledException);
-        }
 
         var file = parsedFromBody.Files[0];
         if (string.IsNullOrEmpty(file.Name))
-        {
             throw new ApiException(ErrorCode.UnhandledException);
-        }
 
         var splitName = file.FileName.Split('.');
         if (splitName.Length == 1)
-        {
             throw new ApiException(ErrorCode.UnhandledException);
-        }
 
         string filename = Guid.NewGuid() + "." + splitName[splitName.Length - 1]; //generate unique id of image
         using var myBlob = file.Data;

@@ -29,7 +29,8 @@ public class InsuranceController
     public async Task<HttpResponseData> Put([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "insurance")] HttpRequestData req)
     {
         var requestedData = await req.ReadBodyAs<InsuranceData>();
-        await _handlerPut.Handle(requestedData, req);
+        var pid = req.ReadPidFromJwt();
+        await _handlerPut.Handle(requestedData, pid);
         return req.CreateResponse(HttpStatusCode.Accepted);
     }
 }

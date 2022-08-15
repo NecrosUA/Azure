@@ -19,7 +19,7 @@ public class ImageController
     public async Task<HttpResponseData> Create(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "images")] HttpRequestData req)
     {
-        var filename = await _handler.Handle(req);
+        var filename = await _handler.Handle(req.Body);
         return await req.ReturnJson(filename);
     }
 }

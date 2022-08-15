@@ -20,17 +20,11 @@ public class GetUser : IHandler
     public async Task<UserData> Handle(string pid)
     {
         if (string.IsNullOrEmpty(pid))
-        {
-            _logger.LogWarning("Error, received pid is empty!");
             throw new ApiException(ErrorCode.InvalidQueryParameters);
-        }
 
         var users = await _context.Users.FirstOrDefaultAsync(u => u.Pid == pid);
         if (users is null)
-        {
-            _logger.LogWarning("Error reading user, user is null!");
             throw new ApiException(ErrorCode.NotFound);
-        }
 
         return new UserData
         {
