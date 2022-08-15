@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using OnboardingInsuranceAPI.ErrorHandling;
 using OnboardingInsuranceAPI.Extensions;
 using OnboardingInsuranceAPI.Services;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace OnboardingInsuranceAPI.Areas.User;
@@ -35,6 +36,12 @@ public class RegisterUser : IHandler
         if (sub != pid)
         {
             throw new ApiException(ErrorCode.Unauthorized);
+        }
+
+        string regex = @"^[^@\s]+@[^@\s]+\.(com|net|org|gov|cz)$";
+        if (Regex.IsMatch(email, regex, RegexOptions.IgnoreCase) == false)
+        {
+            throw new ApiException(ErrorCode.InvalidQueryParameters);
         }
 
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Pid == pid); //If this pid does not exist than add it to cosmos db

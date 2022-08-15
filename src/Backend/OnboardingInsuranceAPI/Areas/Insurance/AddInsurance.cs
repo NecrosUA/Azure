@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.EntityFrameworkCore;
@@ -38,8 +39,23 @@ public class AddInsurance: IHandler
             throw new ApiException(ErrorCode.NotFound);
         }
 
+        if (DateTime.TryParse(item.CarInsurance.YearOfProduction, out var yearOfProduction) == false)
+        {
+            throw new ApiException(ErrorCode.InvalidQueryParameters);
+        }
+
+        if (yearOfProduction <= DateTime.Parse("01/01/1900"))
+        {
+            throw new ApiException(ErrorCode.InvalidQueryParameters);
+        }
+
+        if (DateTime.Parse(item.CarInsurance.ExpirationDate) < DateTime.Now)
+        {
+            throw new ApiException(ErrorCode.InvalidQueryParameters);
+        }
+
         user.CarInsurance.CarBarnd = item.CarInsurance.CarBarnd;
-        user.CarInsurance.YearOfProduction = item.CarInsurance.YearOfProduction;
+        user.CarInsurance.YearOfProduction = yearOfProduction.ToString(); //TODO change type of property to DateTime in the next branch
         user.CarInsurance.CarType = item.CarInsurance.CarType;
         user.CarInsurance.FirstOwner = item.CarInsurance.FirstOwner;
         user.CarInsurance.Crashed = item.CarInsurance.Crashed;

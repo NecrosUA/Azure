@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,21 @@ public class UpdateUser : IHandler
             throw new ApiException(ErrorCode.NotFound);
         }
 
+        if (DateTime.TryParse(item.Birthdate, out var birthDate) == false)
+        {
+            throw new ApiException(ErrorCode.InvalidQueryParameters);
+        }
+
+        if (birthDate <= DateTime.Parse("01/01/1900"))
+        {
+            throw new ApiException(ErrorCode.InvalidQueryParameters);
+        }
+
+        if(int.TryParse(item.MobileNumber, out _) == false && item.MobileNumber.Length != 9)
+        {
+            throw new ApiException(ErrorCode.InvalidQueryParameters);
+        }
+
         // Prepare to update only not null data
         user.Name = item.Name;
         user.Surname = item.Surname;
@@ -46,7 +62,7 @@ public class UpdateUser : IHandler
         user.MobileNumber = item.MobileNumber;
         user.ProfileImage = item.ProfileImage;
         if(string.IsNullOrEmpty(user.BirthNumber)) user.BirthNumber = item.BirthNumber;
-        if (string.IsNullOrEmpty(user.Birthdate)) user.Birthdate = item.Birthdate;
+        if (string.IsNullOrEmpty(user.Birthdate)) user.Birthdate = birthDate.ToString(); //TODO change type of property in the next branch
 
         _context.Update(user);
         await _context.SaveChangesAsync();
