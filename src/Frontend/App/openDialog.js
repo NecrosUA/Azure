@@ -3,7 +3,8 @@ fileSelector.setAttribute('type', 'file');
 fileSelector.setAttribute('accept','image/*');
 fileSelector.addEventListener('change', handleFileInput);
 
-function openFile() {   
+function openFile() 
+{   
     fileSelector.click();    
 }
 

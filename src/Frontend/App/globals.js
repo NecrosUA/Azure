@@ -3,7 +3,8 @@ const editProfileArea = document.getElementById('editProfileArea')
 const insuranceArea =  document.getElementById('insuranceArea')
 const loader = document.getElementById('loader')
 
-/* editProfileArea form elements */
+
+/*editProfileArea form elements */
 const picName = document.getElementById('picName')
 const picEmail = document.getElementById('picEmail')
 const picSrc = document.getElementById('picSrc')
@@ -19,10 +20,10 @@ const tbAddress2 = document.getElementById('tbAddress2')
 const tbCountry = document.getElementById('tbCountry')
 const tbRegion = document.getElementById('tbRegion')
 
-/* Insurance profile area */
-const picNameIns = document.getElementById('picNameIns')
-const picEmailIns = document.getElementById('picEmailIns')
-const picSrcIns = document.getElementById('picSrcIns')
+/* Insurance profile area*/
+const picNameIns = document.getElementById('picName')
+const picEmailIns = document.getElementById('picEmail')
+const picSrcIns = document.getElementById('picSrc')
 const carType = document.getElementById('carType') 
 const carBrand = document.getElementById('carBrand')
 const lastService = document.getElementById('lastService')
@@ -44,22 +45,3 @@ const editProfileButton = document.getElementById('editProfileButton')
 const insuranceButton = document.getElementById('InsuranceButton')
 const response = document.getElementById("response")
 const label = document.getElementById('label')
-
-function welcomeUser(username) {
-    welcomeDiv.innerHTML = `Welcome ${username}!`
-
-    label.classList.add('d-none')
-    signInButton.classList.add('d-none')
-    titleDiv.classList.add('d-none')
-    //editProfileArea.classList.add('d-none') //Rost hide element
-
-    signOutButton.classList.remove('d-none')
-    insuranceButton.classList.remove('d-none')
-    editProfileButton.classList.remove('d-none')
-    welcomeDiv.classList.remove('d-none')
-    //callApiButton.classList.remove('d-none');
-}
-
-function logMessage(s) {
-    response.appendChild(document.createTextNode('\n' + s + '\n'))
-}

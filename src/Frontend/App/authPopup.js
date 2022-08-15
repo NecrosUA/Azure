@@ -147,10 +147,10 @@ function passTokenToApi(key,img = null) {
                 try {
                     switch (key) {
                         case "INSURANCEGET":
-                            readInsurance(apiConfigRead.webApi+getUserId(response.accessToken), response.accessToken); //Call information from backend about user
+                            readInsurance(apiConfigReadInsurance .webApi+getUserId(response.accessToken), response.accessToken); //Call information from backend about user
                             break;
-                        case "NSURANCEPUT":
-                            writeInsurance(apiConfigWrite.webApi, response.accessToken); //Save information about user
+                        case "INSURANCEPUT":
+                            writeInsurance(apiConfigWriteInsurance .webApi, response.accessToken); //Save information about user
                             break;
                         case "GET":
                             readUserInfo(apiConfigRead.webApi+getUserId(response.accessToken), response.accessToken); //Call information from backend about user

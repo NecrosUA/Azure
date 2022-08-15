@@ -5,6 +5,10 @@ using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
 using OnboardingInsuranceAPI.ErrorHandling;
 using OnboardingInsuranceAPI.Extensions;
 using OnboardingInsuranceAPI.Services;
+using Microsoft.EntityFrameworkCore;
+using System;
+using Microsoft.Azure.Cosmos;
+using System.Net;
 
 namespace OnboardingInsuranceAPI;
 
@@ -23,7 +27,7 @@ public class Program
             {
                 services
                     .AddScopedByInterface<IHandler>()
-                    .AddDbContext<DataContext>(); //AddDbContextFactory try booth
+                    .AddCosmosDb(); //Dev DB
             })
             .ConfigureOpenApi()
             .Build();
