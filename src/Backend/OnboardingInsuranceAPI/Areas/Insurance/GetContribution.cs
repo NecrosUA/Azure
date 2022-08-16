@@ -34,7 +34,7 @@ public class GetContribution : IHandler
         var riskCoeficient = requestedData.Crashed && requestedData.FirstOwner ? 1.1 : 1;
 
         requestedData.YearlyContribution = Math.Round((carTypeContribution + carProductionYear * 2.3 - age*30) * riskCoeficient, 2);
-        requestedData.ExpirationDate = new DateTime(DateTime.Now.Year + 1, DateTime.Now.Month, DateTime.Now.Day).ToString(); //Add 1 year insurance to current date
+        requestedData.ExpirationDate = new DateTime(DateTime.Now.Year + 1, DateTime.Now.Month, DateTime.Now.Day).ToString("yyy-MM-dd"); //Add 1 year insurance to current date
 
         return requestedData;
     }
