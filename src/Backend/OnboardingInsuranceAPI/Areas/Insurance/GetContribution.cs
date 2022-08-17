@@ -39,7 +39,6 @@ public class GetContribution : IHandler
         {
             YearlyContribution = Math.Round((carTypeContribution + carProductionYear * 2.3 - age * 30) * riskCoeficient, 2),
             ExpirationDate = new DateOnly(DateTime.Now.Year + 1, DateTime.Now.Month, DateTime.Now.Day).ToString("yyy-MM-dd")
-
         };
 
         return responsedData;
