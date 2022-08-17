@@ -1,5 +1,9 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 namespace OnboardingInsuranceAPI.Enums
 {
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum CarTypes
     {
         Default = 100,
@@ -12,19 +16,8 @@ namespace OnboardingInsuranceAPI.Enums
         Sedan = 150,
         Micro = 50
     }
-    internal static class CarTypesContribution
-    { 
-        public static int FromString(string type) => type.ToLower() switch
-        {
-            "cabriolet" => (int)CarTypes.Cabriolet,
-            "sport_car" => (int)CarTypes.SportCar,
-            "van" => (int)CarTypes.Van,
-            "micro" => (int)CarTypes.Micro,
-            "sedan" => (int)CarTypes.Sedan,
-            "camper_van" => (int)CarTypes.CamperVan,
-            "super_car" => (int)CarTypes.SuperCar,
-            "coupe" => (int)CarTypes.Coupe,
-            _ => (int)CarTypes.Default
-        };
+    public record CarTypesContribution
+    {
+        public CarTypes CarType { get; set; }
     }
 }
