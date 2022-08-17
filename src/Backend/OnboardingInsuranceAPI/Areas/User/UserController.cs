@@ -21,7 +21,7 @@ public class UserController
 
     [Function("GetUser")] //read user profile by PID number
     public  async Task<HttpResponseData> Get(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "user")] HttpRequestData req) //TODO rewrite frontend remove pid and fix reference 
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users")] HttpRequestData req) //TODO rewrite frontend remove pid and fix reference 
     {
         var pid = req.ReadPidFromJwt(); //Return pid from header jwt
         var userData = await _getUser.Handle(pid);
@@ -30,7 +30,7 @@ public class UserController
 
     [Function("PutUser")] //write into user profile  
     public  async Task<HttpResponseData> Put(
-    [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "user")] HttpRequestData req)
+    [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "users")] HttpRequestData req)
     {
         var requestedData = await req.ReadBodyAs<UserData>();
         var pid = req.ReadPidFromJwt();

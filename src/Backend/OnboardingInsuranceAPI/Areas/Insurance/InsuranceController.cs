@@ -39,7 +39,7 @@ public class InsuranceController
     [Function("GetContribution")]
     public async Task<HttpResponseData> ReadContribution([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "contribution")] HttpRequestData req)
     {
-        var requestedData = await req.ReadBodyAs<ContributionData>();
+        var requestedData = await req.ReadBodyAs<ContributionDataRequest>();
         var pid = req.ReadPidFromJwt();
         var contributionData = await _getContribution.Handle(requestedData, pid);
         return await req.ReturnJson(contributionData);

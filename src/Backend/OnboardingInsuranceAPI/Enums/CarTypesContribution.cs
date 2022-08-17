@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace OnboardingInsuranceAPI.Enums
 {
     public enum CarTypes
@@ -18,20 +12,19 @@ namespace OnboardingInsuranceAPI.Enums
         Sedan = 150,
         Micro = 50
     }
-
     internal static class CarTypesContribution
-    {
-        public static CarTypes FromString(string type) => type.ToLower() switch
+    { 
+        public static int FromString(string type) => type.ToLower() switch
         {
-            "cabriolet" => CarTypes.Cabriolet,
-            "sport_car" => CarTypes.SportCar,
-            "van" => CarTypes.Van,
-            "micro" => CarTypes.Micro,
-            "sedan" => CarTypes.Sedan,
-            "camper_van" => CarTypes.CamperVan,
-            "super_car" => CarTypes.SuperCar,
-            "coupe" => CarTypes.Coupe,
-            _ => CarTypes.Default
+            "cabriolet" => (int)CarTypes.Cabriolet,
+            "sport_car" => (int)CarTypes.SportCar,
+            "van" => (int)CarTypes.Van,
+            "micro" => (int)CarTypes.Micro,
+            "sedan" => (int)CarTypes.Sedan,
+            "camper_van" => (int)CarTypes.CamperVan,
+            "super_car" => (int)CarTypes.SuperCar,
+            "coupe" => (int)CarTypes.Coupe,
+            _ => (int)CarTypes.Default
         };
     }
 }

@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 
 namespace OnboardingInsuranceAPI.Areas.Insurance;
 
-public record ContributionData
+public record ContributionDataRequest
 {
-    [JsonPropertyName("expDate")]
-    public string ExpirationDate { get; set; }
-    [JsonPropertyName("yearlyContribution")]
-    public double? YearlyContribution { get; set; }
     [JsonPropertyName("carType")]
     public string CarType { get; init; }
     [JsonPropertyName("crashed")]
