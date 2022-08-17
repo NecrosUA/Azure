@@ -29,10 +29,9 @@ public class GetContribution : IHandler
         if(string.IsNullOrEmpty(birthDate))
             throw new ApiException(ErrorCode.NotFound);
 
-        var carContribution = JsonSerializer.Deserialize<CarTypesContribution>(requestedData.CarType);
         var age = DateTime.Now.Year - DateOnly.Parse(birthDate).Year; 
         var carProductionYear = DateOnly.Parse(requestedData.YearOfProduction).Year;
-        var carTypeContribution = (int)carContribution.CarType;
+        var carTypeContribution = (int)requestedData.CarType;
         var riskCoeficient = requestedData.Crashed && requestedData.FirstOwner ? 1.1 : 1;
 
         var responsedData = new ContributionDataResponse

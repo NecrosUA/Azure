@@ -16,8 +16,4 @@ namespace OnboardingInsuranceAPI.Enums
         Sedan = 150,
         Micro = 50
     }
-    public record CarTypesContribution
-    {
-        public CarTypes CarType { get; set; }
-    }
 }
