@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -9,15 +11,13 @@ namespace OnboardingInsuranceAPI.Areas.Insurance;
 public class GetInsurance : IHandler
 {
     private readonly DataContext _context;
-    private readonly ILogger<GetInsurance> _logger;
 
-    public GetInsurance(DataContext context, ILogger<GetInsurance> logger)
+    public GetInsurance(DataContext context)
     {
         _context = context;
-        _logger = logger;
     }
 
-    public async Task<InsuranceData> Handle(string pid)
+    public async Task<InsuranceDataResponse> Handle(string pid)
     {
         if (string.IsNullOrEmpty(pid))
             throw new ApiException(ErrorCode.InvalidQueryParameters);
@@ -26,21 +26,23 @@ public class GetInsurance : IHandler
         if (user is null)
             throw new ApiException(ErrorCode.NotFound);
 
-        return new InsuranceData
+        var insurance = await _context.Insurances.Where(i => i.Pid == pid).ToListAsync();
+        return new InsuranceDataResponse
         {
             ProfileImage = user.ProfileImage,
-            CarInsurance = new CarInsuranceData
+            CarInsurance = insurance.Select(x => new CarInsuranceData()
             {
-                CarBarnd = user.CarInsurance.CarBarnd,
-                YearOfProduction = user.CarInsurance.YearOfProduction,
-                CarType = user.CarInsurance.CarType,
-                FirstOwner = user.CarInsurance.FirstOwner,
-                Crashed = user.CarInsurance.Crashed,
-                ExpirationDate = user.CarInsurance.ExpirationDate,
-                InformationNote = user.CarInsurance.InformationNote,
-                LastService = user.CarInsurance.LastService,
-                YearlyContribution = user.CarInsurance.YearlyContribution,
-            },
+                ExpirationDate = x.ExpirationDate,
+                InformationNote = x.InformationNote,
+                YearlyContribution = x.YearlyContribution,
+                CarType = x.CarType,
+                CarBarnd = x.CarBarnd,                
+                Crashed = x.Crashed,                
+                FirstOwner = x.FirstOwner,
+                LastService = x.LastService,
+                YearOfProduction = x.YearOfProduction,
+                InsuranceId = x.InsuranceId
+            }).ToList(),
             Email = user.Email,
             Name = user.Name,
             Pid = user.Pid

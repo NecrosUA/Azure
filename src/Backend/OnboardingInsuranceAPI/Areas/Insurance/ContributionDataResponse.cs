@@ -5,13 +5,12 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace OnboardingInsuranceAPI.Areas.Insurance
+namespace OnboardingInsuranceAPI.Areas.Insurance;
+
+public record ContributionDataResponse
 {
-    public record ContributionDataResponse
-    {
-        [JsonPropertyName("expDate")]
-        public string ExpirationDate { get; init; }
-        [JsonPropertyName("yearlyContribution")]
-        public double? YearlyContribution { get; init; }
-    }
+    [JsonPropertyName("expDate")]
+    public DateOnly ExpirationDate { get; init; }
+    [JsonPropertyName("yearlyContribution")]
+    public decimal? YearlyContribution { get; init; }
 }

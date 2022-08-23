@@ -30,7 +30,7 @@ public class UserController
 
     [Function("PutUser")] //write into user profile  
     public  async Task<HttpResponseData> Put(
-    [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "users")] HttpRequestData req)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "users")] HttpRequestData req)
     {
         var requestedData = await req.ReadBodyAs<UserData>();
         var pid = req.ReadPidFromJwt();
@@ -42,7 +42,7 @@ public class UserController
     public async Task<HttpResponseData> Post(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "user")] HttpRequestData req)
     {
-        var requestedData = await req.ReadBodyAs<RegisterUserData>();//TODO return only email of user in custom policies
+        var requestedData = await req.ReadBodyAs<RegisterUserData>();
         var pid = req.ReadPidFromJwt();
         await _registerUser.Handle(pid, requestedData.Email);
         return req.CreateResponse(HttpStatusCode.Accepted);

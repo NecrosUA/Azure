@@ -20,7 +20,7 @@ public class InsuranceController
     }
 
     [Function("GetInsurance")]
-    public async Task<HttpResponseData> ReadInsurance([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "insurance")] HttpRequestData req)
+    public async Task<HttpResponseData> ReadInsurance([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "insurances")] HttpRequestData req)
     {
         var pid = req.ReadPidFromJwt();
         var insuranceData = await _getInsurance.Handle(pid);
@@ -28,9 +28,9 @@ public class InsuranceController
     }
 
     [Function("PutInsurance")]
-    public async Task<HttpResponseData> UpdateInsurance([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "insurance")] HttpRequestData req)
+    public async Task<HttpResponseData> UpdateInsurance([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "insurances")] HttpRequestData req)
     {
-        var requestedData = await req.ReadBodyAs<InsuranceData>();
+        var requestedData = await req.ReadBodyAs<InsuranceDataRequest>();
         var pid = req.ReadPidFromJwt();
         await _addInsurance.Handle(requestedData, pid);
         return req.CreateResponse(HttpStatusCode.Accepted);
@@ -41,7 +41,7 @@ public class InsuranceController
     {
         var requestedData = await req.ReadBodyAs<ContributionDataRequest>();
         var pid = req.ReadPidFromJwt();
-        var contributionData = await _getContribution.Handle(requestedData, pid);
+        var contributionData = _getContribution.Handle(requestedData, pid);
         return await req.ReturnJson(contributionData);
     }
 }

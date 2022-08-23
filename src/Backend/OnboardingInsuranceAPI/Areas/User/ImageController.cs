@@ -15,6 +15,7 @@ public class ImageController
     {
         _handler = handler;
     }
+
     [Function("UploadImage")]
     public async Task<HttpResponseData> Create(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "images")] HttpRequestData req)

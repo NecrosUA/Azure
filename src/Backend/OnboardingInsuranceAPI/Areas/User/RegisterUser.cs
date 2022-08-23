@@ -12,12 +12,10 @@ namespace OnboardingInsuranceAPI.Areas.User;
 public class RegisterUser : IHandler
 {
     private readonly DataContext _context;
-    private readonly ILogger<RegisterUser> _logger;
 
-    public RegisterUser(DataContext context, ILogger<RegisterUser> logger)
+    public RegisterUser(DataContext context)
     {
         _context = context;
-        _logger = logger;
     }
 
     public async Task Handle(string pid, string email)
@@ -41,6 +39,6 @@ public class RegisterUser : IHandler
                 Email = email
             });
 
-            await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.EntityFrameworkCore;
@@ -12,43 +13,62 @@ namespace OnboardingInsuranceAPI.Areas.Insurance;
 public class AddInsurance: IHandler
 {
     private readonly DataContext _context;
-    private readonly ILogger<AddInsurance> _logger;
 
-    public AddInsurance(DataContext context, ILogger<AddInsurance> logger)
+    public AddInsurance(DataContext context)
     {
-        _context = context;
-        _logger = logger;   
+        _context = context; 
     }
 
-    public async Task Handle(InsuranceData item, string pid)
+    public async Task Handle(InsuranceDataRequest request, string pid)
     {
         if (string.IsNullOrEmpty(pid))
             throw new ApiException(ErrorCode.InvalidQueryParameters);
 
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Pid == pid);
-        if (user is null)
-            throw new ApiException(ErrorCode.NotFound);
-
-        if (DateTime.TryParse(item.CarInsurance.YearOfProduction, out var yearOfProduction) == false)
+        var yearProd = request.CarInsurance.YearOfProduction;
+        if (yearProd is null)
             throw new ApiException(ErrorCode.InvalidQueryParameters);
 
-        if (yearOfProduction <= DateTime.Parse("01/01/1900"))
+        if (yearProd <= 1900 || yearProd == 0 || yearProd > DateTime.Now.Year)
             throw new ApiException(ErrorCode.ValidationFailed);
 
-        if (DateTime.Parse(item.CarInsurance.ExpirationDate) < DateTime.Now)
+        if (request.CarInsurance.ExpirationDate < DateOnly.FromDateTime(DateTime.Now))
             throw new ApiException(ErrorCode.ValidationFailed);
 
-        user.CarInsurance.CarBarnd = item.CarInsurance.CarBarnd;
-        user.CarInsurance.YearOfProduction = yearOfProduction.ToString(); //TODO change type of property to DateTime in the next branch
-        user.CarInsurance.CarType = item.CarInsurance.CarType;
-        user.CarInsurance.FirstOwner = item.CarInsurance.FirstOwner;
-        user.CarInsurance.Crashed = item.CarInsurance.Crashed;
-        user.CarInsurance.ExpirationDate = item.CarInsurance.ExpirationDate;
-        user.CarInsurance.InformationNote = item.CarInsurance.InformationNote;
-        user.CarInsurance.LastService = item.CarInsurance.LastService;
-        user.CarInsurance.YearlyContribution = item.CarInsurance.YearlyContribution;
+        var insurance = await _context.Insurances.Where(i => i.Pid == pid).ToListAsync();
+        if (insurance is null)
+            _context.Add(new CarInsuranceInfo
+            {
+                Pid = pid,
+                InsuranceId = Guid.NewGuid().ToString(),
+                CarBarnd = request.CarInsurance.CarBarnd,
+                CarType = request.CarInsurance.CarType,
+                Crashed = request.CarInsurance.Crashed,
+                ExpirationDate = request.CarInsurance.ExpirationDate,
+                FirstOwner = request.CarInsurance.FirstOwner,
+                InformationNote = request.CarInsurance.InformationNote,
+                LastService = request.CarInsurance.LastService,
+                YearlyContribution = request.CarInsurance.YearlyContribution,
+                YearOfProduction = request.CarInsurance.YearOfProduction
+            });
 
-        _context.Update(user);
+        if (request.CarInsurance.InsuranceId != null)
+        {
+            _context.Update(new CarInsuranceInfo 
+            {
+                Pid = pid,
+                InsuranceId = request.CarInsurance.InsuranceId,
+                CarBarnd = request.CarInsurance.CarBarnd,
+                CarType = request.CarInsurance.CarType,
+                Crashed = request.CarInsurance.Crashed,
+                ExpirationDate = request.CarInsurance.ExpirationDate,
+                FirstOwner = request.CarInsurance.FirstOwner,
+                InformationNote = request.CarInsurance.InformationNote,
+                LastService = request.CarInsurance.LastService,
+                YearlyContribution = request.CarInsurance.YearlyContribution,
+                YearOfProduction = request.CarInsurance.YearOfProduction
+            });
+        }
+        
         await _context.SaveChangesAsync();
     }
 }

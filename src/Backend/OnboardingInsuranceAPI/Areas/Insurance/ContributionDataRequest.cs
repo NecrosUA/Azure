@@ -15,7 +15,7 @@ public record ContributionDataRequest
     [JsonPropertyName("crashed")]
     public bool Crashed { get; init; }
     [JsonPropertyName("year")]
-    public string YearOfProduction { get; init; }
+    public int? YearOfProduction { get; init; }
     [JsonPropertyName("firstOwner")]
     public bool FirstOwner { get; init; }
 }
