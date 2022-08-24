@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using OnboardingInsuranceAPI.Enums;
+using Microsoft.EntityFrameworkCore;
 using OnboardingInsuranceAPI.ErrorHandling;
 using OnboardingInsuranceAPI.Services;
 
@@ -22,22 +18,34 @@ public class GetContribution : IHandler
 
     public async Task<ContributionDataResponse> Handle(ContributionDataRequest requestedData, string pid)
     {
-        if(string.IsNullOrEmpty(pid))
+        if (string.IsNullOrEmpty(pid))
             throw new ApiException(ErrorCode.InvalidQueryParameters);
 
-        var birthDate = _context.Users.FirstOrDefault(u => u.Pid == pid)?.Birthdate;
-        if(string.IsNullOrEmpty(birthDate))
-            throw new ApiException(ErrorCode.NotFound);
+        var birthDate = (await _context.Users.FirstOrDefaultAsync(u => u.Pid == pid))?.Birthdate;
+        if (birthDate is null)
+            throw new ApiException(ErrorCode.InvalidQueryParameters);
 
-        var age = DateTime.Now.Year - DateOnly.Parse(birthDate).Year; 
-        var carProductionYear = DateOnly.Parse(requestedData.YearOfProduction).Year;
+        if (birthDate <= DateOnly.Parse("1900-01-01"))
+            throw new ApiException(ErrorCode.ValidationFailed);
+
+        var age = DateTime.Now.Year - birthDate.Value.Year;
+        if (age < 18)
+            throw new ApiException(ErrorCode.ValidationFailed);
+
+        var yearProd = requestedData.YearOfProduction;
+        if (yearProd is null)
+            throw new ApiException(ErrorCode.InvalidQueryParameters);
+
+        if (yearProd <= 1900 || yearProd == 0 || yearProd > DateTime.Now.Year)
+            throw new ApiException(ErrorCode.ValidationFailed);
+
         var carTypeContribution = (int)requestedData.CarType;
         var riskCoeficient = requestedData.Crashed && requestedData.FirstOwner ? 1.1 : 1;
 
         var responsedData = new ContributionDataResponse
         {
-            YearlyContribution = Math.Round((carTypeContribution + carProductionYear * 2.3 - age * 30) * riskCoeficient, 2),
-            ExpirationDate = new DateOnly(DateTime.Now.Year + 1, DateTime.Now.Month, DateTime.Now.Day).ToString("yyy-MM-dd")
+            YearlyContribution = Math.Round((decimal)((carTypeContribution + yearProd * 2.3 - age * 30) * riskCoeficient), 2),
+            ExpirationDate = new DateOnly(DateTime.Now.Year + 1, DateTime.Now.Month, DateTime.Now.Day)
         };
 
         return responsedData;

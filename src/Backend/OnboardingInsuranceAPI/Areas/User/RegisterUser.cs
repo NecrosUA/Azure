@@ -12,12 +12,10 @@ namespace OnboardingInsuranceAPI.Areas.User;
 public class RegisterUser : IHandler
 {
     private readonly DataContext _context;
-    private readonly ILogger<RegisterUser> _logger;
 
-    public RegisterUser(DataContext context, ILogger<RegisterUser> logger)
+    public RegisterUser(DataContext context)
     {
         _context = context;
-        _logger = logger;
     }
 
     public async Task Handle(string pid, string email)
@@ -34,13 +32,13 @@ public class RegisterUser : IHandler
 
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Pid == pid); //If this pid does not exist than add it to cosmos db
         if (user == null)
-            _context.Add(new UserInfo
+            await _context.AddAsync(new UserInfo
             {
                 Pid = pid,
                 ProfileImage = "https://rostupload.blob.core.windows.net/images/default.jpg",
                 Email = email
             });
 
-            await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
     }
 }

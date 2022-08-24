@@ -1,5 +1,7 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using OnboardingInsuranceAPI.Converters;
 
 namespace OnboardingInsuranceAPI.Areas.User;
 
@@ -12,7 +14,7 @@ public record UserData
     [JsonPropertyName("surname")]
     public string? Surname { get; init; }
     [JsonPropertyName("birthdate")]
-    public string? Birthdate { get; init; }
+    public DateOnly? Birthdate { get; init; }
     [JsonPropertyName("birthNumber")]
     public string? BirthNumber { get; init; }
     [JsonPropertyName("mobileNumber")]

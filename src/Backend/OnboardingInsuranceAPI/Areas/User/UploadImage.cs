@@ -12,14 +12,8 @@ namespace OnboardingInsuranceAPI.Areas.User;
 
 public class UploadImage : IHandler
 {
-    private readonly ILogger<UploadImage> _logger;
     private readonly string _connection = Environment.GetEnvironmentVariable("ImageAzureWebJobsStorage");
     private readonly  string _containerName = Environment.GetEnvironmentVariable("ImageContainerName");
-
-    public UploadImage(ILogger<UploadImage> logger)
-    {
-        _logger = logger;
-    }
 
     public async Task<string> Handle(Stream stream)
     {

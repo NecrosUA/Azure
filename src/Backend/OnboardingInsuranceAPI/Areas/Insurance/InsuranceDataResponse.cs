@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace OnboardingInsuranceAPI.Areas.Insurance;
 
-public record InsuranceData
+public record InsuranceDataResponse
 {
     [JsonPropertyName("pid")]
     public string Pid { get; init; }
@@ -11,8 +12,8 @@ public record InsuranceData
     [JsonPropertyName("profileImage")]
     public string? ProfileImage { get; init; }
     [JsonPropertyName("email")]
-    public string Email { get; init; }
+    public string? Email { get; init; }
     [JsonPropertyName("carInsurance")]
-    public CarInsuranceData CarInsurance { get; init; }
+    public List<CarInsuranceData>? CarInsurance { get; init; }
 }
 

@@ -12,12 +12,10 @@ namespace OnboardingInsuranceAPI.Areas.User;
 public class UpdateUser : IHandler
 {
     private readonly DataContext _context;
-    private readonly ILogger<UpdateUser> _logger;
 
-    public UpdateUser(DataContext context, ILogger<UpdateUser> logger)
+    public UpdateUser(DataContext context)
     {
         _context = context;
-        _logger = logger;
     }
 
     public async Task Handle(UserData item, string pid)
@@ -29,10 +27,10 @@ public class UpdateUser : IHandler
         if (user is null)
             throw new ApiException(ErrorCode.NotFound);
 
-        if (DateTime.TryParse(item.Birthdate, out var birthDate) == false)
+        if (item.Birthdate is null)
             throw new ApiException(ErrorCode.InvalidQueryParameters);
 
-        if (birthDate <= DateTime.Parse("01/01/1900"))
+        if (item.Birthdate <= DateOnly.Parse("1900-01-01"))
             throw new ApiException(ErrorCode.ValidationFailed);
 
         if(int.TryParse(item.MobileNumber, out _) == false && item.MobileNumber.Length != 9)
@@ -46,7 +44,7 @@ public class UpdateUser : IHandler
         user.MobileNumber = item.MobileNumber;
         user.ProfileImage = item.ProfileImage;
         if(string.IsNullOrEmpty(user.BirthNumber)) user.BirthNumber = item.BirthNumber;
-        if (string.IsNullOrEmpty(user.Birthdate)) user.Birthdate = birthDate.ToString(); //TODO change type of property in the next branch
+        if (user.Birthdate is null) user.Birthdate = item.Birthdate; 
 
         _context.Update(user);
         await _context.SaveChangesAsync();

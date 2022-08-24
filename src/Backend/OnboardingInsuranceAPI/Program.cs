@@ -5,10 +5,8 @@ using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
 using OnboardingInsuranceAPI.ErrorHandling;
 using OnboardingInsuranceAPI.Extensions;
 using OnboardingInsuranceAPI.Services;
-using Microsoft.EntityFrameworkCore;
-using System;
-using Microsoft.Azure.Cosmos;
-using System.Net;
+using System.Text.Json;
+using OnboardingInsuranceAPI.Converters;
 
 namespace OnboardingInsuranceAPI;
 
@@ -26,8 +24,12 @@ public class Program
             .ConfigureServices(services =>
             {
                 services
+                    .Configure<JsonSerializerOptions>(jsonOptions =>
+                    {
+                        jsonOptions.Converters.Add(new DateOnlyJsonConverter());
+                    })
                     .AddScopedByInterface<IHandler>()
-                    .AddCosmosDb(); //Dev DB
+                    .AddCosmosDb();
             })
             .ConfigureOpenApi()
             .Build();

@@ -6,7 +6,7 @@ namespace OnboardingInsuranceAPI.Enums
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum CarTypes
     {
-        Default = 100,
+        Default = 0,
         SuperCar = 2000,
         SportCar = 1000,
         Cabriolet = 500,
