@@ -21,53 +21,33 @@ public class AddInsurance: IHandler
 
     public async Task Handle(InsuranceDataRequest request, string pid)
     {
-        if (string.IsNullOrEmpty(pid))
+        if(string.IsNullOrEmpty(pid))
             throw new ApiException(ErrorCode.InvalidQueryParameters);
 
         var yearProd = request.CarInsurance.YearOfProduction;
-        if (yearProd is null)
+        if(yearProd is null)
             throw new ApiException(ErrorCode.InvalidQueryParameters);
 
-        if (yearProd <= 1900 || yearProd == 0 || yearProd > DateTime.Now.Year)
+        if(yearProd <= 1900 || yearProd == 0 || yearProd > DateTime.Now.Year)
             throw new ApiException(ErrorCode.ValidationFailed);
 
-        if (request.CarInsurance.ExpirationDate < DateOnly.FromDateTime(DateTime.Now))
+        if(request.CarInsurance.ExpirationDate < DateOnly.FromDateTime(DateTime.Now))
             throw new ApiException(ErrorCode.ValidationFailed);
 
-        var insurance = await _context.Insurances.Where(i => i.Pid == pid).ToListAsync();
-        if (insurance is null)
-            _context.Add(new CarInsuranceInfo
-            {
-                Pid = pid,
-                InsuranceId = Guid.NewGuid().ToString(),
-                CarBarnd = request.CarInsurance.CarBarnd,
-                CarType = request.CarInsurance.CarType,
-                Crashed = request.CarInsurance.Crashed,
-                ExpirationDate = request.CarInsurance.ExpirationDate,
-                FirstOwner = request.CarInsurance.FirstOwner,
-                InformationNote = request.CarInsurance.InformationNote,
-                LastService = request.CarInsurance.LastService,
-                YearlyContribution = request.CarInsurance.YearlyContribution,
-                YearOfProduction = request.CarInsurance.YearOfProduction
-            });
-
-        if (request.CarInsurance.InsuranceId != null)
+        await _context.AddAsync(new CarInsuranceInfo
         {
-            _context.Update(new CarInsuranceInfo 
-            {
-                Pid = pid,
-                InsuranceId = request.CarInsurance.InsuranceId,
-                CarBarnd = request.CarInsurance.CarBarnd,
-                CarType = request.CarInsurance.CarType,
-                Crashed = request.CarInsurance.Crashed,
-                ExpirationDate = request.CarInsurance.ExpirationDate,
-                FirstOwner = request.CarInsurance.FirstOwner,
-                InformationNote = request.CarInsurance.InformationNote,
-                LastService = request.CarInsurance.LastService,
-                YearlyContribution = request.CarInsurance.YearlyContribution,
-                YearOfProduction = request.CarInsurance.YearOfProduction
-            });
-        }
+            Pid = pid,
+            InsuranceId = Guid.NewGuid().ToString(),
+            CarBarnd = request.CarInsurance.CarBarnd,
+            CarType = request.CarInsurance.CarType,
+            Crashed = request.CarInsurance.Crashed,
+            ExpirationDate = request.CarInsurance.ExpirationDate,
+            FirstOwner = request.CarInsurance.FirstOwner,
+            InformationNote = request.CarInsurance.InformationNote,
+            LastService = request.CarInsurance.LastService,
+            YearlyContribution = request.CarInsurance.YearlyContribution,
+            YearOfProduction = request.CarInsurance.YearOfProduction
+        });
         
         await _context.SaveChangesAsync();
     }

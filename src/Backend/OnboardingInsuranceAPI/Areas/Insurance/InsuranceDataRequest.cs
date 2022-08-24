@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace OnboardingInsuranceAPI.Areas.Insurance;
 
-public class InsuranceDataRequest
+public record InsuranceDataRequest
 {
     [JsonPropertyName("pid")]
     public string Pid { get; init; }

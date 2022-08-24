@@ -21,7 +21,7 @@ public class UserController
 
     [Function("GetUser")] //read user profile by PID number
     public  async Task<HttpResponseData> Get(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users")] HttpRequestData req) //TODO rewrite frontend remove pid and fix reference 
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users")] HttpRequestData req)
     {
         var pid = req.ReadPidFromJwt(); //Return pid from header jwt
         var userData = await _getUser.Handle(pid);

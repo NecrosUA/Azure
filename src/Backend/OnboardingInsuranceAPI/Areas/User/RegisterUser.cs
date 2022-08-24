@@ -32,7 +32,7 @@ public class RegisterUser : IHandler
 
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Pid == pid); //If this pid does not exist than add it to cosmos db
         if (user == null)
-            _context.Add(new UserInfo
+            await _context.AddAsync(new UserInfo
             {
                 Pid = pid,
                 ProfileImage = "https://rostupload.blob.core.windows.net/images/default.jpg",

@@ -1,7 +1,5 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
-using OnboardingInsuranceAPI.System.Text.Json;
 
 namespace OnboardingInsuranceAPI.Services;
 

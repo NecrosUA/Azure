@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace OnboardingInsuranceAPI.System.Text.Json;
+namespace OnboardingInsuranceAPI.Converters;
 
 public class DateOnlyJsonConverter : JsonConverter<DateOnly>
 {

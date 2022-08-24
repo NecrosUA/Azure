@@ -5,8 +5,8 @@ namespace OnboardingInsuranceAPI.Services;
 
 public class CarInsuranceInfo
 {
-    [Key]
     public string Pid { get; set; }
+    [Key]
     public string InsuranceId { get; set; } 
     public DateOnly? ExpirationDate { get; set; } 
     public string InformationNote { get; set; } 

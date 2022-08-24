@@ -23,14 +23,14 @@ public class GetInsurance : IHandler
             throw new ApiException(ErrorCode.InvalidQueryParameters);
 
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Pid == pid);
-        if (user is null)
+        if(user is null)
             throw new ApiException(ErrorCode.NotFound);
 
-        var insurance = await _context.Insurances.Where(i => i.Pid == pid).ToListAsync();
+        var insurances = await _context.Insurances.Where(i => i.Pid == pid).AsNoTracking().ToListAsync();
         return new InsuranceDataResponse
         {
             ProfileImage = user.ProfileImage,
-            CarInsurance = insurance.Select(x => new CarInsuranceData()
+            CarInsurance = insurances.Select(x => new CarInsuranceData()
             {
                 ExpirationDate = x.ExpirationDate,
                 InformationNote = x.InformationNote,

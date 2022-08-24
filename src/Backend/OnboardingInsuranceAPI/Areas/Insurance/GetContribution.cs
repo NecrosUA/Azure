@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using OnboardingInsuranceAPI.ErrorHandling;
 using OnboardingInsuranceAPI.Services;
 
@@ -14,14 +16,15 @@ public class GetContribution : IHandler
         _context = context;
     }
 
-    public ContributionDataResponse Handle(ContributionDataRequest requestedData, string pid)
+    public async Task<ContributionDataResponse> Handle(ContributionDataRequest requestedData, string pid)
     {
         if (string.IsNullOrEmpty(pid))
             throw new ApiException(ErrorCode.InvalidQueryParameters);
 
-        var birthDate = _context.Users.FirstOrDefault(u => u.Pid == pid)?.Birthdate;
+        var birthDate = (await _context.Users.FirstOrDefaultAsync(u => u.Pid == pid))?.Birthdate;
         if (birthDate is null)
             throw new ApiException(ErrorCode.InvalidQueryParameters);
+
         if (birthDate <= DateOnly.Parse("1900-01-01"))
             throw new ApiException(ErrorCode.ValidationFailed);
 
@@ -32,6 +35,7 @@ public class GetContribution : IHandler
         var yearProd = requestedData.YearOfProduction;
         if (yearProd is null)
             throw new ApiException(ErrorCode.InvalidQueryParameters);
+
         if (yearProd <= 1900 || yearProd == 0 || yearProd > DateTime.Now.Year)
             throw new ApiException(ErrorCode.ValidationFailed);
 
