@@ -21,7 +21,7 @@ public class GetContribution : IHandler
         if (string.IsNullOrEmpty(pid))
             throw new ApiException(ErrorCode.InvalidQueryParameters);
 
-        var birthDate = (await _context.Users.FirstOrDefaultAsync(u => u.Pid == pid))?.Birthdate;
+        var birthDate = (await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Pid == pid))?.Birthdate;
         if (birthDate is null)
             throw new ApiException(ErrorCode.InvalidQueryParameters);
 
