@@ -26,7 +26,7 @@ public class GetInsurance : IHandler
         if(user is null)
             throw new ApiException(ErrorCode.NotFound);
 
-        var insurances = await _context.Insurances.Where(i => i.Pid == pid).AsNoTracking().ToListAsync();
+        var insurances = await _context.Insurances.AsNoTracking().Where(i => i.Pid == pid).ToListAsync();
         return new InsuranceDataResponse
         {
             ProfileImage = user.ProfileImage,

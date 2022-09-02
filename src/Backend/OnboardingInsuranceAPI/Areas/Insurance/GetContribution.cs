@@ -25,13 +25,6 @@ public class GetContribution : IHandler
         if (birthDate is null)
             throw new ApiException(ErrorCode.InvalidQueryParameters);
 
-        if (birthDate <= DateOnly.Parse("1900-01-01"))
-            throw new ApiException(ErrorCode.ValidationFailed);
-
-        var age = DateTime.Now.Year - birthDate.Value.Year;
-        if (age < 18)
-            throw new ApiException(ErrorCode.ValidationFailed);
-
         var yearProd = requestedData.YearOfProduction;
         if (yearProd is null)
             throw new ApiException(ErrorCode.InvalidQueryParameters);
@@ -39,6 +32,7 @@ public class GetContribution : IHandler
         if (yearProd <= 1900 || yearProd == 0 || yearProd > DateTime.Now.Year)
             throw new ApiException(ErrorCode.ValidationFailed);
 
+        var age = DateTime.Now.Year - birthDate.Value.Year;
         var carTypeContribution = (int)requestedData.CarType;
         var riskCoeficient = requestedData.Crashed && requestedData.FirstOwner ? 1.1 : 1;
 

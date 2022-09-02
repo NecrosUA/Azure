@@ -34,6 +34,9 @@ public class AddInsurance: IHandler
         if(request.CarInsurance.ExpirationDate < DateOnly.FromDateTime(DateTime.Now))
             throw new ApiException(ErrorCode.ValidationFailed);
 
+        if (request.CarInsurance.ExpirationDate.Value.Year > DateTime.Now.Year + 1)
+            throw new ApiException(ErrorCode.ValidationFailed);
+
         await _context.AddAsync(new CarInsuranceInfo
         {
             Pid = pid,
