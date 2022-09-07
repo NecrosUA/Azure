@@ -55,8 +55,8 @@ public class UpdateUserTests : IDisposable
         var exception = await Record.ExceptionAsync(() => updateUser.Handle(item, pid));
 
         Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("InvalidQueryParameters", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(399, (int)apiException.ErrorCode);
     }
 
     [Fact]
@@ -69,8 +69,8 @@ public class UpdateUserTests : IDisposable
         var exception = await Record.ExceptionAsync(() => updateUser.Handle(item, pid));
 
         Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("NotFound", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(404, (int)apiException.ErrorCode);
     }
 
     [Fact]
@@ -83,8 +83,8 @@ public class UpdateUserTests : IDisposable
         var exception = await Record.ExceptionAsync(() => updateUser.Handle(item, pid));
 
         Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("InvalidQueryParameters", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(399, (int)apiException.ErrorCode);
     }
 
     [Fact]
@@ -97,8 +97,8 @@ public class UpdateUserTests : IDisposable
         var exception = await Record.ExceptionAsync(() => updateUser.Handle(item, pid));
 
         Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("ValidationFailed", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(400, (int)apiException.ErrorCode);
     }
 
     [Fact]
@@ -111,36 +111,28 @@ public class UpdateUserTests : IDisposable
         var exception = await Record.ExceptionAsync(() => updateUser.Handle(item, pid));
 
         Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("ValidationFailed", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(400, (int)apiException.ErrorCode);
     }
 
-    [Fact]
-    public async Task Handler_8CharMobileNumber_ExceptionReturned()
+    [Theory]
+    [InlineData("12345678X")]
+    [InlineData("XXXXXXXXX")]
+    [InlineData("1234567")]
+    [InlineData("123456")]
+    [InlineData("12345")]
+    [InlineData("774345353a")]
+    public async Task Handler_WrongMobileNumber_ExceptionReturned(string mobileNumber)
     {
         var pid = _userInfo.Pid;
-        var item = _userData with { MobileNumber = "12345678X" };
+        var item = _userData with { MobileNumber = mobileNumber};
         var updateUser = new UpdateUser(_context);
 
         var exception = await Record.ExceptionAsync(() => updateUser.Handle(item, pid));
 
         Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("ValidationFailed", exception.Message);
-    }
-
-    [Fact]
-    public async Task Handler_9CharOnlyMobileNumber_ExceptionReturned()
-    {
-        var pid = _userInfo.Pid;
-        var item = _userData with { MobileNumber = "XXXXXXXXX" };
-        var updateUser = new UpdateUser(_context);
-
-        var exception = await Record.ExceptionAsync(() => updateUser.Handle(item, pid));
-
-        Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("ValidationFailed", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(400, (int)apiException.ErrorCode);
     }
 
     [Fact]
@@ -148,6 +140,11 @@ public class UpdateUserTests : IDisposable
     {
         var pid = _userInfo.Pid;
         var item = _userData;
+        var expectedUser = _userData with
+        {
+            Pid = _userInfo.Pid, 
+            BirthNumber = _userInfo.BirthNumber,
+        };
         var updateUser = new UpdateUser(_context);
         var getUser = new GetUser(_context);
 
@@ -157,9 +154,7 @@ public class UpdateUserTests : IDisposable
         Assert.NotNull(user);
         Assert.IsType<UserData>(user);
         Assert.Equal(pid, user.Pid);
-        Assert.Equal("Mock", user.Name);
-        Assert.Equal("User", user.Surname);
-        Assert.Equal("9303091234", user.BirthNumber); //Birthnumber should't change because we do not updated it
+        Assert.Equal(expectedUser, user); 
     }
 
     public void Dispose() => _context.Dispose();

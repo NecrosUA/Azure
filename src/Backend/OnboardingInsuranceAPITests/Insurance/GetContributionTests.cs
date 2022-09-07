@@ -28,6 +28,20 @@ public class GetContributionTests : IDisposable //Implement IDisposable to run m
         ProfileImage = "https://rostupload.blob.core.windows.net/images/default.jpg"
     };
 
+    private readonly UserInfo _mockDefaultUserInfo = new UserInfo
+    {
+        Pid = "6a891aca-60c9-4c70-87c4-6bd52f9f2421",
+        Name = "",
+        Surname = "",
+        Birthdate = null,
+        BirthNumber = "",
+        MobileNumber = "",
+        Email = "Mock.Usr@dex.cz",
+        Address1 = "",
+        Address2 = "",
+        ProfileImage = "https://rostupload.blob.core.windows.net/images/default.jpg"
+    };
+
     public GetContributionTests()
     {
         var options = new DbContextOptionsBuilder<DataContext>()
@@ -39,7 +53,8 @@ public class GetContributionTests : IDisposable //Implement IDisposable to run m
         _context.Database.EnsureDeleted();
         _context.Database.EnsureCreated();
 
-        _context.Users.Add(_mockUserInfo); 
+        _context.Users.Add(_mockUserInfo);
+        _context.Users.Add(_mockDefaultUserInfo);
         _context.SaveChanges();
     }
 
@@ -53,8 +68,8 @@ public class GetContributionTests : IDisposable //Implement IDisposable to run m
         var exception = await Record.ExceptionAsync(() => getContribution.Handle(requestedData, pid));
 
         Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("InvalidQueryParameters", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(399, (int)apiException.ErrorCode);
     }
 
     [Fact]
@@ -67,8 +82,22 @@ public class GetContributionTests : IDisposable //Implement IDisposable to run m
         var exception = await Record.ExceptionAsync(() => getContribution.Handle(requestedData, pid));
 
         Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("InvalidQueryParameters", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(404, (int)apiException.ErrorCode);
+    }
+
+    [Fact]
+    public async Task Handle_EmptyBirthDate_ExceptionReturned()
+    {
+        var pid = _mockDefaultUserInfo.Pid;
+        var requestedData = _requestedData;
+        var getContribution = new GetContribution(_context);
+
+        var exception = await Record.ExceptionAsync(() => getContribution.Handle(requestedData, pid));
+
+        Assert.NotNull(exception);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(400, (int)apiException.ErrorCode);
     }
 
     [Fact]
@@ -84,8 +113,8 @@ public class GetContributionTests : IDisposable //Implement IDisposable to run m
         var exception = await Record.ExceptionAsync(() => getContribution.Handle(requestedData, pid));
 
         Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("InvalidQueryParameters", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(399, (int)apiException.ErrorCode);
     }
 
     [Fact]
@@ -101,8 +130,8 @@ public class GetContributionTests : IDisposable //Implement IDisposable to run m
         var exception = await Record.ExceptionAsync(() => getContribution.Handle(requestedData, pid));
 
         Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("ValidationFailed", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(400, (int)apiException.ErrorCode);
     }
 
     [Fact]
@@ -118,8 +147,8 @@ public class GetContributionTests : IDisposable //Implement IDisposable to run m
         var exception = await Record.ExceptionAsync(() => getContribution.Handle(requestedData, pid));
 
         Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("ValidationFailed", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(400, (int)apiException.ErrorCode);
     }
 
     [Fact]
@@ -135,8 +164,8 @@ public class GetContributionTests : IDisposable //Implement IDisposable to run m
         var exception = await Record.ExceptionAsync(() => getContribution.Handle(requestedData, pid));
 
         Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("ValidationFailed", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(400, (int)apiException.ErrorCode);
     }
 
     [Fact]
@@ -151,7 +180,7 @@ public class GetContributionTests : IDisposable //Implement IDisposable to run m
         Assert.NotNull(responsedData);
         Assert.IsType<ContributionDataResponse>(responsedData);
         Assert.Equal((decimal)4480.6, responsedData.YearlyContribution);
-        Assert.Equal(responsedData.ExpirationDate,new DateOnly(DateTime.Now.Year + 1, DateTime.Now.Month, DateTime.Now.Day));
+        Assert.Equal(responsedData.ExpirationDate, new DateOnly(DateTime.Now.Year + 1, DateTime.Now.Month, DateTime.Now.Day));
     }
 
     public void Dispose() => _context.Dispose(); 

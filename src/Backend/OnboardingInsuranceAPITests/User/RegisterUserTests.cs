@@ -27,7 +27,8 @@ public class RegisterUserTests : IDisposable
 
         Assert.NotNull(exception);
         Assert.IsType<ApiException>(exception);
-        Assert.Equal("InvalidQueryParameters", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(399, (int)apiException.ErrorCode);
     }
 
     [Fact]
@@ -40,32 +41,36 @@ public class RegisterUserTests : IDisposable
         var exception = await Record.ExceptionAsync(() => registerUser.Handle(pid, email));
 
         Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("InvalidQueryParameters", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(399, (int)apiException.ErrorCode);
     }
 
-    [Fact]
-    public async Task Handle_WrongEmail_ExceptionReturned()
+    [Theory]
+    [InlineData("wrong email")]
+    [InlineData("WrongEmail")]
+    [InlineData("wrong@email")]
+    [InlineData("wrong@email.")]
+    [InlineData("wrong@e.mail")]
+    public async Task Handle_WrongEmail_ExceptionReturned(string email)
     {
         string pid = "some pid";
-        string[] email = { "wrong email", "WrongEmail", "wrong@email", "wrong@email.", "wrong@e.mail" };
         var registerUser = new RegisterUser(_context);
 
-        foreach (var mail in email)
-        {
-            var exception = await Record.ExceptionAsync(() => registerUser.Handle(pid, mail));
+        var exception = await Record.ExceptionAsync(() => registerUser.Handle(pid, email));
 
-            Assert.NotNull(exception);
-            Assert.IsType<ApiException>(exception);
-            Assert.Equal("InvalidQueryParameters", exception.Message);
-        }
+        Assert.NotNull(exception);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(399, (int)apiException.ErrorCode);
     }
 
-    [Fact]
-    public async Task Handle_CorrectDataPassed_DataAddedToDb()
+    [Theory]
+    [InlineData("correct@email.cz")]
+    [InlineData("correct@email.com")]
+    [InlineData("correct@email.net")]
+    [InlineData("crct@eml.org")]
+    public async Task Handle_CorrectDataPassed_DataAddedToDb(string email)
     {
         var pid = Guid.NewGuid().ToString();
-        var email = "correct@email.cz";
         var registerUser = new RegisterUser(_context);
         var getUser = new GetUser(_context);
 

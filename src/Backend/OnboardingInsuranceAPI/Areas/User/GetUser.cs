@@ -21,7 +21,7 @@ public class GetUser : IHandler
         if (string.IsNullOrEmpty(pid))
             throw new ApiException(ErrorCode.InvalidQueryParameters);
 
-        var user = (await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Pid == pid));
+        var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Pid == pid);
         if (user is null)
             throw new ApiException(ErrorCode.NotFound);
 

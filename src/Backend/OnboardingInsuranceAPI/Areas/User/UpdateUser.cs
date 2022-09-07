@@ -41,13 +41,13 @@ public class UpdateUser : IHandler
             throw new ApiException(ErrorCode.ValidationFailed);
 
         // Prepare to update only not null data
-        if(string.IsNullOrEmpty(item.Name) == false) user.Name = item.Name;
+        if (string.IsNullOrEmpty(item.Name) == false) user.Name = item.Name;
         if (string.IsNullOrEmpty(item.Surname) == false) user.Surname = item.Surname;
         if (string.IsNullOrEmpty(item.Address1) == false) user.Address1 = item.Address1;
         if (string.IsNullOrEmpty(item.Address2) == false) user.Address2 = item.Address2;
         if (string.IsNullOrEmpty(item.MobileNumber) == false) user.MobileNumber = item.MobileNumber;
         if (string.IsNullOrEmpty(item.ProfileImage) == false) user.ProfileImage = item.ProfileImage;
-        if(string.IsNullOrEmpty(user.BirthNumber)) user.BirthNumber = item.BirthNumber;
+        if (string.IsNullOrEmpty(user.BirthNumber)) user.BirthNumber = item.BirthNumber;
         if (user.Birthdate is null) user.Birthdate = item.Birthdate; 
 
         _context.Update(user);

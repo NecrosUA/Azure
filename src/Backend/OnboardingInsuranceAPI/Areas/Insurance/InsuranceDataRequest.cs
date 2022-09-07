@@ -6,6 +6,7 @@ public record InsuranceDataRequest
 {
     [JsonPropertyName("pid")]
     public string Pid { get; init; }
+
     [JsonPropertyName("carInsurance")]
-    public CarInsuranceData? CarInsurance { get; init; }
+    public CarInsuranceData CarInsurance { get; init; }
 }

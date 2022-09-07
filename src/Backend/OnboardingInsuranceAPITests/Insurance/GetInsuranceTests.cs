@@ -75,8 +75,8 @@ public class GetInsuranceTests : IDisposable
         var exception = await Record.ExceptionAsync(() => getInsurance.Handle(pid));
 
         Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("InvalidQueryParameters", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(399, (int)apiException.ErrorCode);
     }
 
     [Fact]
@@ -88,8 +88,8 @@ public class GetInsuranceTests : IDisposable
         var exception = await Record.ExceptionAsync(() => getInsurance.Handle(pid));
 
         Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("NotFound",exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(404, (int)apiException.ErrorCode);
     }
 
     [Fact]
@@ -103,7 +103,7 @@ public class GetInsuranceTests : IDisposable
         Assert.NotNull(insurances);
         Assert.NotNull(insurances.CarInsurance);
         Assert.IsType<InsuranceDataResponse>(insurances);
-        Assert.Equal(2, insurances.CarInsurance?.Count());
+        Assert.Equal(2, insurances.CarInsurance?.Count);
         Assert.Equal(_mockCarInsurance[0].InsuranceId, insurances?.CarInsurance?[0].InsuranceId);
         Assert.Equal(_mockCarInsurance[1].InsuranceId, insurances?.CarInsurance?[1].InsuranceId);
     }

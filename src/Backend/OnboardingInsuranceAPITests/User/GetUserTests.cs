@@ -42,8 +42,8 @@ public class GetUserTests : IDisposable
         var exception = await Record.ExceptionAsync(() => getUser.Handle(pid));
 
         Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("InvalidQueryParameters", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(399, (int)apiException.ErrorCode);
     }
 
     [Fact]
@@ -55,8 +55,8 @@ public class GetUserTests : IDisposable
         var exception = await Record.ExceptionAsync(() => getUser.Handle(pid));
 
         Assert.NotNull(_context);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("NotFound", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(404, (int)apiException.ErrorCode);
     }
 
     [Fact]

@@ -61,8 +61,8 @@ public class AddInsuranceTests : IDisposable
         var exception = await Record.ExceptionAsync(() => addInsurance.Handle(_requestedData, pid));
 
         Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("InvalidQueryParameters", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(399, (int)apiException.ErrorCode);
     }
 
     [Fact]
@@ -78,93 +78,51 @@ public class AddInsuranceTests : IDisposable
         var exception = await Record.ExceptionAsync(() => addInsurance.Handle(requestedData, pid));
 
         Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("InvalidQueryParameters", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(399, (int)apiException.ErrorCode);
     }
 
-    [Fact]
-    public async Task Handle_1900YearOfProduction_exceptionReturned()
+    [Theory]
+    [InlineData(1900)]
+    [InlineData(0)]
+    [InlineData(2300)]
+    public async Task Handle_WrongYearOfProduction_exceptionReturned(int yearOfProduction)
     {
         var pid = _requestedData.Pid;
         var addInsurance = new AddInsurance(_context);
         var requestedData = _requestedData with
         {
-            CarInsurance = _requestedData.CarInsurance! with { YearOfProduction = 1900 }
+            CarInsurance = _requestedData.CarInsurance! with { YearOfProduction = yearOfProduction }
         };
 
         var exception = await Record.ExceptionAsync(() => addInsurance.Handle(requestedData, pid));
 
         Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("ValidationFailed", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(400, (int)apiException.ErrorCode);
     }
 
-    [Fact]
-    public async Task Handle_0YearOfProduction_exceptionReturned()
+    [Theory]
+    [InlineData("1900-01-01")]
+    [InlineData("2900-01-01")]
+    [InlineData("1800-01-01")]
+    [InlineData("01-01-01")]
+    [InlineData("xx-oe-zc")]
+    public async Task Handle_WrongExpirationDate_exceptionReturned(string expirationDate)
     {
         var pid = _requestedData.Pid;
         var addInsurance = new AddInsurance(_context);
+        DateOnly.TryParseExact(expirationDate, "yyyy-MM-dd", out var parsedDate);
         var requestedData = _requestedData with
         {
-            CarInsurance = _requestedData.CarInsurance! with { YearOfProduction = 0 }
+            CarInsurance = _requestedData.CarInsurance! with { ExpirationDate = parsedDate }
         };
 
         var exception = await Record.ExceptionAsync(() => addInsurance.Handle(requestedData, pid));
 
         Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("ValidationFailed", exception.Message);
-    }
-
-    [Fact]
-    public async Task Handle_2030YearOfProduction_exceptionReturned()
-    {
-        var pid = _requestedData.Pid;
-        var addInsurance = new AddInsurance(_context);
-        var requestedData = _requestedData with
-        {
-            CarInsurance = _requestedData.CarInsurance! with { YearOfProduction = 2030 }
-        };
-
-        var exception = await Record.ExceptionAsync(() => addInsurance.Handle(requestedData, pid));
-
-        Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("ValidationFailed", exception.Message);
-    }
-
-    [Fact]
-    public async Task Handle_1900ExpirationDate_exceptionReturned()
-    {
-        var pid = _requestedData.Pid;
-        var addInsurance = new AddInsurance(_context);
-        var requestedData = _requestedData with
-        {
-            CarInsurance = _requestedData.CarInsurance! with { ExpirationDate = new DateOnly(1900,01,01)}
-        };
-
-        var exception = await Record.ExceptionAsync(() => addInsurance.Handle(requestedData, pid));
-
-        Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("ValidationFailed", exception.Message);
-    }
-
-    [Fact]
-    public async Task Handle_2900ExpirationDate_exceptionReturned()
-    {
-        var pid = _requestedData.Pid;
-        var addInsurance = new AddInsurance(_context);
-        var requestedData = _requestedData with
-        {
-            CarInsurance = _requestedData.CarInsurance! with { ExpirationDate = new DateOnly(2900, 01, 01) }
-        };
-
-        var exception = await Record.ExceptionAsync(() => addInsurance.Handle(requestedData, pid));
-
-        Assert.NotNull(exception);
-        Assert.IsType<ApiException>(exception);
-        Assert.Equal("ValidationFailed", exception.Message);
+        var apiException = Assert.IsType<ApiException>(exception);
+        Assert.Equal(400, (int)apiException.ErrorCode);
     }
 
     [Fact]
@@ -184,7 +142,7 @@ public class AddInsuranceTests : IDisposable
         Assert.NotNull(insurances);
         Assert.NotNull(insurances.CarInsurance);
         Assert.IsType<InsuranceDataResponse>(insurances);
-        Assert.Equal(1,insurances.CarInsurance?.Count());
+        Assert.Equal(1, insurances.CarInsurance?.Count);
     }
 
     public void Dispose() => _context.Dispose();
