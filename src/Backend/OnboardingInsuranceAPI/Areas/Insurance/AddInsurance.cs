@@ -21,17 +21,21 @@ public class AddInsurance: IHandler
 
     public async Task Handle(InsuranceDataRequest request, string pid)
     {
-        if(string.IsNullOrEmpty(pid))
+        if (string.IsNullOrEmpty(pid))
             throw new ApiException(ErrorCode.InvalidQueryParameters);
 
-        var yearProd = request.CarInsurance.YearOfProduction;
-        if(yearProd is null)
+        var yearProd = request.CarInsurance?.YearOfProduction;
+        if (yearProd is null)
             throw new ApiException(ErrorCode.InvalidQueryParameters);
 
-        if(yearProd <= 1900 || yearProd == 0 || yearProd > DateTime.Now.Year)
+        if (yearProd <= 1900 || yearProd == 0 || yearProd > DateTime.Now.Year)
             throw new ApiException(ErrorCode.ValidationFailed);
 
-        if(request.CarInsurance.ExpirationDate < DateOnly.FromDateTime(DateTime.Now))
+        if (request.CarInsurance.ExpirationDate < DateOnly.FromDateTime(DateTime.Now))
+            throw new ApiException(ErrorCode.ValidationFailed);
+
+        //This is business logic, we can continue insurance only for 1 year
+        if (request.CarInsurance.ExpirationDate.Value.Year > DateTime.Now.Year + 1)
             throw new ApiException(ErrorCode.ValidationFailed);
 
         await _context.AddAsync(new CarInsuranceInfo

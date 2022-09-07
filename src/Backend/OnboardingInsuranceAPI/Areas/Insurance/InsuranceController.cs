@@ -41,7 +41,7 @@ public class InsuranceController
     {
         var requestedData = await req.ReadBodyAs<ContributionDataRequest>();
         var pid = req.ReadPidFromJwt();
-        var contributionData = _getContribution.Handle(requestedData, pid);
+        var contributionData = await _getContribution.Handle(requestedData, pid);
         return await req.ReturnJson(contributionData);
     }
 }
