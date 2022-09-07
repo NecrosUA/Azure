@@ -62,7 +62,7 @@ public class AddInsuranceTests : IDisposable
 
         Assert.NotNull(exception);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(399, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.InvalidQueryParameters, apiException.ErrorCode);
     }
 
     [Fact]
@@ -79,7 +79,7 @@ public class AddInsuranceTests : IDisposable
 
         Assert.NotNull(exception);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(399, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.InvalidQueryParameters, apiException.ErrorCode);
     }
 
     [Theory]
@@ -99,20 +99,18 @@ public class AddInsuranceTests : IDisposable
 
         Assert.NotNull(exception);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(400, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.ValidationFailed, apiException.ErrorCode);
     }
 
     [Theory]
     [InlineData("1900-01-01")]
     [InlineData("2900-01-01")]
     [InlineData("1800-01-01")]
-    [InlineData("01-01-01")]
-    [InlineData("xx-oe-zc")]
     public async Task Handle_WrongExpirationDate_exceptionReturned(string expirationDate)
     {
         var pid = _requestedData.Pid;
         var addInsurance = new AddInsurance(_context);
-        DateOnly.TryParseExact(expirationDate, "yyyy-MM-dd", out var parsedDate);
+        var parsedDate = DateOnly.ParseExact(expirationDate, "yyyy-MM-dd");
         var requestedData = _requestedData with
         {
             CarInsurance = _requestedData.CarInsurance! with { ExpirationDate = parsedDate }
@@ -122,7 +120,7 @@ public class AddInsuranceTests : IDisposable
 
         Assert.NotNull(exception);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(400, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.ValidationFailed, apiException.ErrorCode);
     }
 
     [Fact]

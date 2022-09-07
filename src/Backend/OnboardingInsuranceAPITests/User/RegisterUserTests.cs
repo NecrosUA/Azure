@@ -28,7 +28,7 @@ public class RegisterUserTests : IDisposable
         Assert.NotNull(exception);
         Assert.IsType<ApiException>(exception);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(399, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.InvalidQueryParameters, apiException.ErrorCode);
     }
 
     [Fact]
@@ -42,7 +42,7 @@ public class RegisterUserTests : IDisposable
 
         Assert.NotNull(exception);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(399, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.InvalidQueryParameters, apiException.ErrorCode);
     }
 
     [Theory]
@@ -60,7 +60,7 @@ public class RegisterUserTests : IDisposable
 
         Assert.NotNull(exception);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(399, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.InvalidQueryParameters, apiException.ErrorCode);
     }
 
     [Theory]

@@ -6,7 +6,7 @@ public class UpdateUserTests : IDisposable
 
     private readonly UserData _userData = new UserData
     {
-        Birthdate = new DateOnly(1993,03,09),
+        Birthdate = new DateOnly(1993, 03, 09),
         Name = "Mock",
         Surname = "User",
         MobileNumber = "774229145",
@@ -56,7 +56,7 @@ public class UpdateUserTests : IDisposable
 
         Assert.NotNull(exception);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(399, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.InvalidQueryParameters, apiException.ErrorCode);
     }
 
     [Fact]
@@ -70,7 +70,7 @@ public class UpdateUserTests : IDisposable
 
         Assert.NotNull(exception);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(404, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.NotFound, apiException.ErrorCode);
     }
 
     [Fact]
@@ -84,35 +84,25 @@ public class UpdateUserTests : IDisposable
 
         Assert.NotNull(exception);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(399, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.InvalidQueryParameters, apiException.ErrorCode);
     }
 
-    [Fact]
-    public async Task Handler_1893BirthDate_ExceptionReturned()
+    [Theory]
+    [InlineData("1893-03-01")]
+    [InlineData("2018-01-01")]
+    [InlineData("2032-01-01")]
+    public async Task Handler_WrongBirthDate_ExceptionReturned(string wrongBirthDate)
     {
         var pid = _userInfo.Pid;
-        var item = _userData with { Birthdate = new DateOnly(1893,03,09) };
+        var parsedDate = DateOnly.ParseExact(wrongBirthDate, "yyyy-MM-dd");
+        var item = _userData with { Birthdate = parsedDate };
         var updateUser = new UpdateUser(_context);
 
         var exception = await Record.ExceptionAsync(() => updateUser.Handle(item, pid));
 
         Assert.NotNull(exception);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(400, (int)apiException.ErrorCode);
-    }
-
-    [Fact]
-    public async Task Handler_2011BirthDate_ExceptionReturned()
-    {
-        var pid = _userInfo.Pid;
-        var item = _userData with { Birthdate = new DateOnly(2011, 03, 09) };
-        var updateUser = new UpdateUser(_context);
-
-        var exception = await Record.ExceptionAsync(() => updateUser.Handle(item, pid));
-
-        Assert.NotNull(exception);
-        var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(400, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.ValidationFailed, apiException.ErrorCode);
     }
 
     [Theory]
@@ -132,7 +122,7 @@ public class UpdateUserTests : IDisposable
 
         Assert.NotNull(exception);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(400, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.ValidationFailed, apiException.ErrorCode);
     }
 
     [Fact]

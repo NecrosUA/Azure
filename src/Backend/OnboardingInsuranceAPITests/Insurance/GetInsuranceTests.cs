@@ -76,7 +76,7 @@ public class GetInsuranceTests : IDisposable
 
         Assert.NotNull(exception);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(399, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.InvalidQueryParameters, apiException.ErrorCode);
     }
 
     [Fact]
@@ -89,7 +89,7 @@ public class GetInsuranceTests : IDisposable
 
         Assert.NotNull(exception);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(404, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.NotFound, apiException.ErrorCode);
     }
 
     [Fact]

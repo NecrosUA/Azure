@@ -43,7 +43,7 @@ public class GetUserTests : IDisposable
 
         Assert.NotNull(exception);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(399, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.InvalidQueryParameters, apiException.ErrorCode);
     }
 
     [Fact]
@@ -56,7 +56,7 @@ public class GetUserTests : IDisposable
 
         Assert.NotNull(_context);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(404, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.NotFound, apiException.ErrorCode);
     }
 
     [Fact]

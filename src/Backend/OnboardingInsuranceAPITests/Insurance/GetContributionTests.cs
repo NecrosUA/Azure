@@ -69,7 +69,7 @@ public class GetContributionTests : IDisposable //Implement IDisposable to run m
 
         Assert.NotNull(exception);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(399, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.InvalidQueryParameters, apiException.ErrorCode);
     }
 
     [Fact]
@@ -83,7 +83,7 @@ public class GetContributionTests : IDisposable //Implement IDisposable to run m
 
         Assert.NotNull(exception);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(404, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.NotFound, apiException.ErrorCode);
     }
 
     [Fact]
@@ -97,7 +97,7 @@ public class GetContributionTests : IDisposable //Implement IDisposable to run m
 
         Assert.NotNull(exception);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(400, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.ValidationFailed, apiException.ErrorCode);
     }
 
     [Fact]
@@ -114,16 +114,21 @@ public class GetContributionTests : IDisposable //Implement IDisposable to run m
 
         Assert.NotNull(exception);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(399, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.InvalidQueryParameters, apiException.ErrorCode);
     }
 
-    [Fact]
-    public async Task Handle_1900YearOfProduction_ExceptionReturned()
+    [Theory]
+    [InlineData(1900)]
+    [InlineData(0)]
+    [InlineData(2900)]
+    [InlineData(898787)]
+    [InlineData(-2000)]
+    public async Task Handle_WrongYearOfProduction_ExceptionReturned(int wrongYearOfProduction)
     {
         var pid = _mockUserInfo.Pid;
         var requestedData = _requestedData with
         {
-            YearOfProduction = 1900
+            YearOfProduction = wrongYearOfProduction
         };
         var getContribution = new GetContribution(_context);
 
@@ -131,41 +136,7 @@ public class GetContributionTests : IDisposable //Implement IDisposable to run m
 
         Assert.NotNull(exception);
         var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(400, (int)apiException.ErrorCode);
-    }
-
-    [Fact]
-    public async Task Handle_0YearOfProduction_ExceptionReturned()
-    {
-        var pid = _mockUserInfo.Pid;
-        var requestedData = _requestedData with
-        {
-            YearOfProduction = 0
-        };
-        var getContribution = new GetContribution(_context);
-
-        var exception = await Record.ExceptionAsync(() => getContribution.Handle(requestedData, pid));
-
-        Assert.NotNull(exception);
-        var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(400, (int)apiException.ErrorCode);
-    }
-
-    [Fact]
-    public async Task Handle_2030YearOfProduction_ExceptionReturned()
-    {
-        var pid = _mockUserInfo.Pid;
-        var requestedData = _requestedData with
-        {
-            YearOfProduction = 2030
-        };
-        var getContribution = new GetContribution(_context);
-
-        var exception = await Record.ExceptionAsync(() => getContribution.Handle(requestedData, pid));
-
-        Assert.NotNull(exception);
-        var apiException = Assert.IsType<ApiException>(exception);
-        Assert.Equal(400, (int)apiException.ErrorCode);
+        Assert.Equal(ErrorCode.ValidationFailed, apiException.ErrorCode);
     }
 
     [Fact]
